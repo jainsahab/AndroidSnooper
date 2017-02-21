@@ -1,12 +1,20 @@
 language: android
+  components:
+    - tools
+    - platform-tools
+    - build-tools-25.0.2
+    - android-24
+    - sys-img-armeabi-v7a-android-21
+    - extra-android-m2repository
 
 jdk:
   - oraclejdk8
 
-before_install:
-  - echo y | android update sdk --no-ui --all --filter "tools"
-  - echo y | android update sdk --no-ui --all --filter "platform-tools"
-  - echo y | android update sdk -u -a -t 9,149
+before_script:
+  - echo no | android create avd --force -n test -t android-21 --abi armeabi-v7a
+  - mksdcard -l e 512M sdcard.img
+  - emulator -avd test -no-skin -no-audio -no-window -sdcard sdcard.img &
+  - android-wait-for-emulator
 
 script:
   - ./gradlew clean test connectedAndroidTest build --no-daemon
