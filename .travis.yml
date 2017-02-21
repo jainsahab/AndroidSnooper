@@ -1,0 +1,11 @@
+language: android
+
+jdk:
+  - oraclejdk8
+
+before_install:
+  - echo y | android update sdk --no-ui --all --filter "tools"
+  - echo y | android update sdk --no-ui --all --filter "platform-tools"
+
+script:
+  - ./gradlew clean test connectedAndroidTest build --no-daemon
