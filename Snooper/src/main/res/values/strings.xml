@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Android Snooper</string>
+    <string name="title_activity_http_call_list">HttpCallListActivity</string>
 </resources>
