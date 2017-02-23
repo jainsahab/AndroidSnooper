@@ -44,7 +44,6 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'org.springframework.android:spring-android-rest-template:2.0.0.M3'
     compile group: 'commons-io', name: 'commons-io', version: '2.4'
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:1.10.19'
