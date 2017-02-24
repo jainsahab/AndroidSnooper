@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import com.prateekj.snooper.R;
 import com.prateekj.snooper.adapter.HttpCallListAdapter;
 import com.prateekj.snooper.repo.SnooperRepo;
+import com.prateekj.snooper.views.DividerItemDecoration;
 
 import io.realm.Realm;
 
@@ -23,6 +24,8 @@ public class HttpCallListActivity extends AppCompatActivity {
     SnooperRepo repo = new SnooperRepo(realm);
     HttpCallListAdapter httpCallListAdapter = new HttpCallListAdapter(repo);
     httpCallList.setLayoutManager(new LinearLayoutManager(this));
+    DividerItemDecoration itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL, R.drawable.grey_divider);
+    httpCallList.addItemDecoration(itemDecoration);
     httpCallList.setAdapter(httpCallListAdapter);
   }
 }
