@@ -1,7 +1,7 @@
 package com.prateekj.snooper.activity;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -11,7 +11,7 @@ import com.prateekj.snooper.repo.SnooperRepo;
 
 import io.realm.Realm;
 
-public class HttpCallListActivity extends Activity {
+public class HttpCallListActivity extends AppCompatActivity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
