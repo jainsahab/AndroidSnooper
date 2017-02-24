@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
-  xmlns:android="http://schemas.android.com/apk/res/android">
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools">
 
   <data>
     <variable
@@ -11,6 +12,7 @@
   <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -18,19 +20,50 @@
 
     <TextView
       android:text="@{httpCall.url}"
+      android:textSize="16sp"
+      tools:text="https://google.com"
+      android:textColor="@color/snooper_black"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"/>
-    <TextView
-      android:text="@{httpCall.method}"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"/>
-    <TextView
-      android:text="@{String.valueOf(httpCall.statusCode)}"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"/>
-    <TextView
-      android:text="@{httpCall.statusText}"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"/>
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+      <TextView
+        android:text="@{httpCall.method}"
+        tools:text="POST"
+        android:textSize="12sp"
+        android:textColor="@color/snooper_grey"
+        android:layout_marginRight="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+      <ImageView
+        android:layout_gravity="center_vertical"
+        android:textColor="@color/snooper_grey"
+        android:src="@drawable/circle"
+        android:layout_width="5dp"
+        android:layout_height="wrap_content"/>
+      <TextView
+        android:text="@{String.valueOf(httpCall.statusCode)}"
+        tools:text="200"
+        android:textSize="12sp"
+        android:textColor="@color/snooper_grey"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+      <ImageView
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/circle"
+        android:layout_width="5dp"
+        android:layout_height="wrap_content"/>
+      <TextView
+        android:text="@{httpCall.statusText}"
+        tools:text="OK"
+        android:textSize="12sp"
+        android:layout_marginLeft="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    </LinearLayout>
   </LinearLayout>
 </layout>
