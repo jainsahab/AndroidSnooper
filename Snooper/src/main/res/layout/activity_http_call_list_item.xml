@@ -9,7 +9,7 @@
       type="com.prateekj.snooper.HttpCall"/>
   </data>
 
-  <LinearLayout
+  <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -19,6 +19,7 @@
     tools:paddingRight="@dimen/activity_horizontal_margin">
 
     <TextView
+      android:id="@+id/url"
       android:text="@{httpCall.url}"
       android:textSize="16sp"
       tools:text="https://google.com"
@@ -26,6 +27,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"/>
     <LinearLayout
+      android:layout_below="@+id/url"
       android:layout_width="match_parent"
       android:layout_height="wrap_content">
       <TextView
@@ -65,5 +67,11 @@
         android:layout_height="wrap_content"/>
 
     </LinearLayout>
-  </LinearLayout>
+    <ImageView
+      android:src="@drawable/arrow_right"
+      android:layout_alignParentRight="true"
+      android:layout_centerVertical="true"
+      android:layout_width="16dp"
+      android:layout_height="16dp"/>
+  </RelativeLayout>
 </layout>
