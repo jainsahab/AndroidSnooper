@@ -1,6 +1,7 @@
 package com.prateekj.snooper.repo;
 
 import com.prateekj.snooper.model.HttpCall;
+import com.prateekj.snooper.model.IdInitializer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,7 @@ public class SnooperRepo {
   }
 
   public void save(HttpCall httpCall) {
+    new IdInitializer(this.realm).initialize(httpCall);
     realm.beginTransaction();
     realm.copyToRealm(httpCall);
     realm.commitTransaction();

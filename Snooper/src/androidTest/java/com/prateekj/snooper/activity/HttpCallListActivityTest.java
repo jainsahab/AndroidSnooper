@@ -6,6 +6,7 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.prateekj.snooper.R;
 import com.prateekj.snooper.model.HttpCall;
+import com.prateekj.snooper.repo.SnooperRepo;
 import com.prateekj.snooper.rules.RealmCleanRule;
 
 import org.junit.Before;
@@ -31,12 +32,12 @@ public class HttpCallListActivityTest {
   @Rule
   public ActivityTestRule<HttpCallListActivity> activityRule =
       new ActivityTestRule<>(HttpCallListActivity.class, true, false);
-  private Realm realm;
+  private SnooperRepo snooperRepo;
 
   @Before
   public void setUp() throws Exception {
     Realm.init(InstrumentationRegistry.getTargetContext());
-    realm = Realm.getDefaultInstance();
+    snooperRepo = new SnooperRepo(Realm.getDefaultInstance());
   }
 
   @Test
@@ -68,8 +69,6 @@ public class HttpCallListActivityTest {
         .withStatusCode(statusCode)
         .withStatusText(statusText)
         .build();
-    realm.beginTransaction();
-    realm.copyToRealm(httpCall);
-    realm.commitTransaction();
+    snooperRepo.save(httpCall);
   }
 }
