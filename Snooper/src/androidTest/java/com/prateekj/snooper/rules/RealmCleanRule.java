@@ -20,6 +20,10 @@ public class RealmCleanRule implements TestRule{
     realm = RealmFactory.create(getTargetContext());
   }
 
+  public Realm getRealm() {
+    return realm;
+  }
+
   @Override
   public Statement apply(final Statement base, Description description) {
     return new Statement() {

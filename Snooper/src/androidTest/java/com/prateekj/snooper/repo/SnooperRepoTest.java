@@ -57,6 +57,22 @@ public class SnooperRepoTest {
     assertThat(httpCalls, hasCallWithUrl("url2"));
   }
 
+  @Test
+  public void shouldReturnHttpCallsByGivenId() throws Exception {
+    HttpCall httpCall1 = new HttpCall.HttpCallBuilder().withUrl("url1").build();
+    HttpCall httpCall2 = new HttpCall.HttpCallBuilder().withUrl("url2").build();
+
+    SnooperRepo snooperRepo = new SnooperRepo(realm);
+    snooperRepo.save(httpCall1);
+    snooperRepo.save(httpCall2);
+
+    HttpCall firstPersistedHttpCall = snooperRepo.findById(1);
+    HttpCall secondPersistedHttpCall = snooperRepo.findById(2);
+
+    assertThat(firstPersistedHttpCall.getUrl(), is("url1"));
+    assertThat(secondPersistedHttpCall.getUrl(), is("url2"));
+  }
+
   @NonNull
   private CustomTypeSafeMatcher<List<HttpCall>> hasCallWithUrl(final String url) {
     return new CustomTypeSafeMatcher<List<HttpCall>>("with url") {

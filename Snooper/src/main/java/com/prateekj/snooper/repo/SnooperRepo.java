@@ -31,4 +31,8 @@ public class SnooperRepo {
     }
     return httpCalls;
   }
+
+  public HttpCall findById(int id) {
+    return realm.where(HttpCall.class).equalTo("id", id).findFirst();
+  }
 }

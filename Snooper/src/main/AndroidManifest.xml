@@ -12,6 +12,10 @@
       android:name=".activity.HttpCallListActivity"
       android:label="@string/title_activity_http_call_list">
     </activity>
+    <activity
+      android:name=".activity.ResponseBodyActivity"
+      android:label="@string/title_activity_response_body">
+    </activity>
   </application>
 
 </manifest>
