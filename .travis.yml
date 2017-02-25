@@ -1,4 +1,11 @@
 language: android
+
+sudo: false
+
+cache:
+  directories:
+    - $HOME/.gradle
+
 android:
   components:
     - tools
@@ -18,4 +25,4 @@ before_script:
   - android-wait-for-emulator
 
 script:
-  - ./gradlew clean test connectedAndroidTest build --no-daemon
+  - ./gradlew clean testDebugUnitTest connectedDebugAndroidTest build --no-daemon
