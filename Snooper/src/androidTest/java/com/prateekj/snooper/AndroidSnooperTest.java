@@ -1,6 +1,7 @@
 package com.prateekj.snooper;
 
-import com.prateekj.snooper.HttpCall.HttpCallBuilder;
+import com.prateekj.snooper.model.HttpCall;
+import com.prateekj.snooper.model.HttpCall.HttpCallBuilder;
 import com.prateekj.snooper.rules.RealmCleanRule;
 
 import org.junit.Before;

@@ -1,4 +1,4 @@
-package com.prateekj.snooper;
+package com.prateekj.snooper.model;
 
 import io.realm.RealmObject;
 

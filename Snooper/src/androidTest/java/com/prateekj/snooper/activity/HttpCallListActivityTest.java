@@ -4,8 +4,8 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.prateekj.snooper.HttpCall;
 import com.prateekj.snooper.R;
+import com.prateekj.snooper.model.HttpCall;
 import com.prateekj.snooper.rules.RealmCleanRule;
 
 import org.junit.Before;

@@ -1,6 +1,7 @@
 package com.prateekj.snooper.rules;
 
-import com.prateekj.snooper.HttpCall;
+
+import com.prateekj.snooper.model.HttpCall;
 
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;

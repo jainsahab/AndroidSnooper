@@ -6,7 +6,7 @@
   <data>
     <variable
       name="httpCall"
-      type="com.prateekj.snooper.HttpCall"/>
+      type="com.prateekj.snooper.model.HttpCall"/>
   </data>
 
   <RelativeLayout

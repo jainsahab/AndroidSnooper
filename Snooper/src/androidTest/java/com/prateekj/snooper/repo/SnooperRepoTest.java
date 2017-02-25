@@ -3,7 +3,7 @@ package com.prateekj.snooper.repo;
 import android.support.annotation.NonNull;
 import android.support.test.InstrumentationRegistry;
 
-import com.prateekj.snooper.HttpCall;
+import com.prateekj.snooper.model.HttpCall;
 import com.prateekj.snooper.rules.RealmCleanRule;
 
 import org.hamcrest.CustomTypeSafeMatcher;

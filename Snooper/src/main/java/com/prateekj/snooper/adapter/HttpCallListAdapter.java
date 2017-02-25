@@ -5,9 +5,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import com.prateekj.snooper.HttpCall;
 import com.prateekj.snooper.R;
 import com.prateekj.snooper.databinding.ActivityHttpCallListItemBinding;
+import com.prateekj.snooper.model.HttpCall;
 import com.prateekj.snooper.repo.SnooperRepo;
 
 import java.util.List;

@@ -2,6 +2,7 @@ package com.prateekj.snooper;
 
 import android.content.Context;
 
+import com.prateekj.snooper.model.HttpCall;
 import com.prateekj.snooper.repo.SnooperRepo;
 
 import java.io.IOException;

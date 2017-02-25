@@ -1,6 +1,6 @@
 package com.prateekj.snooper.repo;
 
-import com.prateekj.snooper.HttpCall;
+import com.prateekj.snooper.model.HttpCall;
 
 import java.util.ArrayList;
 import java.util.List;
