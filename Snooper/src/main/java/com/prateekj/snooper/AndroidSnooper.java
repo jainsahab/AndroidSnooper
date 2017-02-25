@@ -3,11 +3,10 @@ package com.prateekj.snooper;
 import android.content.Context;
 
 import com.prateekj.snooper.model.HttpCall;
+import com.prateekj.snooper.realm.RealmFactory;
 import com.prateekj.snooper.repo.SnooperRepo;
 
 import java.io.IOException;
-
-import io.realm.Realm;
 
 public class AndroidSnooper {
 
@@ -20,8 +19,7 @@ public class AndroidSnooper {
   }
 
   public static AndroidSnooper init(Context context) {
-    Realm.init(context);
-    SnooperRepo repo = new SnooperRepo(Realm.getDefaultInstance());
+    SnooperRepo repo = new SnooperRepo(RealmFactory.create(context));
     AndroidSnooper androidSnooper = new AndroidSnooper();
     androidSnooper.snooperRepo = repo;
     return androidSnooper;

@@ -1,11 +1,11 @@
 package com.prateekj.snooper.activity;
 
-import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.prateekj.snooper.R;
 import com.prateekj.snooper.model.HttpCall;
+import com.prateekj.snooper.realm.RealmFactory;
 import com.prateekj.snooper.repo.SnooperRepo;
 import com.prateekj.snooper.rules.RealmCleanRule;
 
@@ -14,8 +14,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import io.realm.Realm;
-
+import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
@@ -36,8 +35,7 @@ public class HttpCallListActivityTest {
 
   @Before
   public void setUp() throws Exception {
-    Realm.init(InstrumentationRegistry.getTargetContext());
-    snooperRepo = new SnooperRepo(Realm.getDefaultInstance());
+    snooperRepo = new SnooperRepo(RealmFactory.create(getTargetContext()));
   }
 
   @Test

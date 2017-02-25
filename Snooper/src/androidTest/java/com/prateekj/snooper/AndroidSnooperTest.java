@@ -2,6 +2,7 @@ package com.prateekj.snooper;
 
 import com.prateekj.snooper.model.HttpCall;
 import com.prateekj.snooper.model.HttpCall.HttpCallBuilder;
+import com.prateekj.snooper.realm.RealmFactory;
 import com.prateekj.snooper.rules.RealmCleanRule;
 
 import org.junit.Before;
@@ -25,8 +26,7 @@ public class AndroidSnooperTest {
   @Before
   public void setUp() throws Exception {
     androidSnooper = AndroidSnooper.init(getTargetContext());
-    Realm.init(getTargetContext());
-    realm = Realm.getDefaultInstance();
+    realm = RealmFactory.create(getTargetContext());
   }
 
   @Test

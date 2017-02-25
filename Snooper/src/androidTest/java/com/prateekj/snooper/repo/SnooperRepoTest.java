@@ -1,9 +1,9 @@
 package com.prateekj.snooper.repo;
 
 import android.support.annotation.NonNull;
-import android.support.test.InstrumentationRegistry;
 
 import com.prateekj.snooper.model.HttpCall;
+import com.prateekj.snooper.realm.RealmFactory;
 import com.prateekj.snooper.rules.RealmCleanRule;
 
 import org.hamcrest.CustomTypeSafeMatcher;
@@ -15,6 +15,7 @@ import java.util.List;
 
 import io.realm.Realm;
 
+import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -27,8 +28,7 @@ public class SnooperRepoTest {
 
   @Before
   public void setUp() throws Exception {
-    Realm.init(InstrumentationRegistry.getTargetContext());
-    realm = Realm.getDefaultInstance();
+    realm = RealmFactory.create(getTargetContext());
   }
 
   @Test

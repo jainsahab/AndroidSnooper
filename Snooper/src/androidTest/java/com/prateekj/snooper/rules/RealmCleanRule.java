@@ -2,6 +2,7 @@ package com.prateekj.snooper.rules;
 
 
 import com.prateekj.snooper.model.HttpCall;
+import com.prateekj.snooper.realm.RealmFactory;
 
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
@@ -16,8 +17,7 @@ public class RealmCleanRule implements TestRule{
   private final Realm realm;
 
   public RealmCleanRule() {
-    Realm.init(getTargetContext());
-    realm = Realm.getDefaultInstance();
+    realm = RealmFactory.create(getTargetContext());
   }
 
   @Override
