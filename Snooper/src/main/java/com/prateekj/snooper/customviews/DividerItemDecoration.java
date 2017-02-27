@@ -1,4 +1,4 @@
-package com.prateekj.snooper.views;
+package com.prateekj.snooper.customviews;
 
 import android.content.Context;
 import android.graphics.Canvas;

@@ -3,6 +3,7 @@ package com.prateekj.snooper.adapter;
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.prateekj.snooper.R;
@@ -16,12 +17,14 @@ public class HttpCallListAdapter extends RecyclerView.Adapter<HttpCallListAdapte
 
 
   private final List<HttpCall> httpCalls;
+  private HttpCallListClickListener listener;
 
-  public HttpCallListAdapter(SnooperRepo repo) {
+  public HttpCallListAdapter(SnooperRepo repo, HttpCallListClickListener listener) {
+    this.listener = listener;
     httpCalls = repo.findAll();
   }
 
-  public static class HttpCallViewHolder extends RecyclerView.ViewHolder {
+  public  class HttpCallViewHolder extends RecyclerView.ViewHolder {
     private ActivityHttpCallListItemBinding binding;
 
     public HttpCallViewHolder(ActivityHttpCallListItemBinding binding) {
@@ -32,6 +35,16 @@ public class HttpCallListAdapter extends RecyclerView.Adapter<HttpCallListAdapte
     public void bind(HttpCall httpCall) {
       this.binding.setHttpCall(httpCall);
       this.binding.executePendingBindings();
+      setClickListener(httpCall);
+    }
+
+    private void setClickListener(final HttpCall httpCall) {
+      this.itemView.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          listener.onClick(httpCall);
+        }
+      });
     }
 
   }

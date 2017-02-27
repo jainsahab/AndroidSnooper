@@ -1,6 +1,8 @@
 package com.prateekj.snooper.activity;
 
-import android.support.test.rule.ActivityTestRule;
+import android.app.Instrumentation;
+import android.content.Intent;
+import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.prateekj.snooper.R;
@@ -14,9 +16,16 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static android.app.Activity.RESULT_OK;
 import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.intent.Intents.intended;
+import static android.support.test.espresso.intent.Intents.intending;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.anyIntent;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.hasExtra;
 import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.prateekj.snooper.utils.EspressoActions.withRecyclerView;
@@ -29,8 +38,8 @@ public class HttpCallListActivityTest {
   public RealmCleanRule rule = new RealmCleanRule();
 
   @Rule
-  public ActivityTestRule<HttpCallListActivity> activityRule =
-      new ActivityTestRule<>(HttpCallListActivity.class, true, false);
+  public IntentsTestRule<HttpCallListActivity> activityRule =
+      new IntentsTestRule<>(HttpCallListActivity.class, true, false);
   private SnooperRepo snooperRepo;
 
   @Before
@@ -58,6 +67,17 @@ public class HttpCallListActivityTest {
         hasDescendant(withText("200")),
         hasDescendant(withText("OK"))
     )));
+
+    verifyClickActionOnListItem(0, 1);
+    verifyClickActionOnListItem(1, 2);
+  }
+
+  private void verifyClickActionOnListItem(int itemIndex, int httpCallId) {
+    intending(anyIntent()).respondWith(new Instrumentation.ActivityResult(RESULT_OK, new Intent()));
+    onView(withRecyclerView(R.id.list, itemIndex)).perform(click());
+    intended(allOf(
+        hasComponent(ResponseBodyActivity.class.getName()),
+        hasExtra(ResponseBodyActivity.HTTP_CALL_ID, httpCallId)));
   }
 
   private void saveHttpCall(String url, String method, int statusCode, String statusText) {

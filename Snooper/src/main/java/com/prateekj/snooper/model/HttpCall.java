@@ -19,24 +19,12 @@ public class HttpCall extends RealmObject implements IncrementalIdModel{
     return payload;
   }
 
-  public void setPayload(String payload) {
-    this.payload = payload;
-  }
-
   public String getMethod() {
     return method;
   }
 
-  public void setMethod(String method) {
-    this.method = method;
-  }
-
   public String getUrl() {
     return url;
-  }
-
-  public void setUrl(String url) {
-    this.url = url;
   }
 
   public String getResponseBody() {
@@ -60,6 +48,10 @@ public class HttpCall extends RealmObject implements IncrementalIdModel{
   @Override
   public void setId(int id) {
     this.id = id;
+  }
+
+  public int getId() {
+    return id;
   }
 
   public static class HttpCallBuilder {
