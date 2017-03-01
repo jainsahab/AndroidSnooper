@@ -79,11 +79,11 @@ public class SnooperRepoTest {
       @Override
       protected boolean matchesSafely(List<HttpCall> item) {
         for (HttpCall httpCall : item) {
-          if(httpCall.getUrl().equals(url)){
+          if (httpCall.getUrl().equals(url)) {
             return true;
           }
         }
-        return  false;
+        return false;
       }
     };
   }

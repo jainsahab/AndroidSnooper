@@ -19,9 +19,9 @@ public class IdInitializerTest {
   public void setUp() throws Exception {
     Realm.init(getTargetContext());
     RealmConfiguration configuration = new RealmConfiguration.Builder()
-        .name("test.realm")
-        .modules(new RealmTestModule())
-        .build();
+      .name("test.realm")
+      .modules(new RealmTestModule())
+      .build();
     realm = Realm.getInstance(configuration);
     cleanDB();
   }

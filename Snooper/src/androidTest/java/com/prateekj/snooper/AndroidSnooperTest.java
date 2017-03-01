@@ -36,12 +36,12 @@ public class AndroidSnooperTest {
     String requestBody = "requestBody";
 
     HttpCall call = new HttpCallBuilder()
-        .withUrl(url)
-        .withMethod("POST")
-        .withPayload(requestBody)
-        .withResponseBody(responseBody)
-        .withStatusCode(200)
-        .withStatusText("OK").build();
+      .withUrl(url)
+      .withMethod("POST")
+      .withPayload(requestBody)
+      .withResponseBody(responseBody)
+      .withStatusCode(200)
+      .withStatusText("OK").build();
 
     androidSnooper.record(call);
 

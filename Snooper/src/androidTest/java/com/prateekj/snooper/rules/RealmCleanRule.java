@@ -12,7 +12,7 @@ import io.realm.Realm;
 
 import static android.support.test.InstrumentationRegistry.getTargetContext;
 
-public class RealmCleanRule implements TestRule{
+public class RealmCleanRule implements TestRule {
 
   private final Realm realm;
 

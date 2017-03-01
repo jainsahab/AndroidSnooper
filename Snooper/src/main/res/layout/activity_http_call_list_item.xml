@@ -4,6 +4,7 @@
   xmlns:tools="http://schemas.android.com/tools">
 
   <data>
+
     <variable
       name="httpCall"
       type="com.prateekj.snooper.model.HttpCall"/>
@@ -26,10 +27,12 @@
       android:textColor="@color/snooper_black"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"/>
+
     <LinearLayout
       android:layout_below="@+id/url"
       android:layout_width="match_parent"
       android:layout_height="wrap_content">
+
       <TextView
         android:text="@{httpCall.method}"
         tools:text="POST"
@@ -38,12 +41,14 @@
         android:layout_marginRight="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
+
       <ImageView
         android:layout_gravity="center_vertical"
         android:textColor="@color/snooper_grey"
         android:src="@drawable/circle"
         android:layout_width="5dp"
         android:layout_height="wrap_content"/>
+
       <TextView
         android:text="@{String.valueOf(httpCall.statusCode)}"
         tools:text="200"
@@ -53,11 +58,13 @@
         android:layout_marginLeft="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
+
       <ImageView
         android:layout_gravity="center_vertical"
         android:src="@drawable/circle"
         android:layout_width="5dp"
         android:layout_height="wrap_content"/>
+
       <TextView
         android:text="@{httpCall.statusText}"
         tools:text="OK"
@@ -67,6 +74,7 @@
         android:layout_height="wrap_content"/>
 
     </LinearLayout>
+
     <ImageView
       android:src="@drawable/arrow_right"
       android:layout_alignParentRight="true"

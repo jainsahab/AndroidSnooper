@@ -26,7 +26,7 @@ public class SnooperRepo {
   public List<HttpCall> findAll() {
     RealmResults<HttpCall> results = realm.where(HttpCall.class).findAll();
     ArrayList<HttpCall> httpCalls = new ArrayList<>();
-    for (int index = 0 ; index < results.size(); index++) {
+    for (int index = 0; index < results.size(); index++) {
       httpCalls.add(results.get(index));
     }
     return httpCalls;

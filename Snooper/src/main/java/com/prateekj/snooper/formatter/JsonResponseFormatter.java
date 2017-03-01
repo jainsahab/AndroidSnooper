@@ -7,10 +7,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-public class JsonResponseFormatter implements ResponseFormatter{
+public class JsonResponseFormatter implements ResponseFormatter {
 
   private static final String TAG = JsonResponseFormatter.class.getSimpleName();
-  private static final int INDENT_SPACES = 2;
+  private static final int INDENT_SPACES = 4;
 
   @Override
   public String format(String response) {

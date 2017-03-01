@@ -3,7 +3,7 @@ package com.prateekj.snooper.model;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-public class TestModel extends RealmObject implements IncrementalIdModel{
+public class TestModel extends RealmObject implements IncrementalIdModel {
   @PrimaryKey
   public int id;
 

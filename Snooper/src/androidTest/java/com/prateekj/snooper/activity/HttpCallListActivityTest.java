@@ -39,7 +39,7 @@ public class HttpCallListActivityTest {
 
   @Rule
   public IntentsTestRule<HttpCallListActivity> activityRule =
-      new IntentsTestRule<>(HttpCallListActivity.class, true, false);
+    new IntentsTestRule<>(HttpCallListActivity.class, true, false);
   private SnooperRepo snooperRepo;
 
   @Before
@@ -55,17 +55,17 @@ public class HttpCallListActivityTest {
     activityRule.launchActivity(null);
 
     onView(withRecyclerView(R.id.list, 0)).check(matches(allOf(
-        hasDescendant(withText("https://www.google.com")),
-        hasDescendant(withText("GET")),
-        hasDescendant(withText("200")),
-        hasDescendant(withText("OK"))
+      hasDescendant(withText("https://www.google.com")),
+      hasDescendant(withText("GET")),
+      hasDescendant(withText("200")),
+      hasDescendant(withText("OK"))
     )));
 
     onView(withRecyclerView(R.id.list, 1)).check(matches(allOf(
-        hasDescendant(withText("https://www.facebook.com")),
-        hasDescendant(withText("GET")),
-        hasDescendant(withText("200")),
-        hasDescendant(withText("OK"))
+      hasDescendant(withText("https://www.facebook.com")),
+      hasDescendant(withText("GET")),
+      hasDescendant(withText("200")),
+      hasDescendant(withText("OK"))
     )));
 
     verifyClickActionOnListItem(0, 1);
@@ -76,17 +76,17 @@ public class HttpCallListActivityTest {
     intending(anyIntent()).respondWith(new Instrumentation.ActivityResult(RESULT_OK, new Intent()));
     onView(withRecyclerView(R.id.list, itemIndex)).perform(click());
     intended(allOf(
-        hasComponent(ResponseBodyActivity.class.getName()),
-        hasExtra(ResponseBodyActivity.HTTP_CALL_ID, httpCallId)));
+      hasComponent(ResponseBodyActivity.class.getName()),
+      hasExtra(ResponseBodyActivity.HTTP_CALL_ID, httpCallId)));
   }
 
   private void saveHttpCall(String url, String method, int statusCode, String statusText) {
     HttpCall httpCall = new HttpCall.HttpCallBuilder()
-        .withUrl(url)
-        .withMethod(method)
-        .withStatusCode(statusCode)
-        .withStatusText(statusText)
-        .build();
+      .withUrl(url)
+      .withMethod(method)
+      .withStatusCode(statusCode)
+      .withStatusText(statusText)
+      .build();
     snooperRepo.save(httpCall);
   }
 }

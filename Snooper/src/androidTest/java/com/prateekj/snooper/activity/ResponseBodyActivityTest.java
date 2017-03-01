@@ -26,7 +26,7 @@ public class ResponseBodyActivityTest {
 
   @Rule
   public ActivityTestRule<ResponseBodyActivity> activityRule =
-      new ActivityTestRule<>(ResponseBodyActivity.class, true, false);
+    new ActivityTestRule<>(ResponseBodyActivity.class, true, false);
   private SnooperRepo snooperRepo;
 
   @Before
@@ -45,18 +45,18 @@ public class ResponseBodyActivityTest {
     activityRule.launchActivity(intent);
 
     onView(withId(R.id.payload_text))
-        .check(matches(withText(readFrom("person_details_formatted_response.json"))));
+      .check(matches(withText(readFrom("person_details_formatted_response.json"))));
   }
 
   private void saveHttpCall(String url, String method,
                             int statusCode, String statusText, String payload) {
     HttpCall httpCall = new HttpCall.HttpCallBuilder()
-        .withUrl(url)
-        .withMethod(method)
-        .withStatusCode(statusCode)
-        .withStatusText(statusText)
-        .withPayload(payload)
-        .build();
+      .withUrl(url)
+      .withMethod(method)
+      .withStatusCode(statusCode)
+      .withStatusText(statusText)
+      .withPayload(payload)
+      .build();
     snooperRepo.save(httpCall);
   }
 }

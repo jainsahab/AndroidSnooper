@@ -12,7 +12,8 @@ public class AndroidSnooper {
 
   private SnooperRepo snooperRepo;
 
-  private AndroidSnooper(){}
+  private AndroidSnooper() {
+  }
 
   public void record(HttpCall httpCall) throws IOException {
     this.snooperRepo.save(httpCall);

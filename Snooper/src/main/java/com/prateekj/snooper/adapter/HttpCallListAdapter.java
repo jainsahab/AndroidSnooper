@@ -13,7 +13,7 @@ import com.prateekj.snooper.repo.SnooperRepo;
 
 import java.util.List;
 
-public class HttpCallListAdapter extends RecyclerView.Adapter<HttpCallListAdapter.HttpCallViewHolder>{
+public class HttpCallListAdapter extends RecyclerView.Adapter<HttpCallListAdapter.HttpCallViewHolder> {
 
 
   private final List<HttpCall> httpCalls;
@@ -24,7 +24,7 @@ public class HttpCallListAdapter extends RecyclerView.Adapter<HttpCallListAdapte
     httpCalls = repo.findAll();
   }
 
-  public  class HttpCallViewHolder extends RecyclerView.ViewHolder {
+  public class HttpCallViewHolder extends RecyclerView.ViewHolder {
     private ActivityHttpCallListItemBinding binding;
 
     public HttpCallViewHolder(ActivityHttpCallListItemBinding binding) {
@@ -48,11 +48,12 @@ public class HttpCallListAdapter extends RecyclerView.Adapter<HttpCallListAdapte
     }
 
   }
+
   @Override
   public HttpCallViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     LayoutInflater inflater = LayoutInflater.from(parent.getContext());
     ActivityHttpCallListItemBinding binding = DataBindingUtil.inflate(
-        inflater, R.layout.activity_http_call_list_item, parent, false);
+      inflater, R.layout.activity_http_call_list_item, parent, false);
     return new HttpCallViewHolder(binding);
   }
 
