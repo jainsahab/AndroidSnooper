@@ -12,8 +12,8 @@ public class JsonResponseFormatterTest {
   @Test
   public void shouldReturnFormattedJsonObject() throws Exception {
     ResponseFormatter formatter = new JsonResponseFormatter();
-    String formattedResponse = formatter.format(readFrom("person_datails_raw_response.json"));
-    String expectedResponse = readFrom("person_datails_formatted_response.json");
+    String formattedResponse = formatter.format(readFrom("person_details_raw_response.json"));
+    String expectedResponse = readFrom("person_details_formatted_response.json");
 
     assertThat(formattedResponse, is(expectedResponse));
   }
@@ -21,8 +21,8 @@ public class JsonResponseFormatterTest {
   @Test
   public void shouldReturnFormattedJsonArray() throws Exception {
     ResponseFormatter formatter = new JsonResponseFormatter();
-    String formattedResponse = formatter.format(readFrom("person_datails_raw_array_response.json"));
-    String expectedResponse = readFrom("person_datails_formatted_array_response.json");
+    String formattedResponse = formatter.format(readFrom("person_details_raw_array_response.json"));
+    String expectedResponse = readFrom("person_details_formatted_array_response.json");
 
     assertThat(formattedResponse, is(expectedResponse));
   }

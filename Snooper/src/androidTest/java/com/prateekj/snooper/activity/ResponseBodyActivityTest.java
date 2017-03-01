@@ -36,7 +36,7 @@ public class ResponseBodyActivityTest {
 
   @Test
   public void shouldRenderResponsePayload() throws Exception {
-    String payload = readFrom("person_datails_raw_response.json");
+    String payload = readFrom("person_details_raw_response.json");
     saveHttpCall("https://www.abc.com/person/1", "GET", 200, "OK", payload);
 
     Intent intent = new Intent();
@@ -45,7 +45,7 @@ public class ResponseBodyActivityTest {
     activityRule.launchActivity(intent);
 
     onView(withId(R.id.payload_text))
-        .check(matches(withText(readFrom("person_datails_formatted_response.json"))));
+        .check(matches(withText(readFrom("person_details_formatted_response.json"))));
   }
 
   private void saveHttpCall(String url, String method,
