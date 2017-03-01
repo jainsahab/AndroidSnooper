@@ -37,5 +37,6 @@ public class HttpCallListActivity extends AppCompatActivity implements HttpListV
     Intent intent = new Intent(this, ResponseBodyActivity.class);
     intent.putExtra(HTTP_CALL_ID, httpCallId);
     startActivity(intent);
+    overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
   }
 }
