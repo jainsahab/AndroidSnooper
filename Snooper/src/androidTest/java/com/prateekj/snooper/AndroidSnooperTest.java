@@ -13,6 +13,7 @@ import io.realm.Realm;
 
 import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.junit.Assert.assertThat;
 
 public class AndroidSnooperTest {
@@ -27,6 +28,12 @@ public class AndroidSnooperTest {
   public void setUp() throws Exception {
     androidSnooper = AndroidSnooper.init(getTargetContext());
     realm = RealmFactory.create(getTargetContext());
+  }
+
+  @Test
+  public void shouldReturnSameInstanceOnEveryInit() throws Exception {
+    AndroidSnooper newSnooper = AndroidSnooper.init(getTargetContext());
+    assertThat(newSnooper, sameInstance(androidSnooper));
   }
 
   @Test

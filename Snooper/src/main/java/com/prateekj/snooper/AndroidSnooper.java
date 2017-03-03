@@ -11,6 +11,7 @@ import java.io.IOException;
 public class AndroidSnooper {
 
   private SnooperRepo snooperRepo;
+  private static AndroidSnooper androidSnooper;
 
   private AndroidSnooper() {
   }
@@ -20,8 +21,11 @@ public class AndroidSnooper {
   }
 
   public static AndroidSnooper init(Context context) {
+    if (androidSnooper != null) {
+      return androidSnooper;
+    }
     SnooperRepo repo = new SnooperRepo(RealmFactory.create(context));
-    AndroidSnooper androidSnooper = new AndroidSnooper();
+    androidSnooper = new AndroidSnooper();
     androidSnooper.snooperRepo = repo;
     return androidSnooper;
   }
