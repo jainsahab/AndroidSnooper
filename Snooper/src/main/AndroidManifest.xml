@@ -8,13 +8,14 @@
     android:allowBackup="true"
     android:label="@string/app_name"
     android:supportsRtl="true"
-    android:theme="@style/AppTheme"
     tools:node="replace">
     <activity
+      android:theme="@style/SnooperTheme"
       android:name=".activity.HttpCallListActivity"
       android:label="@string/title_activity_http_call_list">
     </activity>
     <activity
+      android:theme="@style/SnooperTheme"
       android:name=".activity.ResponseBodyActivity"
       android:label="@string/title_activity_response_body">
     </activity>
