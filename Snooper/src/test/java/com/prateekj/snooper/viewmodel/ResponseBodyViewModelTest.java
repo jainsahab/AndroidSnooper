@@ -13,18 +13,18 @@ import static org.mockito.Mockito.when;
 public class ResponseBodyViewModelTest {
 
   @Test
-  public void shouldReturnFormattedBodyUsingFormatter() throws Exception {
-    String payload = "payload";
-    String formattedPayload = "formatted payload";
+  public void shouldReturnFormattedResponseBodyUsingFormatter() throws Exception {
+    String responseBody = "payload";
+    String formattedResponseBody = "formatted payload";
     ResponseBodyViewModel responseBodyViewModel = new ResponseBodyViewModel();
     ResponseFormatter formatter = mock(ResponseFormatter.class);
     HttpCall httpCall = mock(HttpCall.class);
-    when(httpCall.getPayload()).thenReturn(payload);
-    when(formatter.format(payload)).thenReturn(formattedPayload);
+    when(httpCall.getResponseBody()).thenReturn(responseBody);
+    when(formatter.format(responseBody)).thenReturn(formattedResponseBody);
     responseBodyViewModel.init(httpCall, formatter);
 
     String actualFormattedPayload = responseBodyViewModel.formattedResponse();
 
-    assertThat(actualFormattedPayload, is(formattedPayload));
+    assertThat(actualFormattedPayload, is(formattedResponseBody));
   }
 }

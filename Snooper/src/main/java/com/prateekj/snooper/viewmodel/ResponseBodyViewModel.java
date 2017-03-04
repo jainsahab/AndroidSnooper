@@ -14,6 +14,6 @@ public class ResponseBodyViewModel {
   }
 
   public String formattedResponse() {
-    return this.formatter.format(this.httpCall.getPayload());
+    return this.formatter.format(this.httpCall.getResponseBody());
   }
 }
