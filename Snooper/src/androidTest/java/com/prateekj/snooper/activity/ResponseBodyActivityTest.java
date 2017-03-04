@@ -55,7 +55,7 @@ public class ResponseBodyActivityTest {
       .withMethod(method)
       .withStatusCode(statusCode)
       .withStatusText(statusText)
-      .withPayload(payload)
+      .withResponseBody(payload)
       .build();
     snooperRepo.save(httpCall);
   }
