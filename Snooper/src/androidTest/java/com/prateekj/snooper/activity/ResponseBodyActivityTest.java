@@ -50,7 +50,7 @@ public class ResponseBodyActivityTest {
 
   private void saveHttpCall(String url, String method,
                             int statusCode, String statusText, String payload) {
-    HttpCall httpCall = new HttpCall.HttpCallBuilder()
+    HttpCall httpCall = new HttpCall.Builder()
       .withUrl(url)
       .withMethod(method)
       .withStatusCode(statusCode)

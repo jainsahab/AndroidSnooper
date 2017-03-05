@@ -81,7 +81,7 @@ public class HttpCallListActivityTest {
   }
 
   private void saveHttpCall(String url, String method, int statusCode, String statusText) {
-    HttpCall httpCall = new HttpCall.HttpCallBuilder()
+    HttpCall httpCall = new HttpCall.Builder()
       .withUrl(url)
       .withMethod(method)
       .withStatusCode(statusCode)

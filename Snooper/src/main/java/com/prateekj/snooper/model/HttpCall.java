@@ -54,20 +54,20 @@ public class HttpCall extends RealmObject implements IncrementalIdModel {
     return id;
   }
 
-  public static class HttpCallBuilder {
+  public static class Builder {
 
     private final HttpCall httpCall;
 
-    public HttpCallBuilder() {
+    public Builder() {
       httpCall = new HttpCall();
     }
 
-    public HttpCallBuilder withMethod(String httpMethod) {
+    public Builder withMethod(String httpMethod) {
       httpCall.method = httpMethod;
       return this;
     }
 
-    public HttpCallBuilder withUrl(String url) {
+    public Builder withUrl(String url) {
       httpCall.url = url;
       return this;
     }
@@ -76,22 +76,22 @@ public class HttpCall extends RealmObject implements IncrementalIdModel {
       return httpCall;
     }
 
-    public HttpCallBuilder withPayload(String payload) {
+    public Builder withPayload(String payload) {
       httpCall.payload = payload;
       return this;
     }
 
-    public HttpCallBuilder withResponseBody(String responseBody) {
+    public Builder withResponseBody(String responseBody) {
       httpCall.responseBody = responseBody;
       return this;
     }
 
-    public HttpCallBuilder withStatusText(String statusText) {
+    public Builder withStatusText(String statusText) {
       httpCall.statusText = statusText;
       return this;
     }
 
-    public HttpCallBuilder withStatusCode(int rawStatusCode) {
+    public Builder withStatusCode(int rawStatusCode) {
       httpCall.statusCode = rawStatusCode;
       return this;
     }

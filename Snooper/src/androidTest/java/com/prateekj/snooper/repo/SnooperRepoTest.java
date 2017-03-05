@@ -33,7 +33,7 @@ public class SnooperRepoTest {
 
   @Test
   public void shouldSaveHttpCall() throws Exception {
-    HttpCall httpCall = new HttpCall.HttpCallBuilder().withUrl("url1").build();
+    HttpCall httpCall = new HttpCall.Builder().withUrl("url1").build();
     SnooperRepo snooperRepo = new SnooperRepo(realm);
 
     snooperRepo.save(httpCall);
@@ -44,8 +44,8 @@ public class SnooperRepoTest {
 
   @Test
   public void shouldGetAllHttpCalls() throws Exception {
-    HttpCall httpCall1 = new HttpCall.HttpCallBuilder().withUrl("url1").build();
-    HttpCall httpCall2 = new HttpCall.HttpCallBuilder().withUrl("url2").build();
+    HttpCall httpCall1 = new HttpCall.Builder().withUrl("url1").build();
+    HttpCall httpCall2 = new HttpCall.Builder().withUrl("url2").build();
 
     SnooperRepo snooperRepo = new SnooperRepo(realm);
     snooperRepo.save(httpCall1);
@@ -59,8 +59,8 @@ public class SnooperRepoTest {
 
   @Test
   public void shouldReturnHttpCallsByGivenId() throws Exception {
-    HttpCall httpCall1 = new HttpCall.HttpCallBuilder().withUrl("url1").build();
-    HttpCall httpCall2 = new HttpCall.HttpCallBuilder().withUrl("url2").build();
+    HttpCall httpCall1 = new HttpCall.Builder().withUrl("url1").build();
+    HttpCall httpCall2 = new HttpCall.Builder().withUrl("url2").build();
 
     SnooperRepo snooperRepo = new SnooperRepo(realm);
     snooperRepo.save(httpCall1);

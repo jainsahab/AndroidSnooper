@@ -1,7 +1,7 @@
 package com.prateekj.snooper;
 
 import com.prateekj.snooper.model.HttpCall;
-import com.prateekj.snooper.model.HttpCall.HttpCallBuilder;
+import com.prateekj.snooper.model.HttpCall.Builder;
 import com.prateekj.snooper.rules.RealmCleanRule;
 
 import org.junit.Before;
@@ -40,7 +40,7 @@ public class AndroidSnooperTest {
     final String responseBody = "responseBody";
     final String requestBody = "requestBody";
 
-    HttpCall call = new HttpCallBuilder()
+    HttpCall call = new Builder()
       .withUrl(url)
       .withMethod("POST")
       .withPayload(requestBody)
