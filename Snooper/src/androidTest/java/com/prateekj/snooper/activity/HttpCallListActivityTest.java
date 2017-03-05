@@ -76,8 +76,8 @@ public class HttpCallListActivityTest {
     intending(anyIntent()).respondWith(new Instrumentation.ActivityResult(RESULT_OK, new Intent()));
     onView(withRecyclerView(R.id.list, itemIndex)).perform(click());
     intended(allOf(
-      hasComponent(ResponseBodyActivity.class.getName()),
-      hasExtra(ResponseBodyActivity.HTTP_CALL_ID, httpCallId)));
+      hasComponent(HttpCallActivity.class.getName()),
+      hasExtra(HttpCallActivity.HTTP_CALL_ID, httpCallId)));
   }
 
   private void saveHttpCall(String url, String method, int statusCode, String statusText) {

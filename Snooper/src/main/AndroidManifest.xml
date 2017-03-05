@@ -16,7 +16,7 @@
     </activity>
     <activity
       android:theme="@style/SnooperTheme"
-      android:name=".activity.ResponseBodyActivity"
+      android:name=".activity.HttpCallActivity"
       android:label="@string/title_activity_response_body">
     </activity>
   </application>

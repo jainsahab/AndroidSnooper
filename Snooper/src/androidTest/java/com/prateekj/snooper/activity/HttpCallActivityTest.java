@@ -16,17 +16,17 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static com.prateekj.snooper.activity.ResponseBodyActivity.HTTP_CALL_ID;
+import static com.prateekj.snooper.activity.HttpCallActivity.HTTP_CALL_ID;
 import static com.prateekj.snooper.utils.TestUtilities.readFrom;
 
-public class ResponseBodyActivityTest {
+public class HttpCallActivityTest {
 
   @Rule
   public RealmCleanRule rule = new RealmCleanRule();
 
   @Rule
-  public ActivityTestRule<ResponseBodyActivity> activityRule =
-    new ActivityTestRule<>(ResponseBodyActivity.class, true, false);
+  public ActivityTestRule<HttpCallActivity> activityRule =
+    new ActivityTestRule<>(HttpCallActivity.class, true, false);
   private SnooperRepo snooperRepo;
 
   @Before

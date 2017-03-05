@@ -15,7 +15,7 @@ import com.prateekj.snooper.repo.SnooperRepo;
 import com.prateekj.snooper.customviews.DividerItemDecoration;
 import com.prateekj.snooper.views.HttpListView;
 
-import static com.prateekj.snooper.activity.ResponseBodyActivity.HTTP_CALL_ID;
+import static com.prateekj.snooper.activity.HttpCallActivity.HTTP_CALL_ID;
 
 public class HttpCallListActivity extends AppCompatActivity implements HttpListView {
 
@@ -36,7 +36,7 @@ public class HttpCallListActivity extends AppCompatActivity implements HttpListV
 
   @Override
   public void navigateToResponseBody(int httpCallId) {
-    Intent intent = new Intent(this, ResponseBodyActivity.class);
+    Intent intent = new Intent(this, HttpCallActivity.class);
     intent.putExtra(HTTP_CALL_ID, httpCallId);
     startActivity(intent);
     overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
