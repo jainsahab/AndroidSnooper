@@ -15,7 +15,7 @@
       android:label="@string/title_activity_http_call_list">
     </activity>
     <activity
-      android:theme="@style/SnooperTheme"
+      android:theme="@style/SnooperTheme.NoActionBar"
       android:name=".activity.HttpCallActivity"
       android:label="@string/title_activity_response_body">
     </activity>
