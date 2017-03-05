@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Calendar;
+import java.util.Date;
 
 import static android.support.test.InstrumentationRegistry.getContext;
 
@@ -22,5 +24,17 @@ public class TestUtilities {
       input += line + "\n";
     }
     return input.substring(0, input.length() - 1);
+  }
+
+  public static Date getDate(int year, int month, int day) {
+    Calendar instance = Calendar.getInstance();
+    instance.set(year, month, day);
+    return instance.getTime();
+  }
+
+  public static Calendar getCalendar(Date date) {
+    Calendar instance = Calendar.getInstance();
+    instance.setTime(date);
+    return instance;
   }
 }

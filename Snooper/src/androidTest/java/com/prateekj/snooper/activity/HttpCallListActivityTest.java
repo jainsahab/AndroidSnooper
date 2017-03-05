@@ -54,22 +54,22 @@ public class HttpCallListActivityTest {
 
     activityRule.launchActivity(null);
 
-    onView(withRecyclerView(R.id.list, 0)).check(matches(allOf(
+    onView(withRecyclerView(R.id.list, 1)).check(matches(allOf(
       hasDescendant(withText("https://www.google.com")),
       hasDescendant(withText("GET")),
       hasDescendant(withText("200")),
       hasDescendant(withText("OK"))
     )));
 
-    onView(withRecyclerView(R.id.list, 1)).check(matches(allOf(
+    onView(withRecyclerView(R.id.list, 0)).check(matches(allOf(
       hasDescendant(withText("https://www.facebook.com")),
       hasDescendant(withText("GET")),
       hasDescendant(withText("200")),
       hasDescendant(withText("OK"))
     )));
 
-    verifyClickActionOnListItem(0, 1);
-    verifyClickActionOnListItem(1, 2);
+    verifyClickActionOnListItem(0, 2);
+    verifyClickActionOnListItem(1, 1);
   }
 
   private void verifyClickActionOnListItem(int itemIndex, int httpCallId) {

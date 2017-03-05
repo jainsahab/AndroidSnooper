@@ -4,10 +4,12 @@ import com.prateekj.snooper.model.HttpCall;
 import com.prateekj.snooper.model.IdInitializer;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import io.realm.Realm;
-import io.realm.RealmResults;
+
+import static io.realm.Sort.DESCENDING;
 
 public class SnooperRepo {
   private Realm realm;
@@ -17,6 +19,7 @@ public class SnooperRepo {
   }
 
   public void save(HttpCall httpCall) {
+    httpCall.setDate(new Date());
     new IdInitializer(this.realm).initialize(httpCall);
     realm.beginTransaction();
     realm.copyToRealm(httpCall);
@@ -24,10 +27,9 @@ public class SnooperRepo {
   }
 
   public List<HttpCall> findAll() {
-    RealmResults<HttpCall> results = realm.where(HttpCall.class).findAll();
     ArrayList<HttpCall> httpCalls = new ArrayList<>();
-    for (int index = 0; index < results.size(); index++) {
-      httpCalls.add(results.get(index));
+    for (HttpCall httpCall : realm.where(HttpCall.class).findAllSorted("date", DESCENDING)) {
+      httpCalls.add(httpCall);
     }
     return httpCalls;
   }

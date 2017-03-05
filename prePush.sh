@@ -1,1 +1,1 @@
-./gradlew clean testDebugUnitTest connectedDebugAndroidTest build --no-daemon
+./gradlew clean testDebugUnitTest connectedDebugAndroidTest lintDebug assembleDebug --no-daemon

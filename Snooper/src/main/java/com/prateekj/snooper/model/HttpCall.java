@@ -1,5 +1,7 @@
 package com.prateekj.snooper.model;
 
+import java.util.Date;
+
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -13,6 +15,7 @@ public class HttpCall extends RealmObject implements IncrementalIdModel {
   private String responseBody;
   private String statusText;
   private int statusCode;
+  private Date date;
 
 
   public String getPayload() {
@@ -39,6 +42,9 @@ public class HttpCall extends RealmObject implements IncrementalIdModel {
     return statusCode;
   }
 
+  public Date getDate() {
+    return date;
+  }
 
   @Override
   public Class getClazz() {
@@ -48,6 +54,10 @@ public class HttpCall extends RealmObject implements IncrementalIdModel {
   @Override
   public void setId(int id) {
     this.id = id;
+  }
+
+  public void setDate(Date date) {
+    this.date = date;
   }
 
   public int getId() {

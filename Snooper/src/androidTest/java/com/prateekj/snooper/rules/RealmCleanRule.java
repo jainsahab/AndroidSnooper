@@ -29,10 +29,13 @@ public class RealmCleanRule implements TestRule {
     return new Statement() {
       @Override
       public void evaluate() throws Throwable {
-        base.evaluate();
-        realm.beginTransaction();
-        realm.delete(HttpCall.class);
-        realm.commitTransaction();
+        try {
+          base.evaluate();
+        } finally {
+          realm.beginTransaction();
+          realm.delete(HttpCall.class);
+          realm.commitTransaction();
+        }
       }
     };
   }
