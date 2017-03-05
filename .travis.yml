@@ -25,4 +25,4 @@ before_script:
   - android-wait-for-emulator
 
 script:
-  - ./gradlew clean testDebugUnitTest connectedDebugAndroidTest build --no-daemon
+  - ./gradlew clean testDebugUnitTest connectedDebugAndroidTest lintDebug assembleDebug
