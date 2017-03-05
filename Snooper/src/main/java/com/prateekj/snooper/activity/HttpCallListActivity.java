@@ -3,6 +3,7 @@ package com.prateekj.snooper.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -29,6 +30,7 @@ public class HttpCallListActivity extends AppCompatActivity implements HttpListV
     httpCallList.setLayoutManager(new LinearLayoutManager(this));
     DividerItemDecoration itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL, R.drawable.grey_divider);
     httpCallList.addItemDecoration(itemDecoration);
+    httpCallList.setItemAnimator(new DefaultItemAnimator());
     httpCallList.setAdapter(httpCallListAdapter);
   }
 
