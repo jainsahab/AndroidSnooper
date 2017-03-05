@@ -1,11 +1,16 @@
 package com.prateekj.snooper.activity;
 
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.design.widget.TabLayout.Tab;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.prateekj.snooper.R;
+import com.prateekj.snooper.fragment.RequestBodyFragment;
 import com.prateekj.snooper.fragment.ResponseBodyFragment;
 
 public class HttpCallActivity extends AppCompatActivity {
@@ -16,11 +21,54 @@ public class HttpCallActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_response_body);
+    final ViewPager pager = (ViewPager) findViewById(R.id.pager);
+    TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+    tabLayout.addTab(tabLayout.newTab().setText("REQUEST"));
+    tabLayout.addTab(tabLayout.newTab().setText("RESPONSE"));
+    tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+    HttpCallPagerAdapter adapter = new HttpCallPagerAdapter(getSupportFragmentManager());
+    pager.setAdapter(adapter);
+    pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+    tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+      @Override
+      public void onTabSelected(Tab tab) {
+        pager.setCurrentItem(tab.getPosition());
+      }
+
+      @Override
+      public void onTabUnselected(Tab tab) {
+
+      }
+
+      @Override
+      public void onTabReselected(Tab tab) {
+
+      }
+    });
+  }
+
+  private ResponseBodyFragment getResponseBodyFragment() {
     ResponseBodyFragment fragment = new ResponseBodyFragment();
     fragment.setArguments(getIntent().getExtras());
-    FragmentManager fragmentManager = getSupportFragmentManager();
-    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-    fragmentTransaction.add(R.id.container, fragment);
-    fragmentTransaction.commit();
+    return fragment;
+  }
+
+  private class HttpCallPagerAdapter extends FragmentStatePagerAdapter {
+
+    public HttpCallPagerAdapter(FragmentManager fm) {
+      super(fm);
+    }
+
+    @Override
+    public Fragment getItem(int position) {
+      if (position == 0)
+        return getResponseBodyFragment();
+      return new RequestBodyFragment();
+    }
+
+    @Override
+    public int getCount() {
+      return 2;
+    }
   }
 }
