@@ -2,6 +2,8 @@ package com.prateekj.snooper.rules;
 
 
 import com.prateekj.snooper.model.HttpCall;
+import com.prateekj.snooper.model.HttpHeader;
+import com.prateekj.snooper.model.HttpHeaderValue;
 import com.prateekj.snooper.realm.RealmFactory;
 
 import org.junit.rules.TestRule;
@@ -34,6 +36,8 @@ public class RealmCleanRule implements TestRule {
         } finally {
           realm.beginTransaction();
           realm.delete(HttpCall.class);
+          realm.delete(HttpHeader.class);
+          realm.delete(HttpHeaderValue.class);
           realm.commitTransaction();
         }
       }

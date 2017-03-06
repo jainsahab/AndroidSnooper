@@ -1,9 +1,18 @@
 package com.prateekj.snooper.model;
 
-import java.util.Date;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
+
+import static com.prateekj.snooper.model.HttpHeader.from;
 
 public class HttpCall extends RealmObject implements IncrementalIdModel {
 
@@ -16,6 +25,8 @@ public class HttpCall extends RealmObject implements IncrementalIdModel {
   private String statusText;
   private int statusCode;
   private Date date;
+  private RealmList<HttpHeader> requestHeaders;
+  private RealmList<HttpHeader> responseHeaders;
 
 
   public String getPayload() {
@@ -44,6 +55,32 @@ public class HttpCall extends RealmObject implements IncrementalIdModel {
 
   public Date getDate() {
     return date;
+  }
+
+  public RealmList<HttpHeader> getRequestHeaders() {
+    return requestHeaders;
+  }
+
+  public HttpHeader getRequestHeader(final String name) {
+    return filterFromCollection(name, getRequestHeaders());
+  }
+
+  public RealmList<HttpHeader> getResponseHeaders() {
+    return responseHeaders;
+  }
+
+  public HttpHeader getResponseHeader(final String name) {
+    return filterFromCollection(name, getResponseHeaders());
+  }
+
+  private HttpHeader filterFromCollection(final String name, List<HttpHeader> collection) {
+    Iterator<HttpHeader> iterator = Collections2.filter(collection, new Predicate<HttpHeader>() {
+      @Override
+      public boolean apply(HttpHeader header) {
+        return header.getName().equals(name);
+      }
+    }).iterator();
+    return iterator.hasNext() ? iterator.next() : null;
   }
 
   @Override
@@ -103,6 +140,20 @@ public class HttpCall extends RealmObject implements IncrementalIdModel {
 
     public Builder withStatusCode(int rawStatusCode) {
       httpCall.statusCode = rawStatusCode;
+      return this;
+    }
+
+    public Builder withRequestHeaders(Map<String, List<String>> headers) {
+      RealmList<HttpHeader> realmList = new RealmList<>();
+      realmList.addAll(from(headers));
+      httpCall.requestHeaders = realmList;
+      return this;
+    }
+
+    public Builder withResponseHeaders(Map<String, List<String>> headers) {
+      RealmList<HttpHeader> realmList = new RealmList<>();
+      realmList.addAll(from(headers));
+      httpCall.responseHeaders = realmList;
       return this;
     }
   }
