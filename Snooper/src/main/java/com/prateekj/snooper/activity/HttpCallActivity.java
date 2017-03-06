@@ -11,12 +11,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.prateekj.snooper.R;
-import com.prateekj.snooper.fragment.RequestBodyFragment;
-import com.prateekj.snooper.fragment.ResponseBodyFragment;
+import com.prateekj.snooper.fragment.HttpBodyFragment;
 
 public class HttpCallActivity extends AppCompatActivity {
 
   public static String HTTP_CALL_ID = "HTTP_CALL_ID";
+  public static String HTTP_CALL_MODE = "HTTP_CALL_MODE";
+  public static int REQUEST_MODE = 1;
+  public static int RESPONSE_MODE = 2;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -27,8 +29,8 @@ public class HttpCallActivity extends AppCompatActivity {
 
     final ViewPager pager = (ViewPager) findViewById(R.id.pager);
     TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-    tabLayout.addTab(tabLayout.newTab().setText("REQUEST"));
-    tabLayout.addTab(tabLayout.newTab().setText("RESPONSE"));
+    tabLayout.addTab(tabLayout.newTab().setText(R.string.response));
+    tabLayout.addTab(tabLayout.newTab().setText(R.string.request));
     tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
     HttpCallPagerAdapter adapter = new HttpCallPagerAdapter(getSupportFragmentManager());
     pager.setAdapter(adapter);
@@ -51,9 +53,19 @@ public class HttpCallActivity extends AppCompatActivity {
     });
   }
 
-  private ResponseBodyFragment getResponseBodyFragment() {
-    ResponseBodyFragment fragment = new ResponseBodyFragment();
-    fragment.setArguments(getIntent().getExtras());
+  private HttpBodyFragment getResponseBodyFragment() {
+    HttpBodyFragment fragment = new HttpBodyFragment();
+    Bundle extras = getIntent().getExtras();
+    extras.putInt(HTTP_CALL_MODE, RESPONSE_MODE);
+    fragment.setArguments(extras);
+    return fragment;
+  }
+
+  private HttpBodyFragment getRequestBodyFragment() {
+    HttpBodyFragment fragment = new HttpBodyFragment();
+    Bundle extras = getIntent().getExtras();
+    extras.putInt(HTTP_CALL_MODE, REQUEST_MODE);
+    fragment.setArguments(extras);
     return fragment;
   }
 
@@ -67,7 +79,7 @@ public class HttpCallActivity extends AppCompatActivity {
     public Fragment getItem(int position) {
       if (position == 0)
         return getResponseBodyFragment();
-      return new RequestBodyFragment();
+      return getRequestBodyFragment();
     }
 
     @Override

@@ -2,4 +2,6 @@
   <string name="app_name">Android Snooper</string>
   <string name="title_activity_http_call_list">Http Calls</string>
   <string name="title_activity_response_body">Response Body</string>
+  <string name="request">REQUEST</string>
+  <string name="response">RESPONSE</string>
 </resources>

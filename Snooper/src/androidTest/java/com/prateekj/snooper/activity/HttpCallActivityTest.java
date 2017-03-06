@@ -13,11 +13,14 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.prateekj.snooper.activity.HttpCallActivity.HTTP_CALL_ID;
 import static com.prateekj.snooper.utils.TestUtilities.readFrom;
+import static org.hamcrest.Matchers.allOf;
 
 public class HttpCallActivityTest {
 
@@ -35,27 +38,34 @@ public class HttpCallActivityTest {
   }
 
   @Test
-  public void shouldRenderResponsePayload() throws Exception {
-    String payload = readFrom("person_details_raw_response.json");
-    saveHttpCall("https://www.abc.com/person/1", "GET", 200, "OK", payload);
+  public void shouldRenderRequestAndResponseBody() throws Exception {
+    String responseBody = readFrom("person_details_raw_response.json");
+    String requestPayload = readFrom("person_details_raw_request.json");
+    saveHttpCall("https://www.abc.com/person/1", "GET", 200, "OK", responseBody, requestPayload);
 
     Intent intent = new Intent();
     intent.putExtra(HTTP_CALL_ID, 1);
 
     activityRule.launchActivity(intent);
 
-    onView(withId(R.id.payload_text))
+    onView(allOf(withId(R.id.payload_text), isDisplayed()))
       .check(matches(withText(readFrom("person_details_formatted_response.json"))));
+
+    onView(withText("REQUEST")).check(matches(isDisplayed())).perform(click());
+
+    onView(allOf(withId(R.id.payload_text), isDisplayed()))
+      .check(matches(withText(readFrom("person_details_formatted_request.json"))));
   }
 
   private void saveHttpCall(String url, String method,
-                            int statusCode, String statusText, String payload) {
+                            int statusCode, String statusText, String responseBody, String requestPayload) {
     HttpCall httpCall = new HttpCall.Builder()
       .withUrl(url)
       .withMethod(method)
       .withStatusCode(statusCode)
       .withStatusText(statusText)
-      .withResponseBody(payload)
+      .withResponseBody(responseBody)
+      .withPayload(requestPayload)
       .build();
     snooperRepo.save(httpCall);
   }
