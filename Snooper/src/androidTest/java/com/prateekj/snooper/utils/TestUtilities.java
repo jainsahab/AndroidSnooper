@@ -1,5 +1,7 @@
 package com.prateekj.snooper.utils;
 
+import org.hamcrest.CustomTypeSafeMatcher;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;

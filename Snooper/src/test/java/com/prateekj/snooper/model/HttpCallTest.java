@@ -43,6 +43,12 @@ public class HttpCallTest {
   }
 
   @Test
+  public void shouldReturnRequestHeaderByGivenNameByIgnoringCase() throws Exception {
+    HttpHeader requestHeader = call.getRequestHeader("USER-AGENT");
+    assertThat(requestHeader.getValues().get(0).getValue(), is("Android Browser"));
+  }
+
+  @Test
   public void shouldReturnNullWhenHeaderByGivenNameNotFound() throws Exception {
     HttpHeader requestHeader = call.getRequestHeader("Invalid Name");
     assertNull(requestHeader);
@@ -51,6 +57,12 @@ public class HttpCallTest {
   @Test
   public void shouldReturnResponseHeaderByGivenName() throws Exception {
     HttpHeader responseHeader = call.getResponseHeader("date");
+    assertThat(responseHeader.getValues().get(0).getValue(), is("Thu, 02 Mar 2017 13:03:11 GMT"));
+  }
+
+  @Test
+  public void shouldReturnResponseHeaderByGivenNameByIgnoringCase() throws Exception {
+    HttpHeader responseHeader = call.getResponseHeader("DATE");
     assertThat(responseHeader.getValues().get(0).getValue(), is("Thu, 02 Mar 2017 13:03:11 GMT"));
   }
 

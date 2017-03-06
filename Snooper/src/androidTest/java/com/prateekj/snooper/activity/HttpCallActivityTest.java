@@ -1,6 +1,7 @@
 package com.prateekj.snooper.activity;
 
 import android.content.Intent;
+import android.support.test.espresso.core.deps.guava.collect.ImmutableMap;
 import android.support.test.rule.ActivityTestRule;
 
 import com.prateekj.snooper.R;
@@ -12,6 +13,9 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import java.util.List;
+import java.util.Map;
+
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
@@ -20,6 +24,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.prateekj.snooper.activity.HttpCallActivity.HTTP_CALL_ID;
 import static com.prateekj.snooper.utils.TestUtilities.readFrom;
+import static java.util.Collections.singletonList;
 import static org.hamcrest.Matchers.allOf;
 
 public class HttpCallActivityTest {
@@ -59,6 +64,7 @@ public class HttpCallActivityTest {
 
   private void saveHttpCall(String url, String method,
                             int statusCode, String statusText, String responseBody, String requestPayload) {
+    Map<String, List<String>> headers = ImmutableMap.of("Content-Type", singletonList("application/json"));
     HttpCall httpCall = new HttpCall.Builder()
       .withUrl(url)
       .withMethod(method)
@@ -66,6 +72,8 @@ public class HttpCallActivityTest {
       .withStatusText(statusText)
       .withResponseBody(responseBody)
       .withPayload(requestPayload)
+      .withRequestHeaders(headers)
+      .withResponseHeaders(headers)
       .build();
     snooperRepo.save(httpCall);
   }

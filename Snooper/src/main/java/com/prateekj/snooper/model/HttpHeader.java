@@ -12,6 +12,9 @@ import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Lists.transform;
 
 public class HttpHeader extends RealmObject {
+
+  public static final String CONTENT_TYPE = "Content-Type";
+
   private String name;
   private RealmList<HttpHeaderValue> values;
 

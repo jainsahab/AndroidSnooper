@@ -77,7 +77,7 @@ public class HttpCall extends RealmObject implements IncrementalIdModel {
     Iterator<HttpHeader> iterator = Collections2.filter(collection, new Predicate<HttpHeader>() {
       @Override
       public boolean apply(HttpHeader header) {
-        return header.getName().equals(name);
+        return header.getName().equalsIgnoreCase(name);
       }
     }).iterator();
     return iterator.hasNext() ? iterator.next() : null;
