@@ -2,9 +2,8 @@ package com.prateekj.snooper.presenter;
 
 import android.support.annotation.NonNull;
 
-import com.prateekj.snooper.formatter.JsonResponseFormatter;
 import com.prateekj.snooper.formatter.ResponseFormatter;
-import com.prateekj.snooper.formatter.XmlFormatter;
+import com.prateekj.snooper.formatter.ResponseFormatterFactory;
 import com.prateekj.snooper.model.HttpCall;
 import com.prateekj.snooper.model.HttpHeader;
 import com.prateekj.snooper.model.HttpHeaderValue;
@@ -32,15 +31,9 @@ public class HttpCallFragmentPresenter {
 
   @NonNull
   private ResponseFormatter getFormatter(HttpCall httpCall) {
-    if(isXmlType(getContentTypeHeader(httpCall))) {
-      return new XmlFormatter();
-    }
-    return new JsonResponseFormatter();
-  }
-
-  private boolean isXmlType(HttpHeader header) {
-    HttpHeaderValue headerValue = header.getValues().get(0);
-    return headerValue.getValue().toLowerCase().contains("xml");
+    HttpHeader contentTypeHeader = getContentTypeHeader(httpCall);
+    HttpHeaderValue headerValue = contentTypeHeader.getValues().get(0);
+    return new ResponseFormatterFactory().getFor(headerValue.getValue());
   }
 
   private HttpHeader getContentTypeHeader(HttpCall httpCall) {

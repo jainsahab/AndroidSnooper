@@ -4,4 +4,5 @@
   <string name="title_activity_response_body">Response Body</string>
   <string name="request">REQUEST</string>
   <string name="response">RESPONSE</string>
+  <string name="copy">Copy</string>
 </resources>
