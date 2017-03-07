@@ -26,9 +26,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class HttpBodyPresenterTest {
+public class HttpCallFragmentPresenterTest {
 
-  private HttpBodyPresenter presenter;
+  private HttpCallFragmentPresenter presenter;
   private SnooperRepo repo;
   private HttpBodyViewModel viewModel;
   public static final int HTTP_CALL_ID = 5;
@@ -41,7 +41,7 @@ public class HttpBodyPresenterTest {
     viewModel = mock(HttpBodyViewModel.class);
     when(repo.findById(HTTP_CALL_ID)).thenReturn(httpCall);
 
-    presenter = new HttpBodyPresenter(repo, HTTP_CALL_ID);
+    presenter = new HttpCallFragmentPresenter(repo, HTTP_CALL_ID);
   }
 
   @Test

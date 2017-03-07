@@ -11,7 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.prateekj.snooper.R;
-import com.prateekj.snooper.fragment.HttpBodyFragment;
+import com.prateekj.snooper.fragment.HttpCallFragment;
 
 public class HttpCallActivity extends AppCompatActivity {
 
@@ -29,8 +29,9 @@ public class HttpCallActivity extends AppCompatActivity {
 
     final ViewPager pager = (ViewPager) findViewById(R.id.pager);
     TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-    tabLayout.addTab(tabLayout.newTab().setText(R.string.response));
-    tabLayout.addTab(tabLayout.newTab().setText(R.string.request));
+    for (HttpCallTab tab : HttpCallTab.sortedValues()) {
+      tabLayout.addTab(tabLayout.newTab().setText(tab.getTabTitle()));
+    }
     tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
     HttpCallPagerAdapter adapter = new HttpCallPagerAdapter(getSupportFragmentManager());
     pager.setAdapter(adapter);
@@ -53,16 +54,16 @@ public class HttpCallActivity extends AppCompatActivity {
     });
   }
 
-  private HttpBodyFragment getResponseBodyFragment() {
-    HttpBodyFragment fragment = new HttpBodyFragment();
+  private HttpCallFragment getResponseBodyFragment() {
+    HttpCallFragment fragment = new HttpCallFragment();
     Bundle extras = getIntent().getExtras();
     extras.putInt(HTTP_CALL_MODE, RESPONSE_MODE);
     fragment.setArguments(extras);
     return fragment;
   }
 
-  private HttpBodyFragment getRequestBodyFragment() {
-    HttpBodyFragment fragment = new HttpBodyFragment();
+  private HttpCallFragment getRequestBodyFragment() {
+    HttpCallFragment fragment = new HttpCallFragment();
     Bundle extras = getIntent().getExtras();
     extras.putInt(HTTP_CALL_MODE, REQUEST_MODE);
     fragment.setArguments(extras);

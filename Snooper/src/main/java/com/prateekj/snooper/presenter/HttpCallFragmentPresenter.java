@@ -14,12 +14,12 @@ import com.prateekj.snooper.viewmodel.HttpBodyViewModel;
 import static com.prateekj.snooper.activity.HttpCallActivity.REQUEST_MODE;
 import static com.prateekj.snooper.model.HttpHeader.CONTENT_TYPE;
 
-public class HttpBodyPresenter {
+public class HttpCallFragmentPresenter {
   private SnooperRepo repo;
   private int httpCallId;
   private int mode;
 
-  public HttpBodyPresenter(SnooperRepo repo, int httpCallId) {
+  public HttpCallFragmentPresenter(SnooperRepo repo, int httpCallId) {
     this.repo = repo;
     this.httpCallId = httpCallId;
   }
