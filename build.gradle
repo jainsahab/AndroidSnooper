@@ -1,6 +1,10 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
+    ext {
+        snooperVersion = '1.0.0-SNAPSHOT'
+    }
+
     repositories {
         jcenter()
     }

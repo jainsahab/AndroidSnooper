@@ -5,9 +5,6 @@ apply plugin: 'maven-publish'
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            groupId 'com.prateekj.snooper'
-            artifactId 'android-snooper'
-            version '1.0.0'
             artifact bundleRelease
             pom.withXml {
                 def dependenciesNode = asNode().appendNode('dependencies')
@@ -32,6 +29,8 @@ publishing {
 android {
     compileSdkVersion 24
     buildToolsVersion "25.0.2"
+    group "com.prateekj.snooper"
+    version snooperVersion
 
     dataBinding {
         enabled = true
