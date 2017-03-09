@@ -1,8 +1,8 @@
 package org.springframework.http.client;
 
-import com.google.repacked.apache.commons.io.IOUtils;
 import com.prateekj.snooper.model.HttpCall;
 
+import org.apache.commons.io.IOUtils;
 import org.springframework.http.HttpRequest;
 
 import java.io.IOException;
