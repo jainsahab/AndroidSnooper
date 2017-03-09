@@ -25,4 +25,5 @@ before_script:
   - android-wait-for-emulator
 
 script:
-  - ./gradlew clean testDebugUnitTest connectedDebugAndroidTest lintDebug assembleDebug
+  - ./gradlew Snooper:clean Snooper:testDebugUnitTest Snooper:connectedDebugAndroidTest Snooper:lintDebug Snooper:assembleDebug
+  - ./gradlew Snooper-Spring:clean Snooper-Spring:testDebugUnitTest Snooper-Spring:connectedDebugAndroidTest Snooper-Spring:lintDebug Snooper-Spring:assembleDebug
