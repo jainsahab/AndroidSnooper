@@ -1,3 +1,7 @@
+# Android Snooper
+
+[![Build Status](https://travis-ci.org/jainsahab/AndroidSnooper.svg?branch=master)](https://travis-ci.org/jainsahab/AndroidSnooper)
+
 LICENSE
 -------
 
