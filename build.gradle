@@ -3,6 +3,14 @@
 buildscript {
     ext {
         snooperVersion = '1.0.0-SNAPSHOT'
+
+//      deployment properties
+        NEXUS_USERNAME = System.getenv("NEXUS_USERNAME")
+        NEXUS_PASSWORD = System.getenv("NEXUS_PASSWORD")
+        SNAPSHOT_REPOSITORY_URL = 'https://oss.sonatype.org/content/repositories/snapshots'
+
+        VERSION_NAME = snooperVersion
+        GROUP = 'com.github.jainsahab'
     }
 
     repositories {

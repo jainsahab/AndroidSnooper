@@ -29,7 +29,7 @@ publishing {
 android {
     compileSdkVersion 24
     buildToolsVersion "25.0.2"
-    group "com.prateekj.snooper"
+    group "com.github.jainsahab"
     version snooperVersion
 
     dataBinding {
@@ -94,3 +94,5 @@ dependencies {
     androidTestCompile 'com.android.support.test.espresso:espresso-intents:2.2.2'
     androidTestCompile 'com.android.support.test:runner:0.5'
 }
+
+apply from: '../maven-push.gradle'

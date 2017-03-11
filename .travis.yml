@@ -4,26 +4,32 @@ sudo: false
 
 cache:
   directories:
-    - $HOME/.gradle
-
+  - "$HOME/.gradle"
 android:
   components:
-    - tools
-    - platform-tools
-    - build-tools-25.0.2
-    - android-24
-    - sys-img-armeabi-v7a-android-21
-    - extra-android-m2repository
+  - tools
+  - platform-tools
+  - build-tools-25.0.2
+  - android-24
+  - sys-img-armeabi-v7a-android-21
+  - extra-android-m2repository
 
 jdk:
-  - oraclejdk8
+- oraclejdk8
 
 before_script:
-  - echo no | android create avd --force -n test -t android-21 --abi armeabi-v7a
-  - mksdcard -l e 756M sdcard.img
-  - emulator -avd test -no-skin -no-audio -no-window -sdcard sdcard.img &
-  - android-wait-for-emulator
+- echo no | android create avd --force -n test -t android-21 --abi armeabi-v7a
+- mksdcard -l e 756M sdcard.img
+- emulator -avd test -no-skin -no-audio -no-window -sdcard sdcard.img &
+- android-wait-for-emulator
 
 script:
-  - ./gradlew Snooper:clean Snooper:testDebugUnitTest Snooper:connectedDebugAndroidTest Snooper:lintDebug Snooper:assembleDebug
-  - ./gradlew Snooper-Spring:clean Snooper-Spring:testDebugUnitTest Snooper-Spring:connectedDebugAndroidTest Snooper-Spring:lintDebug Snooper-Spring:assembleDebug
+- "./gradlew Snooper:clean Snooper:testDebugUnitTest Snooper:connectedDebugAndroidTest
+  Snooper:lintDebug Snooper:uploadArchives"
+- "./gradlew Snooper-Spring:clean Snooper-Spring:testDebugUnitTest Snooper-Spring:connectedDebugAndroidTest
+  Snooper-Spring:lintDebug Snooper-Spring:uploadArchives"
+
+env:
+  global:
+  - secure: hdKwiQEVi3myHEGa+R79OItK/au+O23wqfKrphbVyAHVT2hNlnnZ0BxbUBm977I6jUFRAyzDwTeSx+goFxIXCBnXBvqbRGoVLmA9sB1WBvbAQUdE1bIj9eKmF97s+Brz2yOatMRGCS9GGOj/Y/9QQtIljM23l/E2j8EBBHULtx5vNx/FqeMw3jjPtD0bnE6zxQw1yKTa1QIBvd5y09o0GMNeFr1rzCR/PNVOQ3gOwE+K5C2dL5en5Dss6H5ZoMa29Nmm939KjSr6Ff5Dg9YyS+gjaFsjNUyuqJQSBKLoilDLXHTncv/ut+kcNutfBpH6JLvvsGSW/Lf+7NgB4gDoYqSkdh5Ubq7Jj5P4wlakqFxV6JIwd22fq0j26GVYh23sIyS4Jpy12yHnBDKKCHix2XRs2fJlmgaxzNxGtPAOLutlflLOJeQU1Ypwn7B8IJlylZuDuiH3THH61DE4e/YJdfqBomF/rPTRN3g7/Budg3im/scpMZenXrBFQsNOQ4h+pjDfgEB9FnhHjw6UZrq0dZXJWgypiDJcBrhUmELJ6jSbjDccNvNyxrQTkPuY2gA00GZcZnKU52NjTLZPQ9Z/hpuyiQhcdQKhBlWOzlHPfbsSKzVxlb46Yb0DW/dQNSwtXu2MhzpxhfPHmbjCWoWkGlKI/8od3dFPXMl2dE0zIhM=
+  - secure: LgdKCCPdBLbtRhUfSi3lDks5SFo0VREJOR4QW5BV9QTc48YecCfIPyzOl7ngumv0OxgAoJqaw9l+uJyEPVLcDQlZXjKIRPpW7y2NGnj5fNUZ3ROoVX8q9KDf1g9+7y0zArZ2MkmpTgquvOLMF6yNoESfKv1+Hpy1dcMdlho4is4Ynonu8qTG6UI4QTnGAhYY5PH6VZIuBDrR7TlfIIULPzwWv2/JZDnXCWeOv0G2jLexYKh9WdUl7VtjMB3csIClQFYSTBc8L1u6MtvTdaspuBCCj4xyzIlwgLi6SoiPLLrP1rv9efXH9hmspi45PNNoSXN2ZrDvwkPw74Q26qSQOQ2NnSJlloa3LE0+qkqHjLhQJDT5sz6apgn5nXDf998tI8Y6hKliUY0ixsoJGVtTfx71+zP7nSUi/6YpUsTxxirbQEQbXyXwmmJ0iBBM/eZmSlsm6Cusx/bbD4qPM4LRDlYEVchSyh/DT7ddlgdxVeTOfUf5G96er2Z9FDSmjTFh6FR6qrRXXZ97/C0ZvjQLPRAjVxZHz6jw0c34C8biiV5wKQ8joegFX0gnQ3ytoKzVhy/aXGRsXv74H3/K3pyh/QvQ+caaOsnAKtAHq5Ja75itut3b8FPi8Tv9a15kDYN3aguxtYjgkxBV8wjsmIBW4H4aY0ABUOmvqjmLAr+80lI=
