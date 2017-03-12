@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.prateekj.snooper.R;
 import com.prateekj.snooper.databinding.HttpBodyBinding;
+import com.prateekj.snooper.formatter.ResponseFormatterFactory;
 import com.prateekj.snooper.presenter.HttpCallFragmentPresenter;
 import com.prateekj.snooper.realm.RealmFactory;
 import com.prateekj.snooper.repo.SnooperRepo;
@@ -31,7 +32,7 @@ public class HttpCallFragment extends Fragment {
     SnooperRepo repo = new SnooperRepo(realm);
     int httpCallId = getArguments().getInt(HTTP_CALL_ID);
     int mode = getArguments().getInt(HTTP_CALL_MODE);
-    HttpCallFragmentPresenter presenter = new HttpCallFragmentPresenter(repo, httpCallId);
+    HttpCallFragmentPresenter presenter = new HttpCallFragmentPresenter(repo, httpCallId, new ResponseFormatterFactory());
     presenter.init(viewModel, mode);
     binding.setViewModel(viewModel);
     return binding.getRoot();

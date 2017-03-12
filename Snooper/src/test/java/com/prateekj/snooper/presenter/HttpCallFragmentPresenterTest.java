@@ -2,9 +2,8 @@ package com.prateekj.snooper.presenter;
 
 import android.support.annotation.NonNull;
 
-import com.prateekj.snooper.formatter.JsonResponseFormatter;
 import com.prateekj.snooper.formatter.ResponseFormatter;
-import com.prateekj.snooper.formatter.XmlFormatter;
+import com.prateekj.snooper.formatter.ResponseFormatterFactory;
 import com.prateekj.snooper.model.HttpCall;
 import com.prateekj.snooper.model.HttpHeader;
 import com.prateekj.snooper.model.HttpHeaderValue;
@@ -18,10 +17,7 @@ import java.util.Collections;
 
 import static com.prateekj.snooper.activity.HttpCallActivity.REQUEST_MODE;
 import static com.prateekj.snooper.activity.HttpCallActivity.RESPONSE_MODE;
-import static com.prateekj.snooper.utils.TestUtilities.withConcreteClass;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.argThat;
-import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -33,25 +29,28 @@ public class HttpCallFragmentPresenterTest {
   private HttpBodyViewModel viewModel;
   public static final int HTTP_CALL_ID = 5;
   private HttpCall httpCall;
+  private ResponseFormatterFactory factory;
+  private ResponseFormatter responseFormatter;
+  private String responseBody;
+  private String requestPayload;
+  private String formattedBody;
 
   @Before
   public void setUp() throws Exception {
+    responseBody = "response body";
+    requestPayload = "payload";
+    formattedBody = "formatted body";
     httpCall = mock(HttpCall.class);
     repo = mock(SnooperRepo.class);
     viewModel = mock(HttpBodyViewModel.class);
+    factory = mock(ResponseFormatterFactory.class);
+    presenter = new HttpCallFragmentPresenter(repo, HTTP_CALL_ID, factory);
+    responseFormatter = mock(ResponseFormatter.class);
+    when(httpCall.getResponseBody()).thenReturn(responseBody);
+    when(httpCall.getPayload()).thenReturn(requestPayload);
     when(repo.findById(HTTP_CALL_ID)).thenReturn(httpCall);
-
-    presenter = new HttpCallFragmentPresenter(repo, HTTP_CALL_ID);
-  }
-
-  @Test
-  public void shouldInitializeViewModelWithProperMode() throws Exception {
-    HttpHeader httpHeader = getJsonContentTypeHeader();
-    when(httpCall.getResponseHeader("Content-Type")).thenReturn(httpHeader);
-    presenter.init(viewModel, RESPONSE_MODE);
-
-    verify(repo).findById(HTTP_CALL_ID);
-    verify(viewModel).init(eq(httpCall), any(ResponseFormatter.class), eq(RESPONSE_MODE));
+    when(factory.getFor(anyString())).thenReturn(responseFormatter);
+    when(responseFormatter.format(anyString())).thenReturn(formattedBody);
   }
 
   @Test
@@ -60,7 +59,9 @@ public class HttpCallFragmentPresenterTest {
     when(httpCall.getResponseHeader("Content-Type")).thenReturn(httpHeader);
     presenter.init(viewModel, RESPONSE_MODE);
 
-    verify(viewModel).init(eq(httpCall), any(JsonResponseFormatter.class), eq(RESPONSE_MODE));
+    verify(factory).getFor("application/json");
+    verify(responseFormatter).format(responseBody);
+    verify(viewModel).init(formattedBody);
   }
 
   @Test
@@ -69,7 +70,9 @@ public class HttpCallFragmentPresenterTest {
     when(httpCall.getResponseHeader("Content-Type")).thenReturn(httpHeader);
     presenter.init(viewModel, RESPONSE_MODE);
 
-    verify(viewModel).init(eq(httpCall), argThat(withConcreteClass(XmlFormatter.class)), eq(RESPONSE_MODE));
+    verify(factory).getFor("application/xml");
+    verify(responseFormatter).format(responseBody);
+    verify(viewModel).init(formattedBody);
   }
 
   @Test
@@ -78,7 +81,9 @@ public class HttpCallFragmentPresenterTest {
     when(httpCall.getRequestHeader("Content-Type")).thenReturn(httpHeader);
     presenter.init(viewModel, REQUEST_MODE);
 
-    verify(viewModel).init(eq(httpCall), any(JsonResponseFormatter.class), eq(REQUEST_MODE));
+    verify(factory).getFor("application/json");
+    verify(responseFormatter).format(requestPayload);
+    verify(viewModel).init(formattedBody);
   }
 
   @Test
@@ -87,7 +92,9 @@ public class HttpCallFragmentPresenterTest {
     when(httpCall.getRequestHeader("Content-Type")).thenReturn(httpHeader);
     presenter.init(viewModel, REQUEST_MODE);
 
-    verify(viewModel).init(eq(httpCall), argThat(withConcreteClass(XmlFormatter.class)), eq(REQUEST_MODE));
+    verify(factory).getFor("application/xml");
+    verify(responseFormatter).format(requestPayload);
+    verify(viewModel).init(formattedBody);
   }
 
   @NonNull

@@ -16,24 +16,31 @@ import static com.prateekj.snooper.model.HttpHeader.CONTENT_TYPE;
 public class HttpCallFragmentPresenter {
   private SnooperRepo repo;
   private int httpCallId;
+  private ResponseFormatterFactory formatterFactory;
   private int mode;
 
-  public HttpCallFragmentPresenter(SnooperRepo repo, int httpCallId) {
+  public HttpCallFragmentPresenter(SnooperRepo repo, int httpCallId, ResponseFormatterFactory formatterFactory) {
     this.repo = repo;
     this.httpCallId = httpCallId;
+    this.formatterFactory = formatterFactory;
   }
 
   public void init(HttpBodyViewModel viewModel, int mode) {
     this.mode = mode;
     HttpCall httpCall = this.repo.findById(httpCallId);
-    viewModel.init(httpCall, getFormatter(httpCall), mode);
+    ResponseFormatter formatter = getFormatter(httpCall);
+    viewModel.init(formatter.format(getBodyToFormat(httpCall)));
+  }
+
+  private String getBodyToFormat(HttpCall httpCall) {
+    return this.mode == REQUEST_MODE ? httpCall.getPayload() : httpCall.getResponseBody();
   }
 
   @NonNull
   private ResponseFormatter getFormatter(HttpCall httpCall) {
     HttpHeader contentTypeHeader = getContentTypeHeader(httpCall);
     HttpHeaderValue headerValue = contentTypeHeader.getValues().get(0);
-    return new ResponseFormatterFactory().getFor(headerValue.getValue());
+    return this.formatterFactory.getFor(headerValue.getValue());
   }
 
   private HttpHeader getContentTypeHeader(HttpCall httpCall) {
