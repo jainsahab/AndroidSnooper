@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.prateekj.snooper.R;
 import com.prateekj.snooper.databinding.HttpBodyBinding;
 import com.prateekj.snooper.formatter.ResponseFormatterFactory;
+import com.prateekj.snooper.infra.BackgroundTaskExecutor;
 import com.prateekj.snooper.presenter.HttpCallFragmentPresenter;
 import com.prateekj.snooper.realm.RealmFactory;
 import com.prateekj.snooper.repo.SnooperRepo;
@@ -26,13 +27,14 @@ public class HttpCallFragment extends Fragment {
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     super.onCreateView(inflater, container, savedInstanceState);
-    HttpBodyBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_response_body, container, false);
+    final HttpBodyBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_response_body, container, false);
     Realm realm = RealmFactory.create(getActivity());
     HttpBodyViewModel viewModel = new HttpBodyViewModel();
     SnooperRepo repo = new SnooperRepo(realm);
     int httpCallId = getArguments().getInt(HTTP_CALL_ID);
     int mode = getArguments().getInt(HTTP_CALL_MODE);
-    HttpCallFragmentPresenter presenter = new HttpCallFragmentPresenter(repo, httpCallId, new ResponseFormatterFactory());
+    BackgroundTaskExecutor taskExecutor = new BackgroundTaskExecutor(this.getActivity());
+    HttpCallFragmentPresenter presenter = new HttpCallFragmentPresenter(repo, httpCallId, new ResponseFormatterFactory(), taskExecutor);
     presenter.init(viewModel, mode);
     binding.setViewModel(viewModel);
     return binding.getRoot();

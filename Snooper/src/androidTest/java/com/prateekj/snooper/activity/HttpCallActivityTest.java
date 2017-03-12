@@ -4,6 +4,8 @@ import android.content.ClipboardManager;
 import android.content.Intent;
 import android.support.test.espresso.core.deps.guava.collect.ImmutableMap;
 import android.support.test.rule.ActivityTestRule;
+import android.view.View;
+import android.widget.TextView;
 
 import com.prateekj.snooper.R;
 import com.prateekj.snooper.model.HttpCall;
@@ -11,6 +13,8 @@ import com.prateekj.snooper.repo.SnooperRepo;
 import com.prateekj.snooper.rules.RealmCleanRule;
 import com.prateekj.snooper.rules.RunUsingLooper;
 
+import org.hamcrest.CustomTypeSafeMatcher;
+import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -28,6 +32,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.prateekj.snooper.activity.HttpCallActivity.HTTP_CALL_ID;
+import static com.prateekj.snooper.espresso.EspressoViewActions.waitFor;
 import static com.prateekj.snooper.utils.TestUtilities.readFrom;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.CoreMatchers.is;
@@ -62,19 +67,31 @@ public class HttpCallActivityTest {
 
     activityRule.launchActivity(intent);
 
+    onView(allOf(withId(R.id.payload_text), isDisplayed())).perform(waitFor(hasText()));
     onView(allOf(withId(R.id.payload_text), isDisplayed()))
       .check(matches(withText(readFrom("person_details_formatted_response.json"))));
-
     onView(withId(R.id.copy_menu)).perform(click());
     assertThat(clipBoardText(), is(readFrom("person_details_formatted_response.json")));
 
     onView(withText("REQUEST")).check(matches(isDisplayed())).perform(click());
-
+    onView(allOf(withId(R.id.payload_text), isDisplayed())).perform(waitFor(hasText()));
     onView(allOf(withId(R.id.payload_text), isDisplayed()))
       .check(matches(withText(readFrom("person_details_formatted_request.json"))));
-
     onView(withId(R.id.copy_menu)).perform(click());
     assertThat(clipBoardText(), is(readFrom("person_details_formatted_request.json")));
+  }
+
+  private Matcher<View> hasText() {
+    return new CustomTypeSafeMatcher<View>("has text") {
+      @Override
+      protected boolean matchesSafely(View view) {
+        if(!(view instanceof TextView)) {
+          return false;
+        }
+        TextView textView = (TextView) view;
+        return !"".equals(textView.getText());
+      }
+    };
   }
 
   private String clipBoardText() {

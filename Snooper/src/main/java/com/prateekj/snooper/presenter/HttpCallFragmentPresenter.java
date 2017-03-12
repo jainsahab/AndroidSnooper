@@ -4,6 +4,8 @@ import android.support.annotation.NonNull;
 
 import com.prateekj.snooper.formatter.ResponseFormatter;
 import com.prateekj.snooper.formatter.ResponseFormatterFactory;
+import com.prateekj.snooper.infra.BackgroundTask;
+import com.prateekj.snooper.infra.BackgroundTaskExecutor;
 import com.prateekj.snooper.model.HttpCall;
 import com.prateekj.snooper.model.HttpHeader;
 import com.prateekj.snooper.model.HttpHeaderValue;
@@ -17,19 +19,32 @@ public class HttpCallFragmentPresenter {
   private SnooperRepo repo;
   private int httpCallId;
   private ResponseFormatterFactory formatterFactory;
+  private BackgroundTaskExecutor executor;
   private int mode;
 
-  public HttpCallFragmentPresenter(SnooperRepo repo, int httpCallId, ResponseFormatterFactory formatterFactory) {
+  public HttpCallFragmentPresenter(SnooperRepo repo, int httpCallId, ResponseFormatterFactory formatterFactory, BackgroundTaskExecutor executor) {
     this.repo = repo;
     this.httpCallId = httpCallId;
     this.formatterFactory = formatterFactory;
+    this.executor = executor;
   }
 
-  public void init(HttpBodyViewModel viewModel, int mode) {
+  public void init(final HttpBodyViewModel viewModel, int mode) {
     this.mode = mode;
-    HttpCall httpCall = this.repo.findById(httpCallId);
-    ResponseFormatter formatter = getFormatter(httpCall);
-    viewModel.init(formatter.format(getBodyToFormat(httpCall)));
+    final HttpCall httpCall = this.repo.findById(httpCallId);
+    final ResponseFormatter formatter = getFormatter(httpCall);
+    final String bodyToFormat = getBodyToFormat(httpCall);
+    executor.execute(new BackgroundTask<String>() {
+      @Override
+      public String onExecute() {
+        return formatter.format(bodyToFormat);
+      }
+
+      @Override
+      public void onResult(String result) {
+        viewModel.init(result);
+      }
+    });
   }
 
   private String getBodyToFormat(HttpCall httpCall) {

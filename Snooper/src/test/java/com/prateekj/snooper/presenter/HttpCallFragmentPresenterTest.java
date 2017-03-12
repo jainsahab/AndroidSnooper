@@ -4,6 +4,8 @@ import android.support.annotation.NonNull;
 
 import com.prateekj.snooper.formatter.ResponseFormatter;
 import com.prateekj.snooper.formatter.ResponseFormatterFactory;
+import com.prateekj.snooper.infra.BackgroundTask;
+import com.prateekj.snooper.infra.BackgroundTaskExecutor;
 import com.prateekj.snooper.model.HttpCall;
 import com.prateekj.snooper.model.HttpHeader;
 import com.prateekj.snooper.model.HttpHeaderValue;
@@ -12,12 +14,17 @@ import com.prateekj.snooper.viewmodel.HttpBodyViewModel;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import java.util.Collections;
 
 import static com.prateekj.snooper.activity.HttpCallActivity.REQUEST_MODE;
 import static com.prateekj.snooper.activity.HttpCallActivity.RESPONSE_MODE;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -34,6 +41,7 @@ public class HttpCallFragmentPresenterTest {
   private String responseBody;
   private String requestPayload;
   private String formattedBody;
+  private BackgroundTaskExecutor mockExecutor;
 
   @Before
   public void setUp() throws Exception {
@@ -44,7 +52,8 @@ public class HttpCallFragmentPresenterTest {
     repo = mock(SnooperRepo.class);
     viewModel = mock(HttpBodyViewModel.class);
     factory = mock(ResponseFormatterFactory.class);
-    presenter = new HttpCallFragmentPresenter(repo, HTTP_CALL_ID, factory);
+    mockExecutor = Mockito.mock(BackgroundTaskExecutor.class);
+    presenter = new HttpCallFragmentPresenter(repo, HTTP_CALL_ID, factory, mockExecutor);
     responseFormatter = mock(ResponseFormatter.class);
     when(httpCall.getResponseBody()).thenReturn(responseBody);
     when(httpCall.getPayload()).thenReturn(requestPayload);
@@ -57,6 +66,7 @@ public class HttpCallFragmentPresenterTest {
   public void shouldInitializeWithJsonFormatterForResponseMode() throws Exception {
     HttpHeader httpHeader = getJsonContentTypeHeader();
     when(httpCall.getResponseHeader("Content-Type")).thenReturn(httpHeader);
+    resolveBackgroundTask();
     presenter.init(viewModel, RESPONSE_MODE);
 
     verify(factory).getFor("application/json");
@@ -68,6 +78,7 @@ public class HttpCallFragmentPresenterTest {
   public void shouldInitializeWithXmlFormatterForResponseMode() throws Exception {
     HttpHeader httpHeader = getXmlContentTypeHeader();
     when(httpCall.getResponseHeader("Content-Type")).thenReturn(httpHeader);
+    resolveBackgroundTask();
     presenter.init(viewModel, RESPONSE_MODE);
 
     verify(factory).getFor("application/xml");
@@ -79,6 +90,7 @@ public class HttpCallFragmentPresenterTest {
   public void shouldInitializeWithJsonFormatterForRequestMode() throws Exception {
     HttpHeader httpHeader = getJsonContentTypeHeader();
     when(httpCall.getRequestHeader("Content-Type")).thenReturn(httpHeader);
+    resolveBackgroundTask();
     presenter.init(viewModel, REQUEST_MODE);
 
     verify(factory).getFor("application/json");
@@ -90,11 +102,23 @@ public class HttpCallFragmentPresenterTest {
   public void shouldInitializeWithXmlFormatterForRequestMode() throws Exception {
     HttpHeader httpHeader = getXmlContentTypeHeader();
     when(httpCall.getRequestHeader("Content-Type")).thenReturn(httpHeader);
+    resolveBackgroundTask();
     presenter.init(viewModel, REQUEST_MODE);
 
     verify(factory).getFor("application/xml");
     verify(responseFormatter).format(requestPayload);
     verify(viewModel).init(formattedBody);
+  }
+
+  private void resolveBackgroundTask() {
+    doAnswer(new Answer() {
+      @Override
+      public Object answer(InvocationOnMock invocation) throws Throwable {
+        BackgroundTask<String> backgroundTask = (BackgroundTask<String>) invocation.getArguments()[0];
+        backgroundTask.onResult(backgroundTask.onExecute());
+        return null;
+      }
+    }).when(mockExecutor).execute(any(BackgroundTask.class));
   }
 
   @NonNull
