@@ -11,6 +11,7 @@ import com.prateekj.snooper.model.HttpHeader;
 import com.prateekj.snooper.model.HttpHeaderValue;
 import com.prateekj.snooper.repo.SnooperRepo;
 import com.prateekj.snooper.viewmodel.HttpBodyViewModel;
+import com.prateekj.snooper.views.HttpCallBodyView;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -42,6 +43,7 @@ public class HttpCallFragmentPresenterTest {
   private String requestPayload;
   private String formattedBody;
   private BackgroundTaskExecutor mockExecutor;
+  private HttpCallBodyView httpCallBodyView;
 
   @Before
   public void setUp() throws Exception {
@@ -53,7 +55,8 @@ public class HttpCallFragmentPresenterTest {
     viewModel = mock(HttpBodyViewModel.class);
     factory = mock(ResponseFormatterFactory.class);
     mockExecutor = Mockito.mock(BackgroundTaskExecutor.class);
-    presenter = new HttpCallFragmentPresenter(repo, HTTP_CALL_ID, factory, mockExecutor);
+    httpCallBodyView = mock(HttpCallBodyView.class);
+    presenter = new HttpCallFragmentPresenter(repo, HTTP_CALL_ID, httpCallBodyView, factory, mockExecutor);
     responseFormatter = mock(ResponseFormatter.class);
     when(httpCall.getResponseBody()).thenReturn(responseBody);
     when(httpCall.getPayload()).thenReturn(requestPayload);
@@ -108,6 +111,16 @@ public class HttpCallFragmentPresenterTest {
     verify(factory).getFor("application/xml");
     verify(responseFormatter).format(requestPayload);
     verify(viewModel).init(formattedBody);
+  }
+
+  @Test
+  public void shouldNotifyViewOnFormattingDone() throws Exception {
+    HttpHeader httpHeader = getXmlContentTypeHeader();
+    when(httpCall.getRequestHeader("Content-Type")).thenReturn(httpHeader);
+    resolveBackgroundTask();
+    presenter.init(viewModel, REQUEST_MODE);
+
+    verify(httpCallBodyView).onFormattingDone();
   }
 
   private void resolveBackgroundTask() {

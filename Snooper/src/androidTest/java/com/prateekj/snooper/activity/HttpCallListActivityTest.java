@@ -28,7 +28,7 @@ import static android.support.test.espresso.intent.matcher.IntentMatchers.hasCom
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasExtra;
 import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static com.prateekj.snooper.utils.EspressoActions.withRecyclerView;
+import static com.prateekj.snooper.utils.EspressoViewMatchers.withRecyclerView;
 import static org.hamcrest.Matchers.allOf;
 
 @RunWith(AndroidJUnit4.class)

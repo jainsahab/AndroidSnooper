@@ -8,7 +8,7 @@ import org.hamcrest.Matcher;
 
 import static java.text.MessageFormat.format;
 
-public class EspressoActions {
+public class EspressoViewMatchers {
 
   public static Matcher<View> withRecyclerView(final int recyclerViewId, final int position) {
     return new CustomTypeSafeMatcher<View>(format("recycler view with id: {0} at position: {1}",

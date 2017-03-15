@@ -15,7 +15,10 @@ import org.junit.Test;
 
 import java.util.Collections;
 
+import static com.prateekj.snooper.activity.HttpCallActivity.REQUEST_MODE;
+import static com.prateekj.snooper.activity.HttpCallActivity.RESPONSE_MODE;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -65,6 +68,17 @@ public class HttpCallPresenterTest {
     httpCallPresenter.copyHttpCallBody(1);
     verify(responseFormatter).format(requestBody);
     verify(view).copyToClipboard(formatRequestBody);
+  }
+
+  @Test
+  public void shouldDismissDialogWhenRequestAndResponseDataHasBeenLoaded() throws Exception {
+    HttpCallPresenter httpCallPresenter = new HttpCallPresenter(1, repo, view, formatterFactory);
+
+    httpCallPresenter.onHttpCallBodyFormatted(REQUEST_MODE);
+    verify(view, never()).dismissProgressDialog();
+
+    httpCallPresenter.onHttpCallBodyFormatted(RESPONSE_MODE);
+    verify(view).dismissProgressDialog();
   }
 
   @NonNull

@@ -11,6 +11,7 @@ import com.prateekj.snooper.model.HttpHeader;
 import com.prateekj.snooper.model.HttpHeaderValue;
 import com.prateekj.snooper.repo.SnooperRepo;
 import com.prateekj.snooper.viewmodel.HttpBodyViewModel;
+import com.prateekj.snooper.views.HttpCallBodyView;
 
 import static com.prateekj.snooper.activity.HttpCallActivity.REQUEST_MODE;
 import static com.prateekj.snooper.model.HttpHeader.CONTENT_TYPE;
@@ -18,13 +19,19 @@ import static com.prateekj.snooper.model.HttpHeader.CONTENT_TYPE;
 public class HttpCallFragmentPresenter {
   private SnooperRepo repo;
   private int httpCallId;
+  private HttpCallBodyView httpCallBodyView;
   private ResponseFormatterFactory formatterFactory;
   private BackgroundTaskExecutor executor;
   private int mode;
 
-  public HttpCallFragmentPresenter(SnooperRepo repo, int httpCallId, ResponseFormatterFactory formatterFactory, BackgroundTaskExecutor executor) {
+  public HttpCallFragmentPresenter(SnooperRepo repo,
+                                   int httpCallId,
+                                   HttpCallBodyView httpCallBodyView,
+                                   ResponseFormatterFactory formatterFactory,
+                                   BackgroundTaskExecutor executor) {
     this.repo = repo;
     this.httpCallId = httpCallId;
+    this.httpCallBodyView = httpCallBodyView;
     this.formatterFactory = formatterFactory;
     this.executor = executor;
   }
@@ -43,6 +50,7 @@ public class HttpCallFragmentPresenter {
       @Override
       public void onResult(String result) {
         viewModel.init(result);
+        httpCallBodyView.onFormattingDone();
       }
     });
   }

@@ -1,5 +1,6 @@
 package com.prateekj.snooper.activity;
 
+import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.os.Bundle;
@@ -29,8 +30,8 @@ public class HttpCallActivity extends AppCompatActivity implements HttpCallView{
   public static int REQUEST_MODE = 1;
   public static int RESPONSE_MODE = 2;
   private HttpCallPresenter httpCallPresenter;
-  private TabLayout tabLayout;
   private ViewPager pager;
+  private ProgressDialog progressDialog;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -41,12 +42,19 @@ public class HttpCallActivity extends AppCompatActivity implements HttpCallView{
     int httpCallId = getIntent().getIntExtra(HTTP_CALL_ID, 0);
     SnooperRepo repo = new SnooperRepo(RealmFactory.create(this));
     httpCallPresenter = new HttpCallPresenter(httpCallId, repo, this, new ResponseFormatterFactory());
+    progressDialog = new ProgressDialog(this);
+    progressDialog.setCancelable(false);
+    progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+    progressDialog.setIndeterminate(true);
+    progressDialog.setIndeterminateDrawable(getResources().getDrawable(R.drawable.progress));
+    progressDialog.setMessage("Just a Moment....");
+    progressDialog.show();
     setupUi();
   }
 
   private void setupUi() {
     pager = (ViewPager) findViewById(R.id.pager);
-    tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+    TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
     for (HttpCallTab tab : HttpCallTab.sortedValues()) {
       tabLayout.addTab(tabLayout.newTab().setText(tab.getTabTitle()));
     }
@@ -92,6 +100,16 @@ public class HttpCallActivity extends AppCompatActivity implements HttpCallView{
     ClipboardManager clipboard = (ClipboardManager) this.getSystemService(CLIPBOARD_SERVICE);
     ClipData clip = ClipData.newPlainText("Copied", data);
     clipboard.setPrimaryClip(clip);
+  }
+
+  @Override
+  public void onHttpCallBodyFormatted(int mode) {
+    httpCallPresenter.onHttpCallBodyFormatted(mode);
+  }
+
+  @Override
+  public void dismissProgressDialog() {
+    progressDialog.dismiss();
   }
 
   private HttpCallFragment getResponseBodyFragment() {
