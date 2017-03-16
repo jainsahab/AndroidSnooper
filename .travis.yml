@@ -25,8 +25,10 @@ before_script:
 
 script:
 - "./gradlew Snooper:clean Snooper:testDebugUnitTest Snooper:connectedDebugAndroidTest
-  Snooper:lintDebug && ./gradlew Snooper-Spring:clean Snooper-Spring:testDebugUnitTest Snooper-Spring:connectedDebugAndroidTest
-  Snooper-Spring:lintDebug && ./gradlew uploadArchives"
+  Snooper:lintDebug"
+- "./gradlew Snooper-Spring:clean Snooper-Spring:testDebugUnitTest Snooper-Spring:connectedDebugAndroidTest
+  Snooper-Spring:lintDebug"
+- "./gradlew uploadArchives"
 
 env:
   global:
