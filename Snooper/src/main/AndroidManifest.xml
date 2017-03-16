@@ -10,7 +10,7 @@
     android:supportsRtl="true"
     tools:node="replace">
     <activity
-      android:theme="@style/SnooperTheme"
+      android:theme="@style/SnooperTheme.NoActionBar"
       android:name=".activity.HttpCallListActivity"
       android:label="@string/title_activity_http_call_list">
     </activity>

@@ -15,4 +15,8 @@ public class HttpCallListPresenter implements HttpCallListClickListener {
   public void onClick(HttpCall httpCall) {
     httpListView.navigateToResponseBody(httpCall.getId());
   }
+
+  public void onDoneClick() {
+    httpListView.finishView();
+  }
 }

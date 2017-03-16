@@ -27,8 +27,10 @@ import static android.support.test.espresso.intent.matcher.IntentMatchers.anyInt
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasExtra;
 import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.prateekj.snooper.utils.EspressoViewMatchers.withRecyclerView;
+import static junit.framework.Assert.assertTrue;
 import static org.hamcrest.Matchers.allOf;
 
 @RunWith(AndroidJUnit4.class)
@@ -54,6 +56,8 @@ public class HttpCallListActivityTest {
 
     activityRule.launchActivity(null);
 
+    onView(withText(R.string.title_activity_http_call_list)).check(matches(isDisplayed()));
+    onView(withText(R.string.done)).check(matches(isDisplayed()));
     onView(withRecyclerView(R.id.list, 1)).check(matches(allOf(
       hasDescendant(withText("https://www.google.com")),
       hasDescendant(withText("GET")),
@@ -70,6 +74,9 @@ public class HttpCallListActivityTest {
 
     verifyClickActionOnListItem(0, 2);
     verifyClickActionOnListItem(1, 1);
+
+    onView(withText(R.string.done)).perform(click());
+    assertTrue(activityRule.getActivity().isFinishing());
   }
 
   private void verifyClickActionOnListItem(int itemIndex, int httpCallId) {
