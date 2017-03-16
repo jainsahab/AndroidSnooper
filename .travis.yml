@@ -28,7 +28,9 @@ script:
   Snooper:lintDebug"
 - "./gradlew Snooper-Spring:clean Snooper-Spring:testDebugUnitTest Snooper-Spring:connectedDebugAndroidTest
   Snooper-Spring:lintDebug"
-- "./gradlew uploadArchives"
+
+after_success:
+- "./deploy_snapshot.sh"
 
 env:
   global:
