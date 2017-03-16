@@ -22,8 +22,6 @@ before_script:
 - mksdcard -l e 756M sdcard.img
 - emulator -avd test -no-skin -no-audio -no-window -sdcard sdcard.img &
 - android-wait-for-emulator
-
-before_script:
 - chmod +x ./deploy_snapshot.sh
 
 script:
