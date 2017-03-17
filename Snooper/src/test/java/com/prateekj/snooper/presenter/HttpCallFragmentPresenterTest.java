@@ -28,6 +28,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 public class HttpCallFragmentPresenterTest {
@@ -111,6 +112,16 @@ public class HttpCallFragmentPresenterTest {
     verify(factory).getFor("application/xml");
     verify(responseFormatter).format(requestPayload);
     verify(viewModel).init(formattedBody);
+  }
+
+  @Test
+  public void shouldUsePlainTextFormatterWhenContentTypeHeaderNotFound() throws Exception {
+    when(httpCall.getRequestHeader("Content-Type")).thenReturn(null);
+    resolveBackgroundTask();
+    presenter.init(viewModel, REQUEST_MODE);
+
+    verifyNoMoreInteractions(factory);
+    verify(viewModel).init(requestPayload);
   }
 
   @Test

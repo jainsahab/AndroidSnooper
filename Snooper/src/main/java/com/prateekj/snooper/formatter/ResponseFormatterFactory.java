@@ -6,10 +6,16 @@ public class ResponseFormatterFactory {
     if(isXmlType(data)) {
       return new XmlFormatter();
     }
-    return new JsonResponseFormatter();
+    if (isJsonType(data)) {
+      return new JsonResponseFormatter();
+    }
+    return new PlainTextFormatter();
   }
 
   private boolean isXmlType(String data) {
     return data.toLowerCase().contains("xml");
+  }
+  private boolean isJsonType(String data) {
+    return data.toLowerCase().contains("json");
   }
 }

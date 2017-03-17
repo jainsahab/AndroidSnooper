@@ -2,6 +2,7 @@ package com.prateekj.snooper.presenter;
 
 import android.support.annotation.NonNull;
 
+import com.prateekj.snooper.formatter.PlainTextFormatter;
 import com.prateekj.snooper.formatter.ResponseFormatter;
 import com.prateekj.snooper.formatter.ResponseFormatterFactory;
 import com.prateekj.snooper.infra.BackgroundTask;
@@ -62,6 +63,9 @@ public class HttpCallFragmentPresenter {
   @NonNull
   private ResponseFormatter getFormatter(HttpCall httpCall) {
     HttpHeader contentTypeHeader = getContentTypeHeader(httpCall);
+    if (contentTypeHeader == null) {
+      return new PlainTextFormatter();
+    }
     HttpHeaderValue headerValue = contentTypeHeader.getValues().get(0);
     return this.formatterFactory.getFor(headerValue.getValue());
   }
