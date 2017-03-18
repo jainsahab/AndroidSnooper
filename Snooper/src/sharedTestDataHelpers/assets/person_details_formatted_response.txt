@@ -1,0 +1,6 @@
+firstName=Prayas
+lastName=Jain
+age=17
+city=New York
+state=NY
+postalCode=10021
