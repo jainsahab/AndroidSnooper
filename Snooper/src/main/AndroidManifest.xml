@@ -12,6 +12,7 @@
     <activity
       android:theme="@style/SnooperTheme.NoActionBar"
       android:name=".activity.HttpCallListActivity"
+      android:launchMode="singleTop"
       android:label="@string/title_activity_http_call_list">
     </activity>
     <activity
