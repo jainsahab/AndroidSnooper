@@ -2,6 +2,34 @@
 
 [![Build Status](https://travis-ci.org/jainsahab/AndroidSnooper.svg?branch=master)](https://travis-ci.org/jainsahab/AndroidSnooper)
 
+Android Snooper is a HTTP inspector which observes all the HTTP calls being made by the app and opens up an Activity to see the detailed history of HTTP calls on `onShake` event. This library is inspired by the `Network Request History` feature of [FLEX](https://github.com/Flipboard/FLEX) app for iOS.
+
+Android Snooper works on the interceptor mechanism provided by almost every HTTP client. All you need to do is initialize Android Snooper using `AndroidSnooper.init(this);` statement in your Application class and set an instance of `SnooperInterceptor` to the list of your network interceptors.
+As of now we are providing the interceptors for the below libraries.
+
+* [Spring Android Rest Template](http://projects.spring.io/spring-android/)
+
+Didn't get your HTTP client's name in the list? No worries, You can still write your own implementation and let Android Snooper know about the request being made. Below is given a dummy implementation.
+```java
+    AndroidSnooper androidSnooper = AndroidSnooper.getInstance();
+    HttpCall httpCall = new HttpCall.Builder()
+      .withUrl(httpRequest.getUrl())
+      .withPayload(httpRequest.getRequestPayload())
+      .withMethod(httpRequest.getMethod())
+      .withResponseBody(httpResponse.getResponseBody())
+      .withStatusCode(httpResponse.getRawStatusCode())
+      .withStatusText(httpResponse.getStatusCode())
+      .withRequestHeaders(httpRequest.getHeaders())
+      .withResponseHeaders(httpResponse.getHeaders())
+      .build();
+    androidSnooper.record(httpCall);
+```
+The above implementation ought to be part of your custom interceptor where you will have access to the required `Request` and `Response` object to jot down the required data for Android Snooper to work properly.
+
+# Attributions
+* This library uses Icons made by [Madebyoliver](http://www.flaticon.com/authors/madebyoliver), [Freepik](http://www.freepik.com) and [Gregor Cresnar](http://www.flaticon.com/authors/gregor-cresnar) from [www.flaticon.com](http://www.flaticon.com) is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>.
+
+
 LICENSE
 -------
 
