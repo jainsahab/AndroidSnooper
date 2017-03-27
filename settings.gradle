@@ -1,1 +1,1 @@
-include ':Snooper', ':Snooper-Spring'
+include ':Snooper', ':Snooper-Spring', ':Snooper-Okhttp'

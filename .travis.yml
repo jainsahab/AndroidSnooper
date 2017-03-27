@@ -29,6 +29,8 @@ script:
   Snooper:lintDebug"
 - "./gradlew Snooper-Spring:clean Snooper-Spring:testDebugUnitTest Snooper-Spring:connectedDebugAndroidTest
   Snooper-Spring:lintDebug"
+- "./gradlew Snooper-Okhttp:clean Snooper-Okhttp:testDebugUnitTest Snooper-Okhttp:connectedDebugAndroidTest
+  Snooper-Okhttp:lintDebug"
 
 after_success:
 - "./deploy_snapshot.sh"
