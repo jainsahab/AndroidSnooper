@@ -5,6 +5,8 @@
 ## Introduction
 Android Snooper is a HTTP inspector which observes all the HTTP calls made by the app and opens up an Activity to see the detailed history of HTTP calls on `onShake` event. This library is inspired by the `Network Request History` feature of [FLEX](https://github.com/Flipboard/FLEX) app for iOS.
 
+![Snooper](assets/snooper_demo.gif)
+
 Android Snooper works on the interceptor mechanism provided by almost every HTTP client. All you need to do is initialize Android Snooper using `AndroidSnooper.init(this);` statement in your Application class and set an instance of `SnooperInterceptor` to the list of your network interceptors.
 As of now we are providing the interceptors for the below libraries.
 
