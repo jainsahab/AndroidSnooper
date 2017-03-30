@@ -29,6 +29,8 @@ Didn't get your HTTP client's name in the list? No worries, You can still write 
 ```
 The above implementation ought to be part of your custom interceptor where you will have access to the required `Request` and `Response` object to jot down the required data for Android Snooper to work properly.
 
+**Warning:** As Android Snooper records each and every HTTP call goes through it. Please be cautious as it will record the sensitive information such as **Auth Tokens**, **Headers** etc. The only purpose of this library is *Debugging*. Hence, Debug or QA builds are the **only** perfect candidate for this library.
+
 ## Installation
 ```groovy
     // when using Android Snooper's core module
