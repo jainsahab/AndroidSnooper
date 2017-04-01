@@ -43,6 +43,7 @@ The above implementation ought to be part of your custom interceptor where you w
       transitive = true
     }
 ```
+Snapshot versions are available in [Sonatype's snapshots repository](https://oss.sonatype.org/content/repositories/snapshots).
 
 # Attributions
 * This library uses Icons made by [Madebyoliver](http://www.flaticon.com/authors/madebyoliver), [Freepik](http://www.freepik.com) and [Gregor Cresnar](http://www.flaticon.com/authors/gregor-cresnar) from [www.flaticon.com](http://www.flaticon.com) is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>.
