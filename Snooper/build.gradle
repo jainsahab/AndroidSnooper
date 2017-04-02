@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'realm-android'
 apply plugin: 'maven-publish'
+apply plugin: 'spoon'
 
 publishing {
     publications {
@@ -73,6 +74,10 @@ android {
         exclude 'META-INF/NOTICE'
         exclude 'LICENSE.txt'
     }
+}
+
+spoon {
+    debug = true
 }
 
 dependencies {
