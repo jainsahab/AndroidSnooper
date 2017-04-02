@@ -85,8 +85,8 @@ public class HttpCallActivityTest {
     assertThat(clipBoardText(), is(readFrom("person_details_formatted_request.json")));
 
     onView(withText("HEADERS")).check(matches(isDisplayed())).perform(click());
-    onView(withId(R.id.response_headers)).perform(waitFor(hasItems(), ONE_SECOND * 10));
-    onView(withId(R.id.request_headers)).perform(waitFor(hasItems(), ONE_SECOND * 10));
+    onView(withId(R.id.response_headers)).perform(waitFor(hasItems(), ONE_SECOND * 20));
+    onView(withId(R.id.request_headers)).perform(waitFor(hasItems(), ONE_SECOND * 20));
 
     verifyResponseHeader(0, "content-type", "application/json");
     verifyResponseHeader(1, "cache-control", "no-cache");
