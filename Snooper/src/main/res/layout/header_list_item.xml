@@ -11,15 +11,17 @@
   </data>
 
   <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingBottom="@dimen/http_call_line_item_vertical_margin"
-    android:paddingTop="@dimen/http_call_line_item_vertical_margin"
+    android:paddingBottom="@dimen/header_line_item_vertical_margin"
+    android:paddingTop="@dimen/header_line_item_vertical_margin"
     tools:paddingLeft="@dimen/activity_horizontal_margin"
-    tools:paddingRight="@dimen/activity_horizontal_margin">
+    tools:paddingRight="@dimen/activity_horizontal_margin"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <TextView
       tools:text="content-type"
+      android:textStyle="bold"
+      android:textColor="@color/snooper_grey"
       android:text="@{viewModel.headerName()}"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"/>
@@ -31,6 +33,7 @@
 
     <TextView
       tools:text="application/x-www-form-urlencoded"
+      android:textColor="@color/snooper_grey"
       android:text="@{viewModel.headerValues()}"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"/>

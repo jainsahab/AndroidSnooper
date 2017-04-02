@@ -9,5 +9,5 @@
   <string name="done">DONE</string>
   <string name="response_headers">RESPONSE HEADERS</string>
   <string name="request_headers">REQUEST HEADERS</string>
-  <string name="header_name_value_separator">": "</string>
+  <string name="header_name_value_separator">" : "</string>
 </resources>
