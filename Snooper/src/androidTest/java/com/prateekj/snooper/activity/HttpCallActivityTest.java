@@ -24,11 +24,14 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.assertThat;
+import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.prateekj.snooper.activity.HttpCallActivity.HTTP_CALL_ID;
+import static com.prateekj.snooper.utils.EspressoViewMatchers.withRecyclerView;
 import static com.prateekj.snooper.utils.TestUtilities.readFrom;
+import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.allOf;
@@ -72,6 +75,32 @@ public class HttpCallActivityTest {
       .check(matches(withText(readFrom("person_details_formatted_request.json"))));
     onView(withId(R.id.copy_menu)).perform(click());
     assertThat(clipBoardText(), is(readFrom("person_details_formatted_request.json")));
+
+    onView(withText("HEADERS")).check(matches(isDisplayed())).perform(click());
+
+    verifyResponseHeader(0, "content-type", "application/json");
+    verifyResponseHeader(1, "cache-control", "no-cache");
+    verifyResponseHeader(2, "content-disposition", "attachment");
+    verifyResponseHeader(3, "date", "Sun, 02 Apr 2017 08:54:39 GMT");
+
+    verifyRequestHeader(0, "content-type", "application/json");
+    verifyRequestHeader(1, "content-length", "403");
+    verifyRequestHeader(2, "accept-language", "en-US,en;q=0.8,hi;q=0.6");
+    verifyRequestHeader(3, ":scheme", "https");
+  }
+
+  private void verifyResponseHeader(int pos, String headerName, String headerValue) {
+    onView(withRecyclerView(R.id.response_headers, pos)).check(matches(allOf(
+      hasDescendant(withText(headerName)),
+      hasDescendant(withText(headerValue))
+    )));
+  }
+
+  private void verifyRequestHeader(int pos, String headerName, String headerValue) {
+    onView(withRecyclerView(R.id.request_headers, pos)).check(matches(allOf(
+      hasDescendant(withText(headerName)),
+      hasDescendant(withText(headerValue))
+    )));
   }
 
   private String clipBoardText() {
@@ -82,7 +111,18 @@ public class HttpCallActivityTest {
 
   private void saveHttpCall(String url, String method,
                             int statusCode, String statusText, String responseBody, String requestPayload) {
-    Map<String, List<String>> headers = ImmutableMap.of("Content-Type", singletonList("application/json"));
+    Map<String, List<String>> requestHeaders = ImmutableMap.of(
+      "content-type", singletonList("application/json"),
+      "content-length", singletonList("403"),
+      "accept-language", asList("en-US,en", "q=0.8,hi", "q=0.6"),
+      ":scheme", singletonList("https")
+    );
+    Map<String, List<String>> responseHeaders = ImmutableMap.of(
+      "content-type", singletonList("application/json"),
+      "cache-control", singletonList("no-cache"),
+      "content-disposition", singletonList("attachment"),
+      "date", singletonList("Sun, 02 Apr 2017 08:54:39 GMT")
+    );
     HttpCall httpCall = new HttpCall.Builder()
       .withUrl(url)
       .withMethod(method)
@@ -90,8 +130,8 @@ public class HttpCallActivityTest {
       .withStatusText(statusText)
       .withResponseBody(responseBody)
       .withPayload(requestPayload)
-      .withRequestHeaders(headers)
-      .withResponseHeaders(headers)
+      .withRequestHeaders(requestHeaders)
+      .withResponseHeaders(responseHeaders)
       .build();
     snooperRepo.save(httpCall);
   }

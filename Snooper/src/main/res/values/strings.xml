@@ -4,6 +4,10 @@
   <string name="title_activity_response_body">Response Body</string>
   <string name="request">REQUEST</string>
   <string name="response">RESPONSE</string>
+  <string name="headers">HEADERS</string>
   <string name="copy">Copy</string>
   <string name="done">DONE</string>
+  <string name="response_headers">RESPONSE HEADERS</string>
+  <string name="request_headers">REQUEST HEADERS</string>
+  <string name="header_name_value_separator">": "</string>
 </resources>

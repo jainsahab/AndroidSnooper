@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+  <data class="HttpHeaderBinding">
+    <import type="com.prateekj.snooper.adapter.HttpHeaderAdapter"/>
+    <variable
+      name="httpCall"
+      type="com.prateekj.snooper.model.HttpCall"/>
+  </data>
+  <LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+      android:text="@string/response_headers"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"/>
+
+    <android.support.v7.widget.RecyclerView
+      android:id="@+id/response_headers"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+      app:adapter="@{HttpHeaderAdapter.from(httpCall.getResponseHeaders())}"/>
+
+    <TextView
+      android:text="@string/request_headers"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"/>
+
+    <android.support.v7.widget.RecyclerView
+      android:id="@+id/request_headers"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+      app:adapter="@{HttpHeaderAdapter.from(httpCall.getRequestHeaders())}"/>
+  </LinearLayout>
+</layout>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools">
+
+  <data>
+
+    <variable
+      name="viewModel"
+      type="com.prateekj.snooper.viewmodel.HttpHeaderViewModel"/>
+  </data>
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/http_call_line_item_vertical_margin"
+    android:paddingTop="@dimen/http_call_line_item_vertical_margin"
+    tools:paddingLeft="@dimen/activity_horizontal_margin"
+    tools:paddingRight="@dimen/activity_horizontal_margin">
+
+    <TextView
+      tools:text="content-type"
+      android:text="@{viewModel.headerName()}"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"/>
+
+    <TextView
+      android:text="@string/header_name_value_separator"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"/>
+
+    <TextView
+      tools:text="application/x-www-form-urlencoded"
+      android:text="@{viewModel.headerValues()}"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"/>
+
+  </LinearLayout>
+</layout>

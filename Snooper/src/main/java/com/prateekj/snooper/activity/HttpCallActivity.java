@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import com.prateekj.snooper.R;
 import com.prateekj.snooper.formatter.ResponseFormatterFactory;
 import com.prateekj.snooper.fragment.HttpCallFragment;
+import com.prateekj.snooper.fragment.HttpHeadersFragment;
 import com.prateekj.snooper.presenter.HttpCallPresenter;
 import com.prateekj.snooper.realm.RealmFactory;
 import com.prateekj.snooper.repo.SnooperRepo;
@@ -128,6 +129,12 @@ public class HttpCallActivity extends AppCompatActivity implements HttpCallView{
     return fragment;
   }
 
+  private HttpHeadersFragment getHeadersFragment() {
+    HttpHeadersFragment fragment = new HttpHeadersFragment();
+    fragment.setArguments(getIntent().getExtras());
+    return fragment;
+  }
+
   private class HttpCallPagerAdapter extends FragmentStatePagerAdapter {
 
     public HttpCallPagerAdapter(FragmentManager fm) {
@@ -138,12 +145,14 @@ public class HttpCallActivity extends AppCompatActivity implements HttpCallView{
     public Fragment getItem(int position) {
       if (position == 0)
         return getResponseBodyFragment();
-      return getRequestBodyFragment();
+      if (position == 1)
+        return getRequestBodyFragment();
+      return getHeadersFragment();
     }
 
     @Override
     public int getCount() {
-      return 2;
+      return HttpCallTab.values().length;
     }
   }
 }

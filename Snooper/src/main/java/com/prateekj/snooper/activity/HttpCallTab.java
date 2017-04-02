@@ -9,7 +9,8 @@ import java.util.List;
 
 public enum HttpCallTab {
   RESPONSE(0, R.string.response),
-  REQUEST(1, R.string.request);
+  REQUEST(1, R.string.request),
+  HEADERS(2, R.string.headers);
 
   private int index;
 
