@@ -99,6 +99,7 @@ dependencies {
     androidTestCompile 'com.android.support.test.espresso:espresso-contrib:2.2.2'
     androidTestCompile 'com.android.support.test.espresso:espresso-intents:2.2.2'
     androidTestCompile 'com.android.support.test:runner:0.5'
+    androidTestCompile 'com.squareup.spoon:spoon-client:1.5.4'
 }
 
 apply from: '../maven-push.gradle'

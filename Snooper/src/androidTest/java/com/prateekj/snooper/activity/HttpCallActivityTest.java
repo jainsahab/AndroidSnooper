@@ -8,11 +8,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.prateekj.snooper.R;
-import com.prateekj.snooper.espresso.EspressoViewActions;
 import com.prateekj.snooper.model.HttpCall;
 import com.prateekj.snooper.repo.SnooperRepo;
 import com.prateekj.snooper.rules.RealmCleanRule;
 import com.prateekj.snooper.rules.RunUsingLooper;
+import com.squareup.spoon.Spoon;
 
 import org.hamcrest.CustomTypeSafeMatcher;
 import org.hamcrest.Matcher;
@@ -87,6 +87,7 @@ public class HttpCallActivityTest {
 
     onView(withText("HEADERS")).check(matches(isDisplayed())).perform(click());
     onView(withId(R.id.response_headers)).perform(waitFor(hasItems(), ONE_SECOND * 20));
+    Spoon.screenshot(this.activityRule.getActivity(), "http_header_fragment");
     onView(withId(R.id.request_headers)).perform(waitFor(hasItems(), ONE_SECOND * 20));
 
     verifyResponseHeader(0, "content-type", "application/json");

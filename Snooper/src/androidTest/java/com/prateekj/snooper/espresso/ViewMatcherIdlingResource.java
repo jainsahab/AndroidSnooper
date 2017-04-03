@@ -1,6 +1,7 @@
 package com.prateekj.snooper.espresso;
 
 import android.support.test.espresso.IdlingResource;
+import android.util.Log;
 import android.view.View;
 
 import org.hamcrest.Matcher;
@@ -10,6 +11,7 @@ import static java.lang.Thread.sleep;
 public class ViewMatcherIdlingResource implements IdlingResource {
 
   private static final int MATCHER_POLLING_INTERVAL_IN_MILLIS = 100;
+  public static final String TAG = ViewMatcherIdlingResource.class.getSimpleName();
   private int waitTimeInMillis;
   private final Matcher<? super View> viewMatcher;
   private final View view;
@@ -55,6 +57,7 @@ public class ViewMatcherIdlingResource implements IdlingResource {
       public void run() {
         while (!viewMatcher.matches(view) && now() - startTime < waitTimeInMillis) {
           try {
+            Log.d(TAG, "polling view to match " + viewMatcher.toString());
             sleep(MATCHER_POLLING_INTERVAL_IN_MILLIS);
           } catch (InterruptedException ignored) {
           }
