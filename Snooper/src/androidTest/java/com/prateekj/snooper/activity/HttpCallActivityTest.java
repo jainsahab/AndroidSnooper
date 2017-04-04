@@ -2,11 +2,11 @@ package com.prateekj.snooper.activity;
 
 import android.content.ClipboardManager;
 import android.content.Intent;
-import android.support.test.espresso.core.deps.guava.collect.ImmutableMap;
 import android.support.test.rule.ActivityTestRule;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.google.common.collect.ImmutableMap;
 import com.prateekj.snooper.R;
 import com.prateekj.snooper.model.HttpCall;
 import com.prateekj.snooper.repo.SnooperRepo;
@@ -27,6 +27,7 @@ import static android.content.Context.CLIPBOARD_SERVICE;
 import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.assertThat;
 import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
@@ -34,7 +35,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.prateekj.snooper.activity.HttpCallActivity.HTTP_CALL_ID;
-import static com.prateekj.snooper.espresso.EspressoViewActions.ONE_SECOND;
 import static com.prateekj.snooper.espresso.EspressoViewActions.waitFor;
 import static com.prateekj.snooper.utils.EspressoViewMatchers.withRecyclerView;
 import static com.prateekj.snooper.utils.TestUtilities.readFrom;
@@ -86,9 +86,10 @@ public class HttpCallActivityTest {
     assertThat(clipBoardText(), is(readFrom("person_details_formatted_request.json")));
 
     onView(withText("HEADERS")).check(matches(isDisplayed())).perform(click());
-    onView(withId(R.id.response_headers)).perform(waitFor(hasItems(), ONE_SECOND * 20));
-    Spoon.screenshot(this.activityRule.getActivity(), "http_header_fragment");
-    onView(withId(R.id.request_headers)).perform(waitFor(hasItems(), ONE_SECOND * 20));
+    onView(withId(R.id.response_headers)).perform(waitFor(isDisplayed()), waitFor(hasItems()));
+    Spoon.screenshot(this.activityRule.getActivity(), "http_header_fragment_response");
+    onView(withId(R.id.request_headers)).perform(scrollTo(), waitFor(hasItems()));
+    Spoon.screenshot(this.activityRule.getActivity(), "http_header_fragment_request");
 
     verifyResponseHeader(0, "content-type", "application/json");
     verifyResponseHeader(1, "cache-control", "no-cache");
