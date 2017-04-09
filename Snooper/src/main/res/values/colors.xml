@@ -9,4 +9,5 @@
   <color name="snooper_blue">#3F51B5</color>
   <color name="snooper_light_grey">#D8D8D8</color>
   <color name="snooper_black">#000000</color>
+  <color name="snooper_bg">#EEEEEE</color>
 </resources>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <data>
+
+    <variable
+      name="text"
+      type="java.lang.String"/>
+  </data>
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/snooper_bg"
+    android:orientation="vertical">
+
+    <TextView
+      android:id="@+id/heading"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@{text}"
+      android:textColor="@color/snooper_black"
+      android:textSize="21sp"/>
+  </LinearLayout>
+</layout>

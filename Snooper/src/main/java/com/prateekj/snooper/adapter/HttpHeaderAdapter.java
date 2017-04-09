@@ -1,72 +1,83 @@
 package com.prateekj.snooper.adapter;
 
 import android.databinding.DataBindingUtil;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 
-import com.google.common.base.Function;
 import com.prateekj.snooper.R;
 import com.prateekj.snooper.databinding.HeaderListItemBinding;
+import com.prateekj.snooper.databinding.HeadersHeadingBinding;
 import com.prateekj.snooper.model.HttpHeader;
 import com.prateekj.snooper.viewmodel.HttpHeaderViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import static com.google.common.collect.Lists.transform;
+import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
-public class HttpHeaderAdapter extends RecyclerView.Adapter<HttpHeaderAdapter.HttpHeaderViewHolder> {
+import static com.prateekj.snooper.viewmodel.HttpHeaderViewModel.toViewModels;
+
+public class HttpHeaderAdapter extends BaseAdapter implements StickyListHeadersAdapter {
 
   private List<HttpHeaderViewModel> viewModels;
 
-  private HttpHeaderAdapter(List<HttpHeader> headers) {
-    this.viewModels = toViewModels(headers);
+  private HttpHeaderAdapter(List<HttpHeader> responseHeaders, List<HttpHeader> requestHeaders) {
+    viewModels = new ArrayList<>();
+    this.viewModels.addAll(toViewModels(responseHeaders, R.string.response_headers));
+    this.viewModels.addAll(toViewModels(requestHeaders, R.string.request_headers));
   }
 
   @Override
-  public HttpHeaderViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-    LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-    HeaderListItemBinding binding = DataBindingUtil.inflate(
-      inflater, R.layout.header_list_item, parent, false);
-    return new HttpHeaderViewHolder(binding);
-
+  public View getHeaderView(int position, View convertView, ViewGroup parent) {
+    HeadersHeadingBinding binding;
+    if (convertView != null) {
+      binding = DataBindingUtil.bind(convertView);
+    } else {
+      LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+      binding = DataBindingUtil.inflate(inflater, R.layout.headers_heading, parent, false);
+    }
+    binding.setText(parent.getContext().getString(this.viewModels.get(position).getHeaderId()));
+    binding.executePendingBindings();
+    return  binding.getRoot();
   }
 
   @Override
-  public void onBindViewHolder(HttpHeaderViewHolder holder, int position) {
-    holder.bind(viewModels.get(position));
+  public View getView(int position, View convertView, ViewGroup viewGroup) {
+    HeaderListItemBinding binding;
+    if (convertView != null) {
+      binding = DataBindingUtil.bind(convertView);
+    } else {
+      LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
+      binding = DataBindingUtil.inflate(inflater, R.layout.header_list_item, viewGroup, false);
+    }
+    binding.setViewModel(this.viewModels.get(position));
+    binding.executePendingBindings();
+    return binding.getRoot();
   }
 
   @Override
-  public int getItemCount() {
+  public long getHeaderId(int position) {
+    return this.viewModels.get(position).getHeaderId();
+  }
+
+  @Override
+  public int getCount() {
     return this.viewModels.size();
   }
 
-  private List<HttpHeaderViewModel> toViewModels(List<HttpHeader> headers) {
-    return transform(headers, new Function<HttpHeader, HttpHeaderViewModel>() {
-      @Override
-      public HttpHeaderViewModel apply(HttpHeader httpHeader) {
-        return new HttpHeaderViewModel(httpHeader);
-      }
-    });
+  @Override
+  public Object getItem(int pos) {
+    return this.viewModels.get(pos);
   }
 
-  public static HttpHeaderAdapter from(List<HttpHeader> headers) {
-    return new HttpHeaderAdapter(headers);
+  @Override
+  public long getItemId(int position) {
+    return position;
   }
 
-  public class HttpHeaderViewHolder extends RecyclerView.ViewHolder {
-
-    private HeaderListItemBinding binding;
-
-    public HttpHeaderViewHolder(HeaderListItemBinding binding) {
-      super(binding.getRoot());
-      this.binding = binding;
-    }
-
-    public void bind(HttpHeaderViewModel httpHeaderViewModel) {
-      this.binding.setViewModel(httpHeaderViewModel);
-      this.binding.executePendingBindings();
-    }
+  public static HttpHeaderAdapter newInstance(List<HttpHeader> responseHeaders, List<HttpHeader> requestHeaders) {
+    return new HttpHeaderAdapter(responseHeaders, requestHeaders);
   }
 }

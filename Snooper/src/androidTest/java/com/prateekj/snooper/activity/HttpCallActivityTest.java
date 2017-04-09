@@ -3,8 +3,6 @@ package com.prateekj.snooper.activity;
 import android.content.ClipboardManager;
 import android.content.Intent;
 import android.support.test.rule.ActivityTestRule;
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
 import com.google.common.collect.ImmutableMap;
 import com.prateekj.snooper.R;
@@ -12,7 +10,7 @@ import com.prateekj.snooper.model.HttpCall;
 import com.prateekj.snooper.repo.SnooperRepo;
 import com.prateekj.snooper.rules.RealmCleanRule;
 import com.prateekj.snooper.rules.RunUsingLooper;
-import com.squareup.spoon.Spoon;
+import com.prateekj.snooper.viewmodel.HttpHeaderViewModel;
 
 import org.hamcrest.CustomTypeSafeMatcher;
 import org.hamcrest.Matcher;
@@ -25,9 +23,9 @@ import java.util.Map;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
 import static android.support.test.InstrumentationRegistry.getTargetContext;
+import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.assertThat;
 import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
@@ -35,8 +33,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.prateekj.snooper.activity.HttpCallActivity.HTTP_CALL_ID;
-import static com.prateekj.snooper.espresso.EspressoViewActions.waitFor;
-import static com.prateekj.snooper.utils.EspressoViewMatchers.withRecyclerView;
 import static com.prateekj.snooper.utils.TestUtilities.readFrom;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
@@ -86,47 +82,39 @@ public class HttpCallActivityTest {
     assertThat(clipBoardText(), is(readFrom("person_details_formatted_request.json")));
 
     onView(withText("HEADERS")).check(matches(isDisplayed())).perform(click());
-    onView(withId(R.id.response_headers)).perform(waitFor(isDisplayed()), waitFor(hasItems()));
-    Spoon.screenshot(this.activityRule.getActivity(), "http_header_fragment_response");
-    onView(withId(R.id.request_headers)).perform(scrollTo(), waitFor(hasItems()));
-    Spoon.screenshot(this.activityRule.getActivity(), "http_header_fragment_request");
 
-    verifyResponseHeader(0, "content-type", "application/json");
-    verifyResponseHeader(1, "cache-control", "no-cache");
-    verifyResponseHeader(2, "content-disposition", "attachment");
-    verifyResponseHeader(3, "date", "Sun, 02 Apr 2017 08:54:39 GMT");
+    verifyResponseHeader("content-type", "application/json");
+    verifyResponseHeader("cache-control", "no-cache");
+    verifyResponseHeader("content-disposition", "attachment");
+    verifyResponseHeader("date", "Sun, 02 Apr 2017 08:54:39 GMT");
 
-    verifyRequestHeader(0, "content-type", "application/json");
-    verifyRequestHeader(1, "content-length", "403");
-    verifyRequestHeader(2, "accept-language", "en-US,en;q=0.8,hi;q=0.6");
-    verifyRequestHeader(3, ":scheme", "https");
+    verifyRequestHeader("content-type", "application/json");
+    verifyRequestHeader("content-length", "403");
+    verifyRequestHeader("accept-language", "en-US,en;q=0.8,hi;q=0.6");
+    verifyRequestHeader(":scheme", "https");
   }
 
-  private Matcher<View> hasItems() {
-    return new CustomTypeSafeMatcher<View>("has item") {
+  private void verifyResponseHeader(String headerName, String headerValue) {
+    onData(withHeaderData(headerName, headerValue, R.string.response_headers)).check(
+      matches(allOf(hasDescendant(withText(headerName)), hasDescendant(withText(headerValue))))
+    );
+  }
+
+  private void verifyRequestHeader(String headerName, String headerValue) {
+    onData(withHeaderData(headerName, headerValue, R.string.request_headers)).check(
+      matches(allOf(hasDescendant(withText(headerName)), hasDescendant(withText(headerValue))))
+    );
+  }
+
+  private Matcher<HttpHeaderViewModel> withHeaderData(final String headerName, final String headerValue, final int headerId) {
+    return new CustomTypeSafeMatcher<HttpHeaderViewModel>("Header with") {
       @Override
-      protected boolean matchesSafely(View item) {
-        if (!(item instanceof RecyclerView)) {
-          return false;
-        }
-        RecyclerView recyclerView = (RecyclerView) item;
-        return recyclerView.findViewHolderForAdapterPosition(0) != null;
+      protected boolean matchesSafely(HttpHeaderViewModel viewModel) {
+        return viewModel.headerName().equals(headerName) &&
+          viewModel.headerValues().equals(headerValue) &&
+          viewModel.getHeaderId() == headerId;
       }
     };
-  }
-
-  private void verifyResponseHeader(int pos, String headerName, String headerValue) {
-    onView(withRecyclerView(R.id.response_headers, pos)).check(matches(allOf(
-      hasDescendant(withText(headerName)),
-      hasDescendant(withText(headerValue))
-    )));
-  }
-
-  private void verifyRequestHeader(int pos, String headerName, String headerValue) {
-    onView(withRecyclerView(R.id.request_headers, pos)).check(matches(allOf(
-      hasDescendant(withText(headerName)),
-      hasDescendant(withText(headerValue))
-    )));
   }
 
   private String clipBoardText() {

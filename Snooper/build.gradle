@@ -43,6 +43,7 @@ android {
         versionCode 1
         versionName snooperVersion
         testInstrumentationRunner "com.prateekj.snooper.SnooperInstrumentationRunner"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -85,6 +86,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:design:24.2.1'
     compile "com.android.support:recyclerview-v7:24.2.1"
+    compile 'se.emilsjolander:stickylistheaders:2.7.0'
     compile 'org.apache.commons:commons-lang3:3.5'
     compile 'com.google.collections:google-collections:1.0'
     testCompile 'junit:junit:4.12'
