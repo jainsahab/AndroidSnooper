@@ -56,6 +56,20 @@ public class HttpCallPresenterTest {
   }
 
   @Test
+  public void shouldNotAskViewToCopyTheResponseDataIfContentHeaderIsMissing() throws Exception {
+    String responseBody = "response body";
+    String expectedCopiedData = "";
+    when(httpCall.getResponseHeader("Content-Type")).thenReturn(null);
+    when(httpCall.getResponseBody()).thenReturn(null);
+    when(formatterFactory.getFor("application/json")).thenReturn(responseFormatter);
+    HttpCallPresenter httpCallPresenter = new HttpCallPresenter(1, repo, view, formatterFactory);
+
+    httpCallPresenter.copyHttpCallBody(0);
+    verify(responseFormatter, never()).format(responseBody);
+    verify(view).copyToClipboard(expectedCopiedData);
+  }
+
+  @Test
   public void shouldAskViewToCopyTheRequestData() throws Exception {
     String requestBody = "response body";
     String formatRequestBody = "format Request body";
@@ -67,6 +81,20 @@ public class HttpCallPresenterTest {
 
     httpCallPresenter.copyHttpCallBody(1);
     verify(responseFormatter).format(requestBody);
+    verify(view).copyToClipboard(formatRequestBody);
+  }
+
+  @Test
+  public void shouldNotAskViewToCopyTheRequestDataIfContentHeaderIsMissing() throws Exception {
+    String requestBody = "response body";
+    String formatRequestBody = "";
+    when(httpCall.getRequestHeader("Content-Type")).thenReturn(null);
+    when(httpCall.getPayload()).thenReturn(requestBody);
+    when(formatterFactory.getFor("application/json")).thenReturn(responseFormatter);
+    HttpCallPresenter httpCallPresenter = new HttpCallPresenter(1, repo, view, formatterFactory);
+
+    httpCallPresenter.copyHttpCallBody(1);
+    verify(responseFormatter, never()).format(requestBody);
     verify(view).copyToClipboard(formatRequestBody);
   }
 

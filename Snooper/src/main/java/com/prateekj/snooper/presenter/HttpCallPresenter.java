@@ -43,8 +43,16 @@ public class HttpCallPresenter {
       contentTypeHeader = httpCall.getRequestHeader(CONTENT_TYPE);
       dataToCopy = httpCall.getPayload();
     }
-    ResponseFormatter formatter = this.formatterFactory.getFor(contentTypeHeader.getValues().get(0).getValue());
-    return formatter.format(dataToCopy);
+    if (contentHeadersPresent(contentTypeHeader)) {
+      ResponseFormatter formatter = this.formatterFactory.getFor(contentTypeHeader.getValues().get(0).getValue());
+      return formatter.format(dataToCopy);
+    }
+    return "";
+
+  }
+
+  private boolean contentHeadersPresent(HttpHeader contentTypeHeader) {
+    return contentTypeHeader != null && contentTypeHeader.getValues().size() > 0;
   }
 
   public void onHttpCallBodyFormatted(int mode) {
