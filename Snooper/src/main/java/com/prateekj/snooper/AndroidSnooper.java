@@ -1,5 +1,6 @@
 package com.prateekj.snooper;
 
+import android.app.Application;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
@@ -8,6 +9,7 @@ import android.os.Handler;
 import com.prateekj.snooper.model.HttpCall;
 import com.prateekj.snooper.realm.RealmFactory;
 import com.prateekj.snooper.repo.SnooperRepo;
+import com.prateekj.snooper.infra.BackgroundManager;
 
 import java.io.IOException;
 
@@ -30,17 +32,20 @@ public class AndroidSnooper {
     });
   }
 
-  public static AndroidSnooper init(Context context) {
-    AndroidSnooper.context = context;
+  public static AndroidSnooper init(Application application) {
+    AndroidSnooper.context = application;
     if (androidSnooper != null) {
       return androidSnooper;
     }
     SnooperRepo repo = new SnooperRepo(RealmFactory.create(context));
+    ShakeDetector shakeDetector = new ShakeDetector(new SnooperShakeListener(context));
+    BackgroundManager backgroundManager = BackgroundManager.getInstance(application);
+    backgroundManager.registerListener(shakeDetector);
     androidSnooper = new AndroidSnooper();
     androidSnooper.snooperRepo = repo;
     SensorManager sManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
     Sensor sensor = sManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-    sManager.registerListener(new ShakeDetector(new SnooperShakeListener(context)), sensor, SensorManager.SENSOR_DELAY_NORMAL);
+    sManager.registerListener(shakeDetector, sensor, SensorManager.SENSOR_DELAY_NORMAL);
     return androidSnooper;
   }
 

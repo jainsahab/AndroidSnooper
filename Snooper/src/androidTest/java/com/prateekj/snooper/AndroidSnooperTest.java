@@ -1,5 +1,6 @@
 package com.prateekj.snooper;
 
+import android.app.Application;
 import android.support.test.espresso.core.deps.guava.base.Predicate;
 
 import com.prateekj.snooper.model.HttpCall;
@@ -25,7 +26,6 @@ import io.realm.Realm;
 import io.realm.RealmList;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
-import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static android.support.test.espresso.core.deps.guava.collect.Iterables.any;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.CoreMatchers.is;
@@ -46,7 +46,8 @@ public class AndroidSnooperTest {
 
   @Test
   public void shouldReturnSameInstanceOnEveryInit() throws Exception {
-    AndroidSnooper newSnooper = AndroidSnooper.init(getTargetContext());
+    Application application = ((SnooperInstrumentationRunner) getInstrumentation()).getApplication();
+    AndroidSnooper newSnooper = AndroidSnooper.init(application);
     assertThat(newSnooper, sameInstance(androidSnooper));
   }
 

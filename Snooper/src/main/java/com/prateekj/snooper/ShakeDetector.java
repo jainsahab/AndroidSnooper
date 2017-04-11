@@ -5,12 +5,15 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
-public class ShakeDetector implements SensorEventListener {
+import com.prateekj.snooper.infra.BackgroundManager;
+
+public class ShakeDetector implements SensorEventListener, BackgroundManager.Listener {
 
   private OnShakeListener onShakeListener;
   private static final float SHAKE_THRESHOLD_GRAVITY = 2.7F;
   private static final int SHAKE_SLOP_TIME_MS = 500;
   private long mShakeTimestamp;
+  private boolean isInBackground;
 
 
   public ShakeDetector(OnShakeListener shakeListener) {
@@ -33,7 +36,7 @@ public class ShakeDetector implements SensorEventListener {
     if (gForce > SHAKE_THRESHOLD_GRAVITY) {
       final long now = System.currentTimeMillis();
       // ignore shake events too close to each other (500ms)
-      if (mShakeTimestamp + SHAKE_SLOP_TIME_MS > now) {
+      if (mShakeTimestamp + SHAKE_SLOP_TIME_MS > now || isInBackground) {
         return;
       }
 
@@ -45,5 +48,15 @@ public class ShakeDetector implements SensorEventListener {
   @Override
   public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
+  }
+
+  @Override
+  public void onBecameForeground() {
+    isInBackground = false;
+  }
+
+  @Override
+  public void onBecameBackground() {
+    isInBackground = true;
   }
 }
