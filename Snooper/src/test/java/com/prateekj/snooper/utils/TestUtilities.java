@@ -20,4 +20,10 @@ public class TestUtilities {
       }
     };
   }
+
+  public static Date getDate(int year, int month, int day, int hour, int minute, int seconds) {
+    Calendar instance = Calendar.getInstance();
+    instance.set(year, month, day, hour, minute, seconds);
+    return instance.getTime();
+  }
 }

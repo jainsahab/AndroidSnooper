@@ -56,7 +56,7 @@ public class HttpCallPresenterTest {
   }
 
   @Test
-  public void shouldNotAskViewToCopyTheResponseDataIfContentHeaderIsMissing() throws Exception {
+  public void shouldCopyEmptyStringIfContentHeaderIsMissingInResponseData() throws Exception {
     String responseBody = "response body";
     String expectedCopiedData = "";
     when(httpCall.getResponseHeader("Content-Type")).thenReturn(null);
@@ -85,9 +85,9 @@ public class HttpCallPresenterTest {
   }
 
   @Test
-  public void shouldNotAskViewToCopyTheRequestDataIfContentHeaderIsMissing() throws Exception {
+  public void shouldCopyEmptyStringIfContentHeaderIsMissingInRequestData() throws Exception {
     String requestBody = "response body";
-    String formatRequestBody = "";
+    String expectedRequestBody = "";
     when(httpCall.getRequestHeader("Content-Type")).thenReturn(null);
     when(httpCall.getPayload()).thenReturn(requestBody);
     when(formatterFactory.getFor("application/json")).thenReturn(responseFormatter);
@@ -95,7 +95,7 @@ public class HttpCallPresenterTest {
 
     httpCallPresenter.copyHttpCallBody(1);
     verify(responseFormatter, never()).format(requestBody);
-    verify(view).copyToClipboard(formatRequestBody);
+    verify(view).copyToClipboard(expectedRequestBody);
   }
 
   @Test

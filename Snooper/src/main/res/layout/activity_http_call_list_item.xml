@@ -6,8 +6,8 @@
   <data>
 
     <variable
-      name="httpCall"
-      type="com.prateekj.snooper.model.HttpCall"/>
+      name="httpCallViewModel"
+      type="com.prateekj.snooper.viewmodel.HttpCallViewModel"/>
   </data>
 
   <LinearLayout
@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="15dp"
         android:layout_marginRight="15dp"
-        android:text="@{httpCall.url}"
+        android:text="@{httpCallViewModel.getUrl}"
         android:textColor="@color/snooper_black"
         android:textSize="16sp"
         tools:text="https://google.com"/>
@@ -44,7 +44,7 @@
           android:layout_height="wrap_content"
           android:layout_marginEnd="5dp"
           android:layout_marginRight="5dp"
-          android:text="@{httpCall.method}"
+          android:text="@{httpCallViewModel.getMethod}"
           android:textColor="@color/snooper_grey"
           android:textSize="12sp"
           tools:text="POST"/>
@@ -61,7 +61,7 @@
           android:layout_height="wrap_content"
           android:layout_marginLeft="5dp"
           android:layout_marginRight="5dp"
-          android:text="@{String.valueOf(httpCall.statusCode)}"
+          android:text="@{String.valueOf(httpCallViewModel.getStatusCode)}"
           android:textColor="@color/snooper_grey"
           android:textSize="12sp"
           tools:text="200"/>
@@ -77,10 +77,25 @@
           android:layout_height="wrap_content"
           android:layout_marginLeft="5dp"
           android:layout_marginStart="5dp"
-          android:text="@{httpCall.statusText}"
+          android:text="@{httpCallViewModel.getStatusText}"
           android:textSize="12sp"
           tools:text="OK"/>
 
+        <View
+          android:layout_width="0dp"
+          android:layout_height="match_parent"
+          android:layout_weight="1"/>
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="5dp"
+          android:layout_marginStart="5dp"
+          android:paddingRight="10dp"
+          android:text="@{httpCallViewModel.getTimeStamp}"
+          android:textColor="@color/snooper_grey"
+          android:textSize="12sp"
+          tools:text="mm/dd/yyyy hh:mm:ss"/>
       </LinearLayout>
 
     </LinearLayout>

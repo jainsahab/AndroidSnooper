@@ -10,6 +10,7 @@ import com.prateekj.snooper.R;
 import com.prateekj.snooper.databinding.ActivityHttpCallListItemBinding;
 import com.prateekj.snooper.model.HttpCall;
 import com.prateekj.snooper.repo.SnooperRepo;
+import com.prateekj.snooper.viewmodel.HttpCallViewModel;
 
 import java.util.List;
 
@@ -33,7 +34,8 @@ public class HttpCallListAdapter extends RecyclerView.Adapter<HttpCallListAdapte
     }
 
     public void bind(HttpCall httpCall) {
-      this.binding.setHttpCall(httpCall);
+      HttpCallViewModel httpCallViewModel = new HttpCallViewModel(httpCall);
+      this.binding.setHttpCallViewModel(httpCallViewModel);
       this.binding.executePendingBindings();
       setClickListener(httpCall);
     }
