@@ -12,8 +12,8 @@ import java.util.List;
 
 public class BackgroundManager implements Application.ActivityLifecycleCallbacks {
 
-  public static final long BACKGROUND_DELAY = 500;
-  public static final String TAG = BackgroundManager.class.getSimpleName();
+  private static final long BACKGROUND_DELAY = 500;
+  private static final String TAG = BackgroundManager.class.getSimpleName();
 
   private static BackgroundManager sInstance;
 
@@ -28,6 +28,10 @@ public class BackgroundManager implements Application.ActivityLifecycleCallbacks
   private final Handler mBackgroundDelayHandler = new Handler();
   private Runnable mBackgroundTransition;
 
+  private BackgroundManager(Application application) {
+    application.registerActivityLifecycleCallbacks(this);
+  }
+
   public static BackgroundManager getInstance(Application application) {
     if (sInstance == null) {
       sInstance = new BackgroundManager(application);
@@ -35,9 +39,6 @@ public class BackgroundManager implements Application.ActivityLifecycleCallbacks
     return sInstance;
   }
 
-  private BackgroundManager(Application application) {
-    application.registerActivityLifecycleCallbacks(this);
-  }
 
   public void registerListener(Listener listener) {
     listeners.add(listener);
@@ -102,17 +103,22 @@ public class BackgroundManager implements Application.ActivityLifecycleCallbacks
   }
 
   @Override
-  public void onActivityStopped(Activity activity) {}
+  public void onActivityStopped(Activity activity) {
+  }
 
   @Override
-  public void onActivityCreated(Activity activity, Bundle savedInstanceState) {}
+  public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+  }
 
   @Override
-  public void onActivityStarted(Activity activity) {}
+  public void onActivityStarted(Activity activity) {
+  }
 
   @Override
-  public void onActivitySaveInstanceState(Activity activity, Bundle outState) {}
+  public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+  }
 
   @Override
-  public void onActivityDestroyed(Activity activity) {}
+  public void onActivityDestroyed(Activity activity) {
+  }
 }
