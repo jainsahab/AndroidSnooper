@@ -5,9 +5,11 @@ import com.prateekj.snooper.model.HttpCall;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
+import static java.util.Locale.US;
+
 public class HttpCallViewModel {
 
-  public static final String TIMESTAMP_FORMAT = "MM/dd/yyyy HH:mm:ss";
+  private static final String TIMESTAMP_FORMAT = "MM/dd/yyyy HH:mm:ss";
   private final HttpCall httpCall;
 
   public HttpCallViewModel(HttpCall httpCall) {
@@ -31,7 +33,7 @@ public class HttpCallViewModel {
   }
 
   public String getTimeStamp() {
-    DateFormat df = new SimpleDateFormat(TIMESTAMP_FORMAT);
+    DateFormat df = new SimpleDateFormat(TIMESTAMP_FORMAT, US);
     return df.format(httpCall.getDate());
   }
 

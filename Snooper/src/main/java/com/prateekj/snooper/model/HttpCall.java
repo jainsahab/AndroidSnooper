@@ -28,6 +28,9 @@ public class HttpCall extends RealmObject implements IncrementalIdModel {
   private RealmList<HttpHeader> requestHeaders;
   private RealmList<HttpHeader> responseHeaders;
 
+  public HttpCall() {
+    this.date = new Date();
+  }
 
   public String getPayload() {
     return payload;

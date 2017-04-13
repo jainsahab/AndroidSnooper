@@ -10,6 +10,7 @@ import java.util.Map;
 
 import static java.util.Collections.singletonList;
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 
@@ -32,8 +33,7 @@ public class HttpCallTest {
       .withRequestHeaders(getRequestHeaders())
       .withResponseHeaders(getResponseHeaders())
       .build();
-
-
+    assertNotNull(call.getDate());
   }
 
   @Test

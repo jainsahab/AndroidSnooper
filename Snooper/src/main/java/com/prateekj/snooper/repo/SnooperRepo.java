@@ -3,7 +3,6 @@ package com.prateekj.snooper.repo;
 import com.prateekj.snooper.model.HttpCall;
 import com.prateekj.snooper.model.IdInitializer;
 
-import java.util.Date;
 import java.util.List;
 
 import io.realm.Realm;
@@ -18,7 +17,6 @@ public class SnooperRepo {
   }
 
   public void save(HttpCall httpCall) {
-    httpCall.setDate(new Date());
     new IdInitializer(this.realm).initialize(httpCall);
     realm.beginTransaction();
     realm.copyToRealm(httpCall);

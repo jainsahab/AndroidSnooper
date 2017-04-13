@@ -34,6 +34,12 @@ public class TestUtilities {
     return instance.getTime();
   }
 
+  public static Date getDate(int year, int month, int day, int hour, int minute, int seconds) {
+    Calendar instance = Calendar.getInstance();
+    instance.set(year, month, day, hour, minute, seconds);
+    return instance.getTime();
+  }
+
   public static Calendar getCalendar(Date date) {
     Calendar instance = Calendar.getInstance();
     instance.setTime(date);

@@ -16,6 +16,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Date;
+
 import static android.app.Activity.RESULT_OK;
 import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static android.support.test.espresso.Espresso.onView;
@@ -30,6 +32,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.prateekj.snooper.utils.EspressoViewMatchers.withRecyclerView;
+import static com.prateekj.snooper.utils.TestUtilities.getDate;
 import static junit.framework.Assert.assertTrue;
 import static org.hamcrest.Matchers.allOf;
 
@@ -51,25 +54,29 @@ public class HttpCallListActivityTest {
 
   @Test
   public void shouldRenderHttpCalls() throws Exception {
-    saveHttpCall("https://www.google.com", "GET", 200, "OK");
-    saveHttpCall("https://www.facebook.com", "GET", 200, "OK");
+    Date beforeDate = getDate(2017, 5, 2, 11, 22, 33);
+    Date afterDate = getDate(2017, 5, 3, 11, 22, 33);
+    saveHttpCall("https://www.google.com", "GET", 200, "OK", beforeDate);
+    saveHttpCall("https://www.facebook.com", "GET", 200, "OK", afterDate);
 
     activityRule.launchActivity(null);
 
     onView(withText(R.string.title_activity_http_call_list)).check(matches(isDisplayed()));
     onView(withText(R.string.done)).check(matches(isDisplayed()));
-    onView(withRecyclerView(R.id.list, 1)).check(matches(allOf(
-      hasDescendant(withText("https://www.google.com")),
-      hasDescendant(withText("GET")),
-      hasDescendant(withText("200")),
-      hasDescendant(withText("OK"))
-    )));
-
     onView(withRecyclerView(R.id.list, 0)).check(matches(allOf(
       hasDescendant(withText("https://www.facebook.com")),
       hasDescendant(withText("GET")),
       hasDescendant(withText("200")),
-      hasDescendant(withText("OK"))
+      hasDescendant(withText("OK")),
+      hasDescendant(withText("06/03/2017 11:22:33"))
+    )));
+
+    onView(withRecyclerView(R.id.list, 1)).check(matches(allOf(
+      hasDescendant(withText("https://www.google.com")),
+      hasDescendant(withText("GET")),
+      hasDescendant(withText("200")),
+      hasDescendant(withText("OK")),
+      hasDescendant(withText("06/02/2017 11:22:33"))
     )));
 
     verifyClickActionOnListItem(0, 2);
@@ -87,13 +94,14 @@ public class HttpCallListActivityTest {
       hasExtra(HttpCallActivity.HTTP_CALL_ID, httpCallId)));
   }
 
-  private void saveHttpCall(String url, String method, int statusCode, String statusText) {
+  private void saveHttpCall(String url, String method, int statusCode, String statusText, Date date) {
     HttpCall httpCall = new HttpCall.Builder()
       .withUrl(url)
       .withMethod(method)
       .withStatusCode(statusCode)
       .withStatusText(statusText)
       .build();
+    httpCall.setDate(date);
     snooperRepo.save(httpCall);
   }
 }
