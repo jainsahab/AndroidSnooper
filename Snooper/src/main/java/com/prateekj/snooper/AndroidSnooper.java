@@ -13,14 +13,14 @@ import com.prateekj.snooper.infra.BackgroundManager;
 
 import java.io.IOException;
 
-public class AndroidSnooper {
+public class AndroidSnooper implements BackgroundManager.Listener {
 
   private static Context context;
   private SnooperRepo snooperRepo;
   private static AndroidSnooper androidSnooper;
+  private static ShakeDetector shakeDetector;
 
-  private AndroidSnooper() {
-  }
+  private AndroidSnooper() {}
 
   public void record(final HttpCall httpCall) throws IOException {
     Handler handler = new Handler(context.getMainLooper());
@@ -38,14 +38,13 @@ public class AndroidSnooper {
       return androidSnooper;
     }
     SnooperRepo repo = new SnooperRepo(RealmFactory.create(context));
-    ShakeDetector shakeDetector = new ShakeDetector(new SnooperShakeListener(context));
     BackgroundManager backgroundManager = BackgroundManager.getInstance(application);
-    backgroundManager.registerListener(shakeDetector);
+    shakeDetector = new ShakeDetector(new SnooperShakeListener(context));
     androidSnooper = new AndroidSnooper();
+    backgroundManager.registerListener(shakeDetector);
+    backgroundManager.registerListener(androidSnooper);
     androidSnooper.snooperRepo = repo;
-    SensorManager sManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
-    Sensor sensor = sManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-    sManager.registerListener(shakeDetector, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+    registerSensorListener();
     return androidSnooper;
   }
 
@@ -54,5 +53,27 @@ public class AndroidSnooper {
       throw new RuntimeException("Android Snooper is not initialized yet");
     }
     return androidSnooper;
+  }
+
+  @Override
+  public void onBecameForeground() {
+    registerSensorListener();
+  }
+
+  @Override
+  public void onBecameBackground() {
+    unRegisterSensorListener();
+  }
+
+
+  private static void registerSensorListener() {
+    SensorManager sManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+    Sensor sensor = sManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+    sManager.registerListener(shakeDetector, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+  }
+
+  private static void unRegisterSensorListener() {
+    SensorManager sManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+    sManager.unregisterListener(shakeDetector);
   }
 }
