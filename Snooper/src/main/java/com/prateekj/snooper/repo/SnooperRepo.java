@@ -3,7 +3,6 @@ package com.prateekj.snooper.repo;
 import com.prateekj.snooper.model.HttpCall;
 import com.prateekj.snooper.model.IdInitializer;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -27,11 +26,7 @@ public class SnooperRepo {
   }
 
   public List<HttpCall> findAll() {
-    ArrayList<HttpCall> httpCalls = new ArrayList<>();
-    for (HttpCall httpCall : realm.where(HttpCall.class).findAllSorted("date", DESCENDING)) {
-      httpCalls.add(httpCall);
-    }
-    return httpCalls;
+    return realm.where(HttpCall.class).findAllSorted("date", DESCENDING);
   }
 
   public HttpCall findById(int id) {
