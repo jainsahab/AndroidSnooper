@@ -5,6 +5,7 @@ import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Handler;
+import android.util.Log;
 
 import com.prateekj.snooper.model.HttpCall;
 import com.prateekj.snooper.realm.RealmFactory;
@@ -15,10 +16,11 @@ import java.io.IOException;
 
 public class AndroidSnooper implements BackgroundManager.Listener {
 
+  private static final String TAG = AndroidSnooper.class.getSimpleName();
   private static Context context;
-  private SnooperRepo snooperRepo;
   private static AndroidSnooper androidSnooper;
-  private static ShakeDetector shakeDetector;
+  private SnooperRepo snooperRepo;
+  private ShakeDetector shakeDetector;
 
   private AndroidSnooper() {}
 
@@ -32,29 +34,6 @@ public class AndroidSnooper implements BackgroundManager.Listener {
     });
   }
 
-  public static AndroidSnooper init(Application application) {
-    AndroidSnooper.context = application;
-    if (androidSnooper != null) {
-      return androidSnooper;
-    }
-    SnooperRepo repo = new SnooperRepo(RealmFactory.create(context));
-    BackgroundManager backgroundManager = BackgroundManager.getInstance(application);
-    shakeDetector = new ShakeDetector(new SnooperShakeListener(context));
-    androidSnooper = new AndroidSnooper();
-    backgroundManager.registerListener(shakeDetector);
-    backgroundManager.registerListener(androidSnooper);
-    androidSnooper.snooperRepo = repo;
-    registerSensorListener();
-    return androidSnooper;
-  }
-
-  public static AndroidSnooper getInstance() {
-    if (androidSnooper == null) {
-      throw new RuntimeException("Android Snooper is not initialized yet");
-    }
-    return androidSnooper;
-  }
-
   @Override
   public void onBecameForeground() {
     registerSensorListener();
@@ -65,14 +44,35 @@ public class AndroidSnooper implements BackgroundManager.Listener {
     unRegisterSensorListener();
   }
 
+  public static AndroidSnooper init(Application application) {
+    if (androidSnooper != null) {
+      return androidSnooper;
+    }
+    AndroidSnooper.context = application;
+    androidSnooper = new AndroidSnooper();
+    androidSnooper.snooperRepo = new SnooperRepo(RealmFactory.create(context));
+    androidSnooper.shakeDetector = new ShakeDetector(new SnooperShakeListener(context));
+    androidSnooper.registerSensorListener();
+    BackgroundManager.getInstance(application).registerListener(androidSnooper);
+    return androidSnooper;
+  }
 
-  private static void registerSensorListener() {
+  public static AndroidSnooper getInstance() {
+    if (androidSnooper == null) {
+      throw new RuntimeException("Android Snooper is not initialized yet");
+    }
+    return androidSnooper;
+  }
+
+  private void registerSensorListener() {
+    Log.d(TAG, "Registering Listener");
     SensorManager sManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
     Sensor sensor = sManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
     sManager.registerListener(shakeDetector, sensor, SensorManager.SENSOR_DELAY_NORMAL);
   }
 
-  private static void unRegisterSensorListener() {
+  private void unRegisterSensorListener() {
+    Log.d(TAG, "Unregistering Listener");
     SensorManager sManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
     sManager.unregisterListener(shakeDetector);
   }

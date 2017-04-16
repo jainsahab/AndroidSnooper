@@ -4,17 +4,15 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.util.Log;
 
-import com.prateekj.snooper.infra.BackgroundManager;
+public class ShakeDetector implements SensorEventListener {
 
-public class ShakeDetector implements SensorEventListener, BackgroundManager.Listener {
-
+  public static final String TAG = ShakeDetector.class.getSimpleName();
   private OnShakeListener onShakeListener;
   private static final float SHAKE_THRESHOLD_GRAVITY = 2.7F;
   private static final int SHAKE_SLOP_TIME_MS = 500;
   private long mShakeTimestamp;
-  private boolean isInBackground;
-
 
   public ShakeDetector(OnShakeListener shakeListener) {
     this.onShakeListener = shakeListener;
@@ -36,10 +34,10 @@ public class ShakeDetector implements SensorEventListener, BackgroundManager.Lis
     if (gForce > SHAKE_THRESHOLD_GRAVITY) {
       final long now = System.currentTimeMillis();
       // ignore shake events too close to each other (500ms)
-      if (mShakeTimestamp + SHAKE_SLOP_TIME_MS > now || isInBackground) {
+      if (mShakeTimestamp + SHAKE_SLOP_TIME_MS > now) {
         return;
       }
-
+      Log.d(TAG, event.sensor.getName());
       mShakeTimestamp = now;
       this.onShakeListener.onShake();
     }
@@ -48,15 +46,5 @@ public class ShakeDetector implements SensorEventListener, BackgroundManager.Lis
   @Override
   public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
-  }
-
-  @Override
-  public void onBecameForeground() {
-    isInBackground = false;
-  }
-
-  @Override
-  public void onBecameBackground() {
-    isInBackground = true;
   }
 }
