@@ -13,6 +13,7 @@
   <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
     android:paddingBottom="@dimen/http_call_line_item_vertical_margin"
     android:paddingTop="@dimen/http_call_line_item_vertical_margin"
     tools:paddingLeft="@dimen/activity_horizontal_margin"
