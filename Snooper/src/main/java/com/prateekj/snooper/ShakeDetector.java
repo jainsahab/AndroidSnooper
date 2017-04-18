@@ -4,7 +4,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.util.Log;
 
 public class ShakeDetector implements SensorEventListener {
 
@@ -37,7 +36,6 @@ public class ShakeDetector implements SensorEventListener {
       if (mShakeTimestamp + SHAKE_SLOP_TIME_MS > now) {
         return;
       }
-      Log.d(TAG, event.sensor.getName());
       mShakeTimestamp = now;
       this.onShakeListener.onShake();
     }

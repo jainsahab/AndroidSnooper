@@ -52,7 +52,6 @@ public class AndroidSnooper implements BackgroundManager.Listener {
     androidSnooper = new AndroidSnooper();
     androidSnooper.snooperRepo = new SnooperRepo(RealmFactory.create(context));
     androidSnooper.shakeDetector = new ShakeDetector(new SnooperShakeListener(context));
-    androidSnooper.registerSensorListener();
     BackgroundManager.getInstance(application).registerListener(androidSnooper);
     return androidSnooper;
   }
