@@ -33,6 +33,10 @@ The above implementation ought to be part of your custom interceptor where you w
 
 ## Installation
 ```groovy
+    repositories {
+        mavenCentral()
+    }
+
     // when using Android Snooper's core module
     compile ('com.github.jainsahab:Snooper:1.0.0@aar'){
       transitive = true
