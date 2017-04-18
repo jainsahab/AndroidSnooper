@@ -10,7 +10,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,7 +23,7 @@ import com.prateekj.snooper.realm.RealmFactory;
 import com.prateekj.snooper.repo.SnooperRepo;
 import com.prateekj.snooper.views.HttpCallView;
 
-public class HttpCallActivity extends AppCompatActivity implements HttpCallView{
+public class HttpCallActivity extends SnooperBaseActivity implements HttpCallView{
 
   public static String HTTP_CALL_ID = "HTTP_CALL_ID";
   public static String HTTP_CALL_MODE = "HTTP_CALL_MODE";

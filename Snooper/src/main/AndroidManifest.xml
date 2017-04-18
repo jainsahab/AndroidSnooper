@@ -12,12 +12,13 @@
     <activity
       android:theme="@style/SnooperTheme.NoActionBar"
       android:name=".activity.HttpCallListActivity"
-      android:launchMode="singleTop"
+      android:taskAffinity="@string/snooper_affinity"
       android:label="@string/title_activity_http_call_list">
     </activity>
     <activity
       android:theme="@style/SnooperTheme.NoActionBar"
       android:name=".activity.HttpCallActivity"
+      android:taskAffinity="@string/snooper_affinity"
       android:label="@string/title_activity_response_body">
     </activity>
   </application>

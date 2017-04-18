@@ -1,12 +1,7 @@
 package com.prateekj.snooper.activity;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,10 +17,9 @@ import com.prateekj.snooper.realm.RealmFactory;
 import com.prateekj.snooper.repo.SnooperRepo;
 import com.prateekj.snooper.views.HttpListView;
 
-import static com.prateekj.snooper.AndroidSnooper.END_SNOOPER_FLOW;
 import static com.prateekj.snooper.activity.HttpCallActivity.HTTP_CALL_ID;
 
-public class HttpCallListActivity extends AppCompatActivity implements HttpListView {
+public class HttpCallListActivity extends SnooperBaseActivity implements HttpListView {
 
   private HttpCallListPresenter presenter;
 
@@ -44,7 +38,6 @@ public class HttpCallListActivity extends AppCompatActivity implements HttpListV
     httpCallList.addItemDecoration(itemDecoration);
     httpCallList.setItemAnimator(new DefaultItemAnimator());
     httpCallList.setAdapter(httpCallListAdapter);
-    LocalBroadcastManager.getInstance(this).registerReceiver(finishActivityReceiver(), new IntentFilter(END_SNOOPER_FLOW));
   }
 
   @Override
@@ -74,14 +67,5 @@ public class HttpCallListActivity extends AppCompatActivity implements HttpListV
   @Override
   public void finishView() {
     finish();
-  }
-
-  private BroadcastReceiver finishActivityReceiver() {
-    return new BroadcastReceiver() {
-      @Override
-      public void onReceive(Context context, Intent intent) {
-        HttpCallListActivity.this.finish();
-      }
-    };
   }
 }
