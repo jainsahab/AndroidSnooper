@@ -1,22 +1,22 @@
 package com.prateekj.snooper;
 
-import android.content.Context;
-import android.content.Intent;
+public class SnooperShakeListener implements OnShakeListener {
 
-import com.prateekj.snooper.activity.HttpCallListActivity;
+  private SnooperShakeAction shakeAction;
+  private boolean isSnooperFlowStarted;
 
-public class SnooperShakeListener implements OnShakeListener{
-
-  private Context context;
-
-  public SnooperShakeListener(Context context) {
-    this.context = context;
+  public SnooperShakeListener(SnooperShakeAction shakeAction) {
+    this.shakeAction = shakeAction;
   }
 
   @Override
   public void onShake() {
-    Intent intent = new Intent(this.context, HttpCallListActivity.class);
-    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-    this.context.startActivity(intent);
+    if (!isSnooperFlowStarted) {
+      this.shakeAction.startSnooperFlow();
+      isSnooperFlowStarted = true;
+      return;
+    }
+    this.shakeAction.endSnooperFlow();
+    isSnooperFlowStarted = false;
   }
 }
