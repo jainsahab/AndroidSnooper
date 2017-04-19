@@ -42,14 +42,18 @@ public class HttpCallActivity extends SnooperBaseActivity implements HttpCallVie
     int httpCallId = getIntent().getIntExtra(HTTP_CALL_ID, 0);
     SnooperRepo repo = new SnooperRepo(RealmFactory.create(this));
     httpCallPresenter = new HttpCallPresenter(httpCallId, repo, this, new ResponseFormatterFactory());
+    initializeProgressDialog();
+    setupUi();
+  }
+
+  private void initializeProgressDialog() {
     progressDialog = new ProgressDialog(this);
     progressDialog.setCancelable(false);
     progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
     progressDialog.setIndeterminate(true);
     progressDialog.setIndeterminateDrawable(getResources().getDrawable(R.drawable.progress));
-    progressDialog.setMessage("Just a Moment....");
+    progressDialog.setMessage(getString(R.string.progress_wait_message));
     progressDialog.show();
-    setupUi();
   }
 
   private void setupUi() {

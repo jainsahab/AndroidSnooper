@@ -11,7 +11,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 
-import static com.prateekj.snooper.AndroidSnooper.END_SNOOPER_FLOW;
+import static com.prateekj.snooper.AndroidSnooper.ACTION_END_SNOOPER_FLOW;
 
 public abstract class SnooperBaseActivity extends AppCompatActivity {
 
@@ -26,7 +26,7 @@ public abstract class SnooperBaseActivity extends AppCompatActivity {
   @Override
   protected void onResume() {
     super.onResume();
-    LocalBroadcastManager.getInstance(this).registerReceiver(receiver, new IntentFilter(END_SNOOPER_FLOW));
+    LocalBroadcastManager.getInstance(this).registerReceiver(receiver, new IntentFilter(ACTION_END_SNOOPER_FLOW));
   }
 
   @Override

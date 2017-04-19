@@ -21,9 +21,8 @@ import java.io.IOException;
 
 public class AndroidSnooper implements BackgroundManager.Listener, SnooperShakeAction, CurrentActivityManager.Listener {
 
-  private static final String TAG = AndroidSnooper.class.getSimpleName();
-  public static final String END_SNOOPER_FLOW = "END_SNOOPER_FLOW";
-  private static Context context;
+  public static final String ACTION_END_SNOOPER_FLOW = "com.snooper.END_SNOOPER_FLOW";
+  private Context context;
   private static AndroidSnooper androidSnooper;
   private SnooperRepo snooperRepo;
   private ShakeDetector shakeDetector;
@@ -58,23 +57,23 @@ public class AndroidSnooper implements BackgroundManager.Listener, SnooperShakeA
 
   @Override
   public void startSnooperFlow() {
-    Intent intent = new Intent(AndroidSnooper.context, HttpCallListActivity.class);
+    Intent intent = new Intent(AndroidSnooper.this.context, HttpCallListActivity.class);
     this.currentActivity.startActivity(intent);
   }
 
   @Override
   public void endSnooperFlow() {
-    Intent intent = new Intent(END_SNOOPER_FLOW);
-    LocalBroadcastManager.getInstance(AndroidSnooper.context).sendBroadcast(intent);
+    Intent intent = new Intent(ACTION_END_SNOOPER_FLOW);
+    LocalBroadcastManager.getInstance(AndroidSnooper.this.context).sendBroadcast(intent);
   }
 
   public static AndroidSnooper init(Application application) {
     if (androidSnooper != null) {
       return androidSnooper;
     }
-    AndroidSnooper.context = application;
     androidSnooper = new AndroidSnooper();
-    androidSnooper.snooperRepo = new SnooperRepo(RealmFactory.create(context));
+    androidSnooper.context = application;
+    androidSnooper.snooperRepo = new SnooperRepo(RealmFactory.create(androidSnooper.context));
     androidSnooper.shakeDetector = new ShakeDetector(new SnooperShakeListener(androidSnooper));
     BackgroundManager.getInstance(application).registerListener(androidSnooper);
     CurrentActivityManager.getInstance(application).registerListener(androidSnooper);
@@ -89,14 +88,12 @@ public class AndroidSnooper implements BackgroundManager.Listener, SnooperShakeA
   }
 
   private void registerSensorListener() {
-    Log.d(TAG, "Registering Listener");
     SensorManager sManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
     Sensor sensor = sManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
     sManager.registerListener(shakeDetector, sensor, SensorManager.SENSOR_DELAY_NORMAL);
   }
 
   private void unRegisterSensorListener() {
-    Log.d(TAG, "Unregistering Listener");
     SensorManager sManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
     sManager.unregisterListener(shakeDetector);
   }

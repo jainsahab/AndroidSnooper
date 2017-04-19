@@ -29,9 +29,9 @@ public class HttpCallListActivity extends SnooperBaseActivity implements HttpLis
     setContentView(R.layout.activity_http_call_list);
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
-    RecyclerView httpCallList = (RecyclerView) findViewById(R.id.list);
-    SnooperRepo repo = new SnooperRepo(RealmFactory.create(this));
     presenter = new HttpCallListPresenter(this);
+    SnooperRepo repo = new SnooperRepo(RealmFactory.create(this));
+    RecyclerView httpCallList = (RecyclerView) findViewById(R.id.list);
     HttpCallListAdapter httpCallListAdapter = new HttpCallListAdapter(repo, presenter);
     httpCallList.setLayoutManager(new LinearLayoutManager(this));
     DividerItemDecoration itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL, R.drawable.grey_divider);
