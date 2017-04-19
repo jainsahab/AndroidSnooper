@@ -1,6 +1,6 @@
 # Android Snooper
 
-[![Build Status](https://travis-ci.org/jainsahab/AndroidSnooper.svg?branch=master)](https://travis-ci.org/jainsahab/AndroidSnooper)
+[![Build Status](https://travis-ci.org/jainsahab/AndroidSnooper.svg?branch=master)](https://travis-ci.org/jainsahab/AndroidSnooper) [![Maven Central](https://img.shields.io/maven-central/v/com.github.jainsahab/Snooper.svg)](https://mvnrepository.com/artifact/com.github.jainsahab/Snooper)
 
 ## Introduction
 Android Snooper is a HTTP inspector which observes all the HTTP calls made by the app and opens up an Activity to see the detailed history of HTTP calls on `onShake` event. This library is inspired by the `Network Request History` feature of [FLEX](https://github.com/Flipboard/FLEX) app for iOS.
@@ -11,6 +11,7 @@ Android Snooper works on the interceptor mechanism provided by almost every HTTP
 As of now we are providing the interceptors for the below libraries.
 
 * [Spring Android Rest Template](http://projects.spring.io/spring-android/)
+* [Square's OkHttp Client](https://github.com/square/okhttp)
 
 Didn't get your HTTP client's name in the list? No worries, You can still write your own implementation by using `Android Snooper's` core module and let Android Snooper know about the request being made. Below is given a dummy implementation.
 ```java
@@ -49,7 +50,10 @@ The above implementation ought to be part of your custom interceptor where you w
 ```
 Snapshot versions are available in [Sonatype's snapshots repository](https://oss.sonatype.org/content/repositories/snapshots).
 
-# Attributions
+## Contributing
+If you would like to contribute code to `AndroidSnooper` you can do so by forking the repository and create a Pull request. You can also create an Issue to report bugs or features that you want to see in `AndroidSnooper` library.
+
+## Attributions
 This library uses:
 * Icons made by [Madebyoliver](http://www.flaticon.com/authors/madebyoliver), [Freepik](http://www.freepik.com) and [Gregor Cresnar](http://www.flaticon.com/authors/gregor-cresnar) from [www.flaticon.com](http://www.flaticon.com) is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>.
 * [StickyListHeaders](https://github.com/emilsjolander/StickyListHeaders) Android library by [emilsjolander](https://github.com/emilsjolander).
