@@ -1,5 +1,4 @@
 <resources>
-  <string name="app_name">Android Snooper</string>
   <string name="snooper_affinity">.snooper_affinity</string>
   <string name="title_activity_http_call_list">Http Calls</string>
   <string name="title_activity_response_body">Response Body</string>
