@@ -68,8 +68,7 @@ public class HttpCallActivityTest {
 
     activityRule.launchActivity(intent);
 
-    onView(withText("REQUEST")).check(matches(isDisplayed())).perform(click());
-    onView(withText("RESPONSE")).check(matches(isDisplayed())).perform(click());
+    onView(withText(R.string.title_http_call_activity)).check(matches(isDisplayed()));
     onView(allOf(withId(R.id.payload_text), isDisplayed()))
       .check(matches(withText(readFrom("person_details_formatted_response.json"))));
     onView(withId(R.id.copy_menu)).perform(click());
