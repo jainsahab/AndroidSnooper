@@ -1,7 +1,7 @@
 <resources>
   <string name="snooper_affinity">.snooper_affinity</string>
   <string name="title_activity_http_call_list">Http Calls</string>
-  <string name="title_activity_response_body">Response Body</string>
+  <string name="title_http_call_activity">Call Details</string>
   <string name="request">REQUEST</string>
   <string name="response">RESPONSE</string>
   <string name="headers">HEADERS</string>

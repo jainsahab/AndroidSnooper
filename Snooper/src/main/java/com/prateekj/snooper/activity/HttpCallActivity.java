@@ -39,6 +39,7 @@ public class HttpCallActivity extends SnooperBaseActivity implements HttpCallVie
     setContentView(R.layout.activity_http_call_detail);
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
+    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     int httpCallId = getIntent().getIntExtra(HTTP_CALL_ID, 0);
     SnooperRepo repo = new SnooperRepo(RealmFactory.create(this));
     httpCallPresenter = new HttpCallPresenter(httpCallId, repo, this, new ResponseFormatterFactory());

@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 
 import static com.prateekj.snooper.AndroidSnooper.ACTION_END_SNOOPER_FLOW;
 
@@ -33,6 +34,15 @@ public abstract class SnooperBaseActivity extends AppCompatActivity {
   protected void onPause() {
     super.onPause();
     LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    if (item.getItemId() == android.R.id.home) {
+      onBackPressed();
+      return true;
+    }
+    return super.onOptionsItemSelected(item);
   }
 
   private BroadcastReceiver finishActivityReceiver(final Activity activity) {

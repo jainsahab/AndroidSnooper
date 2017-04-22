@@ -6,8 +6,14 @@
     <item name="colorAccent">@color/colorAccent</item>
   </style>
 
+  <style name="SnooperToolbarNavigationButtonStyle" parent="@style/Widget.AppCompat.Toolbar.Button.Navigation">
+    <item name="android:padding">12dp</item>
+    <item name="android:scaleType">centerInside</item>
+  </style>
+
   <style name="SnooperTheme.NoActionBar" parent="SnooperTheme">
     <item name="windowActionBar">false</item>
     <item name="windowNoTitle">true</item>
+    <item name="toolbarNavigationButtonStyle">@style/SnooperToolbarNavigationButtonStyle</item>
   </style>
 </resources>

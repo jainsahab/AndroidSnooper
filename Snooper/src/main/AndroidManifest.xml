@@ -13,7 +13,7 @@
       android:theme="@style/SnooperTheme.NoActionBar"
       android:name=".activity.HttpCallActivity"
       android:taskAffinity="@string/snooper_affinity"
-      android:label="@string/title_activity_response_body">
+      android:label="@string/title_http_call_activity">
     </activity>
   </application>
 
