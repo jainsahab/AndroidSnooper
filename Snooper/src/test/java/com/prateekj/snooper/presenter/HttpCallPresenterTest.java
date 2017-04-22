@@ -10,8 +10,10 @@ import com.prateekj.snooper.model.HttpHeaderValue;
 import com.prateekj.snooper.repo.SnooperRepo;
 import com.prateekj.snooper.views.HttpCallView;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 
 import java.util.Collections;
 
@@ -19,6 +21,7 @@ import static com.prateekj.snooper.activity.HttpCallActivity.REQUEST_MODE;
 import static com.prateekj.snooper.activity.HttpCallActivity.RESPONSE_MODE;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -115,6 +118,71 @@ public class HttpCallPresenterTest {
     HttpHeader httpHeader = new HttpHeader("Content-Type");
     httpHeader.setValues(Collections.singletonList(headerValue));
     return httpHeader;
+  }
+
+  @Test
+  public void shouldShareRequestResponseData() throws Exception {
+    String requestBody = "request body";
+    String formatRequestBody = "format Request body";
+    String responseBody = "response body";
+    String formatResponseBody = "format Response body";
+    StringBuffer expectedData = new StringBuffer();
+    expectedData.append("Request Body");
+    expectedData.append("\n");
+    expectedData.append(formatRequestBody);
+    expectedData.append("\n");
+    expectedData.append("Response Body");
+    expectedData.append("\n");
+    expectedData.append(formatResponseBody);
+
+    when(httpCall.getRequestHeader("Content-Type")).thenReturn(getJsonContentTypeHeader());
+    when(httpCall.getPayload()).thenReturn(requestBody);
+    when(httpCall.getResponseHeader("Content-Type")).thenReturn(getJsonContentTypeHeader());
+    when(httpCall.getResponseBody()).thenReturn(responseBody);
+    when(formatterFactory.getFor("application/json")).thenReturn(responseFormatter);
+    when(responseFormatter.format(requestBody)).thenReturn(formatRequestBody);
+    when(responseFormatter.format(responseBody)).thenReturn(formatResponseBody);
+
+    HttpCallPresenter httpCallPresenter = new HttpCallPresenter(1, repo, view, formatterFactory);
+
+    httpCallPresenter.shareHttpCallBody();
+    verify(responseFormatter, times(1)).format(requestBody);
+
+    verify(responseFormatter, times(1)).format(responseBody);
+    ArgumentCaptor<StringBuilder> argument = ArgumentCaptor.forClass(StringBuilder.class);
+    verify(view).shareData(argument.capture());
+    Assert.assertEquals(argument.getValue().toString(), expectedData.toString());
+
+  }  @Test
+  public void shouldShareOnlyRequestDataIfResponseIsEmpty() throws Exception {
+    String requestBody = "request body";
+    String formatRequestBody = "format Request body";
+    String responseBody = "";
+    String formatResponseBody = "";
+    StringBuffer expectedData = new StringBuffer();
+    expectedData.append("Request Body");
+    expectedData.append("\n");
+    expectedData.append(formatRequestBody);
+    expectedData.append("\n");
+
+    when(httpCall.getRequestHeader("Content-Type")).thenReturn(getJsonContentTypeHeader());
+    when(httpCall.getPayload()).thenReturn(requestBody);
+    when(httpCall.getResponseHeader("Content-Type")).thenReturn(getJsonContentTypeHeader());
+    when(httpCall.getResponseBody()).thenReturn(responseBody);
+    when(formatterFactory.getFor("application/json")).thenReturn(responseFormatter);
+    when(responseFormatter.format(requestBody)).thenReturn(formatRequestBody);
+    when(responseFormatter.format(responseBody)).thenReturn(formatResponseBody);
+
+    HttpCallPresenter httpCallPresenter = new HttpCallPresenter(1, repo, view, formatterFactory);
+
+    httpCallPresenter.shareHttpCallBody();
+    verify(responseFormatter, times(1)).format(requestBody);
+
+    verify(responseFormatter, times(1)).format(responseBody);
+    ArgumentCaptor<StringBuilder> argument = ArgumentCaptor.forClass(StringBuilder.class);
+    verify(view).shareData(argument.capture());
+    Assert.assertEquals(argument.getValue().toString(), expectedData.toString());
+
   }
 
 }

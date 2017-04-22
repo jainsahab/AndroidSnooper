@@ -3,6 +3,8 @@ package com.prateekj.snooper.activity;
 import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.TabLayout.Tab;
@@ -23,12 +25,13 @@ import com.prateekj.snooper.realm.RealmFactory;
 import com.prateekj.snooper.repo.SnooperRepo;
 import com.prateekj.snooper.views.HttpCallView;
 
-public class HttpCallActivity extends SnooperBaseActivity implements HttpCallView{
+public class HttpCallActivity extends SnooperBaseActivity implements HttpCallView {
 
-  public static String HTTP_CALL_ID = "HTTP_CALL_ID";
-  public static String HTTP_CALL_MODE = "HTTP_CALL_MODE";
-  public static int REQUEST_MODE = 1;
-  public static int RESPONSE_MODE = 2;
+  private static final String INTENT_SHARE_MAILTO = "mailto:";
+  public static final String HTTP_CALL_ID = "HTTP_CALL_ID";
+  public static final String HTTP_CALL_MODE = "HTTP_CALL_MODE";
+  public static final int REQUEST_MODE = 1;
+  public static final int RESPONSE_MODE = 2;
   private HttpCallPresenter httpCallPresenter;
   private ViewPager pager;
   private ProgressDialog progressDialog;
@@ -96,6 +99,8 @@ public class HttpCallActivity extends SnooperBaseActivity implements HttpCallVie
     if (item.getItemId() == R.id.copy_menu) {
       httpCallPresenter.copyHttpCallBody(pager.getCurrentItem());
       return true;
+    } else if (item.getItemId() == R.id.share_menu) {
+      httpCallPresenter.shareHttpCallBody();
     }
     return super.onOptionsItemSelected(item);
   }
@@ -105,6 +110,18 @@ public class HttpCallActivity extends SnooperBaseActivity implements HttpCallVie
     ClipboardManager clipboard = (ClipboardManager) this.getSystemService(CLIPBOARD_SERVICE);
     ClipData clip = ClipData.newPlainText("Copied", data);
     clipboard.setPrimaryClip(clip);
+  }
+
+  @Override
+  public void shareData(StringBuilder completeHttpCallData) {
+    Intent intent = new Intent(Intent.ACTION_SENDTO);
+    intent.setType("*/*");
+    intent.setData(Uri.parse(INTENT_SHARE_MAILTO));
+    intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_mail_subject));
+    intent.putExtra(Intent.EXTRA_TEXT, completeHttpCallData.toString());
+    if (intent.resolveActivity(getPackageManager()) != null) {
+      startActivity(intent);
+    }
   }
 
   @Override

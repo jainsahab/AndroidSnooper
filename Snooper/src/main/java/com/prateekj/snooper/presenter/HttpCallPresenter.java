@@ -8,6 +8,8 @@ import com.prateekj.snooper.model.HttpHeader;
 import com.prateekj.snooper.repo.SnooperRepo;
 import com.prateekj.snooper.views.HttpCallView;
 
+import org.apache.commons.lang3.StringUtils;
+
 import static com.prateekj.snooper.activity.HttpCallActivity.REQUEST_MODE;
 import static com.prateekj.snooper.activity.HttpCallActivity.RESPONSE_MODE;
 import static com.prateekj.snooper.activity.HttpCallTab.RESPONSE;
@@ -43,11 +45,7 @@ public class HttpCallPresenter {
       contentTypeHeader = httpCall.getRequestHeader(CONTENT_TYPE);
       dataToCopy = httpCall.getPayload();
     }
-    if (contentHeadersPresent(contentTypeHeader)) {
-      ResponseFormatter formatter = this.formatterFactory.getFor(contentTypeHeader.getValues().get(0).getValue());
-      return formatter.format(dataToCopy);
-    }
-    return "";
+    return getFormattedData(contentTypeHeader, dataToCopy);
 
   }
 
@@ -63,5 +61,44 @@ public class HttpCallPresenter {
     if (requestViewLoaded && responseViewLoaded) {
       view.dismissProgressDialog();
     }
+  }
+
+  public void shareHttpCallBody() {
+    StringBuilder completeHttpCallData = getHttpCallData();
+    view.shareData(completeHttpCallData);
+  }
+
+
+  private StringBuilder getHttpCallData() {
+
+    StringBuilder dataToCopy = new StringBuilder();
+    HttpHeader contentTypeHeader;
+
+    contentTypeHeader = httpCall.getRequestHeader(CONTENT_TYPE);
+    String formattedRequestData = getFormattedData(contentTypeHeader, httpCall.getPayload());
+    if (!StringUtils.isEmpty(formattedRequestData)) {
+      dataToCopy.append("Request Body");
+      dataToCopy.append("\n");
+      dataToCopy.append(formattedRequestData);
+      dataToCopy.append("\n");
+    }
+
+    contentTypeHeader = httpCall.getResponseHeader(CONTENT_TYPE);
+    String formattedResponseData = getFormattedData(contentTypeHeader, httpCall.getResponseBody());
+
+    if (!StringUtils.isEmpty(formattedResponseData)) {
+      dataToCopy.append("Response Body");
+      dataToCopy.append("\n");
+      dataToCopy.append(formattedResponseData);
+    }
+    return dataToCopy;
+  }
+
+  private String getFormattedData(HttpHeader contentTypeHeader, String dataToCopy) {
+    if (contentHeadersPresent(contentTypeHeader)) {
+      ResponseFormatter formatter = this.formatterFactory.getFor(contentTypeHeader.getValues().get(0).getValue());
+      return formatter.format(dataToCopy);
+    }
+    return "";
   }
 }

@@ -11,4 +11,6 @@
   <string name="request_headers">REQUEST HEADERS</string>
   <string name="header_name_value_separator">" : "</string>
   <string name="progress_wait_message">Just a Moment....</string>
+  <string name="share">Share</string>
+  <string name="share_mail_subject">Http call detail</string>
 </resources>
