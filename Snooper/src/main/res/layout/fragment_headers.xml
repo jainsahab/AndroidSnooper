@@ -26,6 +26,7 @@
 
     <se.emilsjolander.stickylistheaders.StickyListHeadersListView
       app:stickyAdapter="@{HttpHeaderAdapter.newInstance(httpCall.getResponseHeaders(), httpCall.getRequestHeaders())}"
+      app:nestingScrollingEnabled="@{true}"
       android:layout_width="match_parent"
       android:layout_height="wrap_content">
 
