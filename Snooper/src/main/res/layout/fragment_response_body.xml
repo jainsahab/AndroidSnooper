@@ -10,7 +10,7 @@
       type="com.prateekj.snooper.viewmodel.HttpBodyViewModel"/>
   </data>
 
-  <android.support.v4.widget.NestedScrollView
+  <ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -32,5 +32,5 @@
         android:scrollHorizontally="true"
         android:text="@{viewModel.formattedBody}"/>
     </HorizontalScrollView>
-  </android.support.v4.widget.NestedScrollView>
+  </ScrollView>
 </layout>
