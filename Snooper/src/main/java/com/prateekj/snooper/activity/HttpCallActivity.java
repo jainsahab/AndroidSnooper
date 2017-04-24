@@ -4,7 +4,9 @@ import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.TabLayout.Tab;
@@ -15,6 +17,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.prateekj.snooper.R;
 import com.prateekj.snooper.formatter.ResponseFormatterFactory;
@@ -130,6 +133,20 @@ public class HttpCallActivity extends SnooperBaseActivity implements HttpCallVie
     intent.putExtra(Intent.EXTRA_STREAM, fileUri);
     Intent j = Intent.createChooser(intent, getString(R.string.chooser_title_share_logs));
     startActivity(j);
+  }
+
+  @Override
+  public boolean isWriteStoragePermissionGranted() {
+    if (Build.VERSION.SDK_INT >= 23) {
+      return (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
+    } else {
+      return true;
+    }
+  }
+
+  @Override
+  public void showMessageShareNotAvailable() {
+    Toast.makeText(this, R.string.permission_not_granted, Toast.LENGTH_SHORT).show();
   }
 
   @Override

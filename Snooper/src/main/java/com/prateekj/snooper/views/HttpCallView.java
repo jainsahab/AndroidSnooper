@@ -6,4 +6,8 @@ public interface HttpCallView {
   void onHttpCallBodyFormatted(int mode);
 
   void dismissProgressDialog();
+
+  void showMessageShareNotAvailable();
+
+  boolean isWriteStoragePermissionGranted();
 }

@@ -42,21 +42,26 @@ public class HttpCallPresenter {
   }
 
   public void shareHttpCallBody() {
-    final StringBuilder completeHttpCallData = getHttpCallData();
+    if (view.isWriteStoragePermissionGranted()) {
 
-    executor.execute(new BackgroundTask<String>() {
-      @Override
-      public String onExecute() {
-        return fileUtil.createLogFile(completeHttpCallData);
-      }
+      final StringBuilder completeHttpCallData = getHttpCallData();
 
-      @Override
-      public void onResult(String result) {
-        if (!StringUtils.isEmpty(result)) {
-          view.shareData(result);
+      executor.execute(new BackgroundTask<String>() {
+        @Override
+        public String onExecute() {
+          return fileUtil.createLogFile(completeHttpCallData);
         }
-      }
-    });
+
+        @Override
+        public void onResult(String result) {
+          if (!StringUtils.isEmpty(result)) {
+            view.shareData(result);
+          }
+        }
+      });
+    } else {
+      view.showMessageShareNotAvailable();
+    }
   }
 
   private String getTextToCopy(int selectedItem) {
