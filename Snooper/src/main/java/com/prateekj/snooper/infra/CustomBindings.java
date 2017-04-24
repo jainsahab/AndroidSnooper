@@ -8,17 +8,17 @@ import android.widget.TextView;
 
 public class CustomBindings {
 
-  @BindingAdapter("app:adapter")
+  @BindingAdapter("adapter")
   public static void setAdapter(RecyclerView recyclerView, RecyclerView.Adapter adapter) {
     recyclerView.setAdapter(adapter);
   }
 
-  @BindingAdapter("app:listAdapter")
+  @BindingAdapter("listAdapter")
   public static void setListAdapter(ListView listView, BaseAdapter adapter) {
     listView.setAdapter(adapter);
   }
 
-  @BindingAdapter("app:itemDecoration")
+  @BindingAdapter("itemDecoration")
   public static void setItemDecoration(RecyclerView recyclerView, RecyclerView.ItemDecoration itemDecoration) {
     recyclerView.addItemDecoration(itemDecoration);
   }
