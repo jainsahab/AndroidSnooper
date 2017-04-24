@@ -13,4 +13,6 @@
   <string name="progress_wait_message">Just a Moment....</string>
   <string name="share">Share</string>
   <string name="share_mail_subject">Http call detail</string>
+  <string name="mail_subject_share_logs">Log details</string>
+  <string name="chooser_title_share_logs">Choose an application to open the log file with:</string>
 </resources>

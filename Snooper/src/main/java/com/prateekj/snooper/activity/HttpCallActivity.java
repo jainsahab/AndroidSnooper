@@ -20,18 +20,22 @@ import com.prateekj.snooper.R;
 import com.prateekj.snooper.formatter.ResponseFormatterFactory;
 import com.prateekj.snooper.fragment.HttpCallFragment;
 import com.prateekj.snooper.fragment.HttpHeadersFragment;
+import com.prateekj.snooper.infra.BackgroundTaskExecutor;
 import com.prateekj.snooper.presenter.HttpCallPresenter;
 import com.prateekj.snooper.realm.RealmFactory;
 import com.prateekj.snooper.repo.SnooperRepo;
+import com.prateekj.snooper.utils.FileUtil;
 import com.prateekj.snooper.views.HttpCallView;
+
+import java.io.File;
 
 public class HttpCallActivity extends SnooperBaseActivity implements HttpCallView {
 
-  private static final String INTENT_SHARE_MAILTO = "mailto:";
   public static final String HTTP_CALL_ID = "HTTP_CALL_ID";
   public static final String HTTP_CALL_MODE = "HTTP_CALL_MODE";
   public static final int REQUEST_MODE = 1;
   public static final int RESPONSE_MODE = 2;
+  private static final String LOGFILE_MIME_TYPE = "*/*";
   private HttpCallPresenter httpCallPresenter;
   private ViewPager pager;
   private ProgressDialog progressDialog;
@@ -44,8 +48,10 @@ public class HttpCallActivity extends SnooperBaseActivity implements HttpCallVie
     setSupportActionBar(toolbar);
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     int httpCallId = getIntent().getIntExtra(HTTP_CALL_ID, 0);
+    FileUtil fileUtil = new FileUtil();
     SnooperRepo repo = new SnooperRepo(RealmFactory.create(this));
-    httpCallPresenter = new HttpCallPresenter(httpCallId, repo, this, new ResponseFormatterFactory());
+    BackgroundTaskExecutor backgroundTaskExecutor = new BackgroundTaskExecutor(this);
+    httpCallPresenter = new HttpCallPresenter(httpCallId, repo, this, new ResponseFormatterFactory(), fileUtil, backgroundTaskExecutor);
     initializeProgressDialog();
     setupUi();
   }
@@ -113,15 +119,17 @@ public class HttpCallActivity extends SnooperBaseActivity implements HttpCallVie
   }
 
   @Override
-  public void shareData(StringBuilder completeHttpCallData) {
-    Intent intent = new Intent(Intent.ACTION_SENDTO);
-    intent.setType("*/*");
-    intent.setData(Uri.parse(INTENT_SHARE_MAILTO));
-    intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_mail_subject));
-    intent.putExtra(Intent.EXTRA_TEXT, completeHttpCallData.toString());
-    if (intent.resolveActivity(getPackageManager()) != null) {
-      startActivity(intent);
-    }
+  public void shareData(String logFilePath) {
+    Intent intent = new Intent(Intent.ACTION_SEND);
+    File file = new File(logFilePath);
+    Uri fileUri = Uri.fromFile(file);
+    intent.setData(fileUri);
+    intent.setType(LOGFILE_MIME_TYPE);
+    intent.putExtra(android.content.Intent.EXTRA_SUBJECT,
+      getString(R.string.mail_subject_share_logs));
+    intent.putExtra(Intent.EXTRA_STREAM, fileUri);
+    Intent j = Intent.createChooser(intent, getString(R.string.chooser_title_share_logs));
+    startActivity(j);
   }
 
   @Override
