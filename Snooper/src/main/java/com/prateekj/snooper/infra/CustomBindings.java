@@ -10,23 +10,23 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 public class CustomBindings {
 
-  @BindingAdapter("adapter")
+  @BindingAdapter("app:adapter")
   public static void setAdapter(RecyclerView recyclerView, RecyclerView.Adapter adapter) {
     recyclerView.setAdapter(adapter);
   }
 
-  @BindingAdapter("stickyAdapter")
+  @BindingAdapter("app:stickyAdapter")
   public static void setStickyAdapter(StickyListHeadersListView stickyHeadersListView, StickyListHeadersAdapter adapter) {
     stickyHeadersListView.setAdapter(adapter);
   }
 
-  @BindingAdapter("nestingScrollingEnabled")
+  @BindingAdapter("app:nestingScrollingEnabled")
   public static void setNestingScrollingEnabled(StickyListHeadersListView stickyHeadersListView, boolean enabled) {
     ListView listView = stickyHeadersListView.getWrappedList();
     ViewCompat.setNestedScrollingEnabled(listView, enabled);
   }
 
-  @BindingAdapter("itemDecoration")
+  @BindingAdapter("app:itemDecoration")
   public static void setItemDecoration(RecyclerView recyclerView, RecyclerView.ItemDecoration itemDecoration) {
     recyclerView.addItemDecoration(itemDecoration);
   }
