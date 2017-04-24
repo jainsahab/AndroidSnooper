@@ -13,7 +13,7 @@
       type="com.prateekj.snooper.customviews.DividerItemDecoration"/>
   </data>
 
-  <ScrollView
+  <android.support.v4.widget.NestedScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -67,5 +67,5 @@
         </LinearLayout>
       </com.prateekj.snooper.customviews.AccordionView>
     </LinearLayout>
-  </ScrollView>
+  </android.support.v4.widget.NestedScrollView>
 </layout>
