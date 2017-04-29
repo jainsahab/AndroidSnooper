@@ -9,16 +9,17 @@ android:
   components:
   - tools
   - platform-tools
-  - build-tools-25.0.2
+  - android-19
   - android-24
-  - sys-img-armeabi-v7a-android-21
+  - build-tools-25.0.2
+  - sys-img-armeabi-v7a-android-19
   - extra-android-m2repository
 
 jdk:
 - oraclejdk8
 
 before_script:
-- echo no | android create avd --force -n test -t android-21 --abi armeabi-v7a
+- echo no | android create avd --force -n test -t android-19 --abi armeabi-v7a
 - mksdcard -l e 756M sdcard.img
 - emulator -avd test -no-skin -no-audio -no-window -sdcard sdcard.img &
 - android-wait-for-emulator
