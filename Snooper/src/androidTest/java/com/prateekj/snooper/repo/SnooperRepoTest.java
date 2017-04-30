@@ -23,6 +23,7 @@ import static java.util.Calendar.DATE;
 import static java.util.Calendar.DAY_OF_MONTH;
 import static java.util.Calendar.YEAR;
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 public class SnooperRepoTest {
@@ -74,14 +75,6 @@ public class SnooperRepoTest {
     assertThat(httpCalls.get(1), hasDate(getCalendar(beforeDate)));
   }
 
-  private void updateHttpCallWithId(int id, Date date) {
-    HttpCall call = snooperRepo.findById(id);
-    realm.beginTransaction();
-    call.setDate(date);
-    realm.copyToRealmOrUpdate(call);
-    realm.commitTransaction();
-  }
-
   @Test
   public void shouldReturnHttpCallsByGivenId() throws Exception {
     HttpCall httpCall1 = new HttpCall.Builder().withUrl("url1").build();
@@ -96,6 +89,27 @@ public class SnooperRepoTest {
 
     assertThat(firstPersistedHttpCall.getUrl(), is("url1"));
     assertThat(secondPersistedHttpCall.getUrl(), is("url2"));
+  }
+
+  @Test
+  public void shouldDeleteAllTheRecords() throws Exception {
+    HttpCall httpCall = new HttpCall.Builder().withUrl("url1").build();
+    HttpCall httpCall2 = new HttpCall.Builder().withUrl("url1").build();
+    snooperRepo.save(httpCall);
+    snooperRepo.save(httpCall2);
+
+    snooperRepo.deleteAll();
+
+    List<HttpCall> httpCalls = snooperRepo.findAll();
+    assertEquals(httpCalls.size(), 0);
+  }
+
+  private void updateHttpCallWithId(int id, Date date) {
+    HttpCall call = snooperRepo.findById(id);
+    realm.beginTransaction();
+    call.setDate(date);
+    realm.copyToRealmOrUpdate(call);
+    realm.commitTransaction();
   }
 
   private Matcher<? super HttpCall> hasDate(final Calendar date) {
