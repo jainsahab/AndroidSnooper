@@ -1,6 +1,7 @@
 package com.prateekj.snooper.presenter;
 
 import com.prateekj.snooper.model.HttpCall;
+import com.prateekj.snooper.repo.SnooperRepo;
 import com.prateekj.snooper.views.HttpListView;
 
 import org.junit.Test;
@@ -17,13 +18,15 @@ public class HttpCallListPresenterTest {
 
   @Mock
   private HttpListView view;
+  @Mock
+  private SnooperRepo repo;
 
   @Test
   public void shouldNotifyViewToNavigateToResponseBody() throws Exception {
     HttpCall httpCall = mock(HttpCall.class);
     when(httpCall.getId()).thenReturn(2);
 
-    HttpCallListPresenter httpCallListPresenter = new HttpCallListPresenter(view);
+    HttpCallListPresenter httpCallListPresenter = new HttpCallListPresenter(view, repo);
     httpCallListPresenter.onClick(httpCall);
 
     verify(view).navigateToResponseBody(2);
@@ -31,9 +34,26 @@ public class HttpCallListPresenterTest {
 
   @Test
   public void shouldNotifyViewToFinishIt() throws Exception {
-    HttpCallListPresenter httpCallListPresenter = new HttpCallListPresenter(view);
+    HttpCallListPresenter httpCallListPresenter = new HttpCallListPresenter(view, repo);
     httpCallListPresenter.onDoneClick();
 
     verify(view).finishView();
+  }
+
+  @Test
+  public void shouldDeleteTheRecordsAndUpdateUi() throws Exception {
+    HttpCallListPresenter httpCallListPresenter = new HttpCallListPresenter(view, repo);
+    httpCallListPresenter.confirmDeleteRecords();
+
+    verify(repo).deleteAll();
+    verify(view).updateListView();
+  }
+
+  @Test
+  public void shouldShowConfirmationDialogOnClickOfDeleteRecords() throws Exception {
+    HttpCallListPresenter httpCallListPresenter = new HttpCallListPresenter(view, repo);
+    httpCallListPresenter.onDeleteRecordsClicked();
+
+    verify(view).showDeleteConfirmationDialog();
   }
 }

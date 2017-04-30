@@ -30,7 +30,9 @@ import static android.support.test.espresso.intent.matcher.IntentMatchers.hasCom
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasExtra;
 import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static com.prateekj.snooper.utils.EspressoViewMatchers.withListSize;
 import static com.prateekj.snooper.utils.EspressoViewMatchers.withRecyclerView;
 import static com.prateekj.snooper.utils.TestUtilities.getDate;
 import static junit.framework.Assert.assertTrue;
@@ -84,6 +86,38 @@ public class HttpCallListActivityTest {
 
     onView(withText(R.string.done)).perform(click());
     assertTrue(activityRule.getActivity().isFinishing());
+  }
+
+  @Test
+  public void shouldNotRenderAnyRecordWhenDeleteTapped() throws Exception {
+    Date beforeDate = getDate(2017, 5, 2, 11, 22, 33);
+    Date afterDate = getDate(2017, 5, 3, 11, 22, 33);
+    saveHttpCall("https://www.google.com", "GET", 200, "OK", beforeDate);
+    saveHttpCall("https://www.facebook.com", "GET", 200, "OK", afterDate);
+
+    activityRule.launchActivity(null);
+    onView(withRecyclerView(R.id.list, 0)).check(matches(allOf(
+      hasDescendant(withText("https://www.facebook.com")),
+      hasDescendant(withText("GET")),
+      hasDescendant(withText("200")),
+      hasDescendant(withText("OK")),
+      hasDescendant(withText("06/03/2017 11:22:33"))
+    )));
+
+    onView(withRecyclerView(R.id.list, 1)).check(matches(allOf(
+      hasDescendant(withText("https://www.google.com")),
+      hasDescendant(withText("GET")),
+      hasDescendant(withText("200")),
+      hasDescendant(withText("OK")),
+      hasDescendant(withText("06/02/2017 11:22:33"))
+    )));
+
+    onView(withId(R.id.delete_records_menu)).perform(click());
+
+    onView(withText(R.string.delete_records_dialog_confirmation)).perform(click());
+    onView(withText(R.string.title_activity_http_call_list)).check(matches(isDisplayed()));
+    onView(withId(R.id.list)).check(matches(withListSize(0)));
+
   }
 
   private void verifyClickActionOnListItem(int itemIndex, int httpCallId) {

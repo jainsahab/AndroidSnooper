@@ -27,6 +27,12 @@ public class SnooperRepo {
     return realm.where(HttpCall.class).findAllSorted("date", DESCENDING);
   }
 
+  public void deleteAll() {
+    realm.beginTransaction();
+    realm.delete(HttpCall.class);
+    realm.commitTransaction();
+  }
+
   public HttpCall findById(int id) {
     return realm.where(HttpCall.class).equalTo("id", id).findFirst();
   }

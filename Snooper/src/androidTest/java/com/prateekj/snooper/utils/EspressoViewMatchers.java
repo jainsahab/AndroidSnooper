@@ -25,4 +25,18 @@ public class EspressoViewMatchers {
       }
     };
   }
+
+  public static Matcher<View> withListSize(final int size) {
+    return new CustomTypeSafeMatcher<View>(format("recycler view with id: {0} ",
+      size)) {
+      @Override
+      protected boolean matchesSafely(View view) {
+
+        if (view == null || !(view instanceof RecyclerView))
+          return false;
+        RecyclerView recyclerView = (RecyclerView) view;
+        return recyclerView.getAdapter().getItemCount() == size;
+      }
+    };
+  }
 }
