@@ -2,8 +2,9 @@ package com.prateekj.snooper.infra;
 
 import android.databinding.BindingAdapter;
 import android.support.v7.widget.RecyclerView;
-import android.widget.BaseAdapter;
-import android.widget.ListView;
+
+import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
+import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 public class CustomBindings {
 
@@ -12,9 +13,9 @@ public class CustomBindings {
     recyclerView.setAdapter(adapter);
   }
 
-  @BindingAdapter("app:listAdapter")
-  public static void setListAdapter(ListView listView, BaseAdapter adapter) {
-    listView.setAdapter(adapter);
+  @BindingAdapter("app:stickyAdapter")
+  public static void setStickyAdapter(StickyListHeadersListView stickyHeadersListView, StickyListHeadersAdapter adapter) {
+    stickyHeadersListView.setAdapter(adapter);
   }
 
   @BindingAdapter("app:itemDecoration")

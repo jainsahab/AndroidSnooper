@@ -110,23 +110,24 @@ public class HttpCallActivityTest {
   }
 
   private void verifyResponseHeader(String headerName, String headerValue) {
-    onData(withHeaderData(headerName, headerValue)).
-      inAdapterView(withId(R.id.response_header_list)).
-      check(matches(allOf(hasDescendant(withText(headerName)), hasDescendant(withText(headerValue)))));
+    onData(withHeaderData(headerName, headerValue, R.string.response_headers)).check(
+      matches(allOf(hasDescendant(withText(headerName)), hasDescendant(withText(headerValue))))
+    );
   }
 
   private void verifyRequestHeader(String headerName, String headerValue) {
-    onData(withHeaderData(headerName, headerValue)).
-      inAdapterView(withId(R.id.request_header_list)).
-      check(matches(allOf(hasDescendant(withText(headerName)), hasDescendant(withText(headerValue)))));
+    onData(withHeaderData(headerName, headerValue, R.string.request_headers)).check(
+      matches(allOf(hasDescendant(withText(headerName)), hasDescendant(withText(headerValue))))
+    );
   }
 
-  private Matcher<HttpHeaderViewModel> withHeaderData(final String headerName, final String headerValue) {
+  private Matcher<HttpHeaderViewModel> withHeaderData(final String headerName, final String headerValue, final int headerId) {
     return new CustomTypeSafeMatcher<HttpHeaderViewModel>("Header with") {
       @Override
       protected boolean matchesSafely(HttpHeaderViewModel viewModel) {
         return viewModel.headerName().equals(headerName) &&
-          viewModel.headerValues().equals(headerValue);
+          viewModel.headerValues().equals(headerValue) &&
+          viewModel.getHeaderId() == headerId;
       }
     };
   }
