@@ -1,5 +1,13 @@
 {
+    "firstName": "Prayas",
     "lastName": "Jain",
+    "age": 17,
+    "address": {
+        "streetAddress": "21 2nd Street",
+        "city": "New York",
+        "state": "NY",
+        "postalCode": "10021"
+    },
     "phoneNumber": [
         {
             "type": "home",
@@ -9,13 +17,5 @@
             "type": "fax",
             "number": "646 555-4567"
         }
-    ],
-    "firstName": "Prayas",
-    "address": {
-        "state": "NY",
-        "streetAddress": "21 2nd Street",
-        "postalCode": "10021",
-        "city": "New York"
-    },
-    "age": 17
+    ]
 }
