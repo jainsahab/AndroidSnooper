@@ -1,0 +1,24 @@
+package com.prateekj.snooper.utils;
+
+import android.content.Intent;
+import android.os.Bundle;
+
+import org.hamcrest.CustomTypeSafeMatcher;
+import org.hamcrest.Matcher;
+
+import static android.content.Intent.EXTRA_INTENT;
+import static android.content.Intent.EXTRA_SUBJECT;
+
+public class EspressoIntentMatchers {
+
+  public static Matcher<Bundle> forMailChooserIntent(final String action, final String mimeType, final String extraData) {
+    return new CustomTypeSafeMatcher<Bundle>("Custom matcher for matching mail chooser intent") {
+      @Override
+      protected boolean matchesSafely(Bundle item) {
+        Intent chooserIntent = (Intent) item.get(EXTRA_INTENT);
+        return chooserIntent.getAction() == action && chooserIntent.getType() == mimeType && chooserIntent.getStringExtra(EXTRA_SUBJECT).equalsIgnoreCase(extraData);
+      }
+    };
+  }
+
+}

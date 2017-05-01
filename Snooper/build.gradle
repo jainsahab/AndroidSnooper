@@ -79,6 +79,7 @@ android {
 
 spoon {
     debug = true
+    grantAllPermissions = true
 }
 
 dependencies {

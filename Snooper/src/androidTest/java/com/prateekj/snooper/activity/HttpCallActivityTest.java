@@ -1,8 +1,9 @@
 package com.prateekj.snooper.activity;
 
+import android.app.Instrumentation;
 import android.content.ClipboardManager;
 import android.content.Intent;
-import android.support.test.rule.ActivityTestRule;
+import android.support.test.espresso.intent.rule.IntentsTestRule;
 
 import com.google.common.collect.ImmutableMap;
 import com.prateekj.snooper.R;
@@ -10,6 +11,7 @@ import com.prateekj.snooper.model.HttpCall;
 import com.prateekj.snooper.repo.SnooperRepo;
 import com.prateekj.snooper.rules.RealmCleanRule;
 import com.prateekj.snooper.rules.RunUsingLooper;
+import com.prateekj.snooper.utils.EspressoIntentMatchers;
 import com.prateekj.snooper.viewmodel.HttpHeaderViewModel;
 
 import org.hamcrest.CustomTypeSafeMatcher;
@@ -21,12 +23,20 @@ import org.junit.Test;
 import java.util.List;
 import java.util.Map;
 
+import static android.app.Activity.RESULT_OK;
 import static android.content.Context.CLIPBOARD_SERVICE;
+import static android.content.Intent.ACTION_CHOOSER;
+import static android.content.Intent.ACTION_SEND;
 import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.intent.Intents.intended;
+import static android.support.test.espresso.intent.Intents.intending;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.anyIntent;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.hasAction;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.hasExtras;
 import static android.support.test.espresso.matcher.ViewMatchers.assertThat;
 import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -48,8 +58,9 @@ public class HttpCallActivityTest {
   public RunUsingLooper runUsingLooper = new RunUsingLooper();
 
   @Rule
-  public ActivityTestRule<HttpCallActivity> activityRule =
-    new ActivityTestRule<>(HttpCallActivity.class, true, false);
+  public IntentsTestRule<HttpCallActivity> activityRule =
+    new IntentsTestRule<>(HttpCallActivity.class, true, false);
+
   private SnooperRepo snooperRepo;
 
   @Before
@@ -91,6 +102,11 @@ public class HttpCallActivityTest {
     verifyRequestHeader("content-length", "403");
     verifyRequestHeader("accept-language", "en-US,en;q=0.8,hi;q=0.6");
     verifyRequestHeader(":scheme", "https");
+
+    intending(anyIntent()).respondWith(new Instrumentation.ActivityResult(RESULT_OK, new Intent()));
+    onView(withId(R.id.share_menu)).perform(click());
+    verifyClickActionOnShareMenu();
+
   }
 
   private void verifyResponseHeader(String headerName, String headerValue) {
@@ -148,4 +164,13 @@ public class HttpCallActivityTest {
       .build();
     snooperRepo.save(httpCall);
   }
+
+  private void verifyClickActionOnShareMenu() {
+
+    intended(allOf(
+      hasExtras(EspressoIntentMatchers.forMailChooserIntent(ACTION_SEND, "*/*", "Log details")),
+      hasAction(ACTION_CHOOSER)));
+  }
+
+
 }

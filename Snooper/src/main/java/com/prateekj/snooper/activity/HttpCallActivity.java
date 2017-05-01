@@ -32,6 +32,8 @@ import com.prateekj.snooper.views.HttpCallView;
 
 import java.io.File;
 
+import static android.content.Intent.EXTRA_SUBJECT;
+
 public class HttpCallActivity extends SnooperBaseActivity implements HttpCallView {
 
   public static final String HTTP_CALL_ID = "HTTP_CALL_ID";
@@ -128,7 +130,7 @@ public class HttpCallActivity extends SnooperBaseActivity implements HttpCallVie
     Uri fileUri = Uri.fromFile(file);
     intent.setData(fileUri);
     intent.setType(LOGFILE_MIME_TYPE);
-    intent.putExtra(android.content.Intent.EXTRA_SUBJECT,
+    intent.putExtra(EXTRA_SUBJECT,
       getString(R.string.mail_subject_share_logs));
     intent.putExtra(Intent.EXTRA_STREAM, fileUri);
     Intent j = Intent.createChooser(intent, getString(R.string.chooser_title_share_logs));
