@@ -30,6 +30,7 @@
 
       <include
         layout="@layout/headers_heading"
+        android:tag="@string/accordion_header"
         bind:text="@{@string/response_headers}"/>
 
       <com.prateekj.snooper.customviews.NonScrollListView
@@ -40,6 +41,7 @@
 
       <include
         layout="@layout/headers_heading"
+        android:tag="@string/accordion_header"
         bind:text="@{@string/request_headers}"/>
 
       <com.prateekj.snooper.customviews.NonScrollListView
