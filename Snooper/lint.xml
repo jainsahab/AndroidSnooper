@@ -3,5 +3,5 @@
   <issue id="ContentDescription" severity="ignore"/>
   <issue id="GradleDependency" severity="ignore"/>
   <issue id="IconLocation" severity="ignore"/>
-  <issue id="UnusedResources,HardcodedText" severity="error"/> 
+  <issue id="UnusedResources,HardcodedText" severity="warning"/> 
 </lint>
