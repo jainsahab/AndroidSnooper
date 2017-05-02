@@ -1,6 +1,6 @@
 # Android Snooper
 
-[![Build Status](https://travis-ci.org/jainsahab/AndroidSnooper.svg?branch=master)](https://travis-ci.org/jainsahab/AndroidSnooper) [![Maven Central](https://img.shields.io/maven-central/v/com.github.jainsahab/Snooper.svg)](https://mvnrepository.com/artifact/com.github.jainsahab/Snooper)
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.jainsahab/Snooper.svg)](https://mvnrepository.com/artifact/com.github.jainsahab/Snooper)
 
 ## Introduction
 Android Snooper is a HTTP inspector which observes all the HTTP calls made by the app and opens up an Activity to see the detailed history of HTTP calls on `onShake` event. This library is inspired by the `Network Request History` feature of [FLEX](https://github.com/Flipboard/FLEX) app for iOS.
