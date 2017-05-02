@@ -28,10 +28,19 @@
       android:layout_height="wrap_content"
       android:orientation="vertical">
 
-      <include
-        layout="@layout/headers_heading"
-        android:tag="@string/accordion_header"
-        bind:text="@{@string/response_headers}"/>
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/snooper_bg"
+        android:orientation="vertical">
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/response_headers"
+          android:textColor="@color/snooper_black"
+          android:textSize="21sp"/>
+      </LinearLayout>
 
       <com.prateekj.snooper.customviews.NonScrollListView
         android:layout_width="match_parent"
@@ -39,10 +48,19 @@
         android:id="@+id/response_header_list"
         app:listAdapter="@{HttpHeaderAdapter.newInstance(httpCall.getResponseHeaders())}"/>
 
-      <include
-        layout="@layout/headers_heading"
-        android:tag="@string/accordion_header"
-        bind:text="@{@string/request_headers}"/>
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/snooper_bg"
+        android:orientation="vertical">
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/request_headers"
+          android:textColor="@color/snooper_black"
+          android:textSize="21sp"/>
+      </LinearLayout>
 
       <com.prateekj.snooper.customviews.NonScrollListView
         android:layout_width="match_parent"
