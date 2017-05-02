@@ -1,34 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:bind="http://schemas.android.com/tools">
 
   <data class="HttpHeaderBinding">
 
     <import type="com.prateekj.snooper.adapter.HttpHeaderAdapter"/>
-
     <variable
       name="httpCall"
       type="com.prateekj.snooper.model.HttpCall"/>
-
     <variable
       name="divider"
       type="com.prateekj.snooper.customviews.DividerItemDecoration"/>
   </data>
 
-  <LinearLayout
+  <ScrollView
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin">
 
-    <se.emilsjolander.stickylistheaders.StickyListHeadersListView
-      app:stickyAdapter="@{HttpHeaderAdapter.newInstance(httpCall.getResponseHeaders(), httpCall.getRequestHeaders())}"
+    <LinearLayout
       android:layout_width="match_parent"
-      android:layout_height="wrap_content">
+      android:layout_height="wrap_content"
+      android:orientation="vertical">
 
-    </se.emilsjolander.stickylistheaders.StickyListHeadersListView>
-  </LinearLayout>
+      <include
+        layout="@layout/headers_heading"
+        android:tag="@string/accordion_header"
+        bind:text="@{@string/response_headers}"/>
+
+      <com.prateekj.snooper.customviews.NonScrollListView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/response_header_list"
+        app:listAdapter="@{HttpHeaderAdapter.newInstance(httpCall.getResponseHeaders())}"/>
+
+      <include
+        layout="@layout/headers_heading"
+        android:tag="@string/accordion_header"
+        bind:text="@{@string/request_headers}"/>
+
+      <com.prateekj.snooper.customviews.NonScrollListView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/request_header_list"
+        app:listAdapter="@{HttpHeaderAdapter.newInstance(httpCall.getRequestHeaders())}"/>
+    </LinearLayout>
+  </ScrollView>
 </layout>
