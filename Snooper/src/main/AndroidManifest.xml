@@ -6,13 +6,13 @@
   <application>
     <activity
       android:theme="@style/SnooperTheme.NoActionBar"
-      android:name=".activity.HttpCallListActivity"
+      android:name=".networksnooper.activity.HttpCallListActivity"
       android:taskAffinity="@string/snooper_affinity"
       android:label="@string/title_activity_http_call_list">
     </activity>
     <activity
       android:theme="@style/SnooperTheme.NoActionBar"
-      android:name=".activity.HttpCallActivity"
+      android:name=".networksnooper.activity.HttpCallActivity"
       android:taskAffinity="@string/snooper_affinity"
       android:label="@string/title_http_call_activity">
     </activity>

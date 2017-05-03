@@ -1,6 +1,6 @@
 package org.springframework.http.client;
 
-import com.prateekj.snooper.model.HttpCall;
+import com.prateekj.snooper.networksnooper.model.HttpCall;
 
 import org.apache.commons.io.IOUtils;
 import org.springframework.http.HttpRequest;

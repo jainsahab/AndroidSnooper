@@ -5,10 +5,10 @@
 
   <data class="HttpHeaderBinding">
 
-    <import type="com.prateekj.snooper.adapter.HttpHeaderAdapter"/>
+    <import type="com.prateekj.snooper.networksnooper.adapter.HttpHeaderAdapter"/>
     <variable
       name="httpCall"
-      type="com.prateekj.snooper.model.HttpCall"/>
+      type="com.prateekj.snooper.networksnooper.model.HttpCall"/>
     <variable
       name="divider"
       type="com.prateekj.snooper.customviews.DividerItemDecoration"/>

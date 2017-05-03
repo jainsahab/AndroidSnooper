@@ -3,10 +3,10 @@ package com.prateekj.snooper;
 import android.app.Application;
 import android.support.test.espresso.core.deps.guava.base.Predicate;
 
-import com.prateekj.snooper.model.HttpCall;
-import com.prateekj.snooper.model.HttpCall.Builder;
-import com.prateekj.snooper.model.HttpHeader;
-import com.prateekj.snooper.model.HttpHeaderValue;
+import com.prateekj.snooper.networksnooper.model.HttpCall;
+import com.prateekj.snooper.networksnooper.model.HttpCall.Builder;
+import com.prateekj.snooper.networksnooper.model.HttpHeader;
+import com.prateekj.snooper.networksnooper.model.HttpHeaderValue;
 import com.prateekj.snooper.rules.RealmCleanRule;
 
 import org.hamcrest.CustomTypeSafeMatcher;

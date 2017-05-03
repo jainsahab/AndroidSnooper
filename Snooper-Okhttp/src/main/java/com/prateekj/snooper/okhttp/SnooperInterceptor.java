@@ -3,7 +3,7 @@ package com.prateekj.snooper.okhttp;
 import android.util.Log;
 
 import com.prateekj.snooper.AndroidSnooper;
-import com.prateekj.snooper.model.HttpCall;
+import com.prateekj.snooper.networksnooper.model.HttpCall;
 
 import java.io.IOException;
 import java.util.HashMap;

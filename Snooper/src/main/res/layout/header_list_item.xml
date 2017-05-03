@@ -7,7 +7,7 @@
 
     <variable
       name="viewModel"
-      type="com.prateekj.snooper.viewmodel.HttpHeaderViewModel"/>
+      type="com.prateekj.snooper.networksnooper.viewmodel.HttpHeaderViewModel"/>
   </data>
 
   <LinearLayout

@@ -1,6 +1,6 @@
 package org.springframework.http.client;
 
-import com.prateekj.snooper.model.HttpCall;
+import com.prateekj.snooper.networksnooper.model.HttpCall;
 
 import org.junit.Test;
 import org.springframework.http.HttpHeaders;
@@ -11,7 +11,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.util.Arrays;
 
-import static com.prateekj.snooper.model.HttpHeader.CONTENT_TYPE;
+import static com.prateekj.snooper.networksnooper.model.HttpHeader.CONTENT_TYPE;
 import static java.net.URI.create;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertNotNull;

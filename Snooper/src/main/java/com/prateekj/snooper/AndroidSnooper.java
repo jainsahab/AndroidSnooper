@@ -8,13 +8,12 @@ import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 
-import com.prateekj.snooper.activity.HttpCallListActivity;
+import com.prateekj.snooper.networksnooper.activity.HttpCallListActivity;
 import com.prateekj.snooper.infra.CurrentActivityManager;
-import com.prateekj.snooper.model.HttpCall;
+import com.prateekj.snooper.networksnooper.model.HttpCall;
 import com.prateekj.snooper.realm.RealmFactory;
-import com.prateekj.snooper.repo.SnooperRepo;
+import com.prateekj.snooper.networksnooper.repo.SnooperRepo;
 import com.prateekj.snooper.infra.BackgroundManager;
 
 import java.io.IOException;

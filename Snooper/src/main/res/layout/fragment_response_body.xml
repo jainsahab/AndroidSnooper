@@ -7,7 +7,7 @@
 
     <variable
       name="viewModel"
-      type="com.prateekj.snooper.viewmodel.HttpBodyViewModel"/>
+      type="com.prateekj.snooper.networksnooper.viewmodel.HttpBodyViewModel"/>
   </data>
 
   <ScrollView
@@ -17,7 +17,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.prateekj.snooper.activity.HttpCallListActivity">
+    tools:context="com.prateekj.snooper.networksnooper.activity.HttpCallListActivity">
 
     <HorizontalScrollView
       android:layout_width="wrap_content"

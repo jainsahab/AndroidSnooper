@@ -1,9 +1,9 @@
 package com.prateekj.snooper.rules;
 
 
-import com.prateekj.snooper.model.HttpCall;
-import com.prateekj.snooper.model.HttpHeader;
-import com.prateekj.snooper.model.HttpHeaderValue;
+import com.prateekj.snooper.networksnooper.model.HttpCall;
+import com.prateekj.snooper.networksnooper.model.HttpHeader;
+import com.prateekj.snooper.networksnooper.model.HttpHeaderValue;
 import com.prateekj.snooper.realm.RealmFactory;
 
 import org.junit.rules.TestRule;
