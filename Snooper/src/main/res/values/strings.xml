@@ -19,4 +19,6 @@
   <string name="delete_records_dialog_confirmation">Delete</string>
   <string name="delete_records_dialog_cancellation">No</string>
   <string name="delete_records_dialog_title">Are you sure you want to delete all the records ?</string>
+  <string name="accordion_header">accordion_header</string>
+  <string name="accordion_body">accordion_body</string>
 </resources>

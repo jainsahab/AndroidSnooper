@@ -9,10 +9,10 @@ import com.google.common.collect.ImmutableMap;
 import com.prateekj.snooper.R;
 import com.prateekj.snooper.networksnooper.model.HttpCall;
 import com.prateekj.snooper.networksnooper.repo.SnooperRepo;
+import com.prateekj.snooper.networksnooper.viewmodel.HttpHeaderViewModel;
 import com.prateekj.snooper.rules.RealmCleanRule;
 import com.prateekj.snooper.rules.RunUsingLooper;
 import com.prateekj.snooper.utils.EspressoIntentMatchers;
-import com.prateekj.snooper.networksnooper.viewmodel.HttpHeaderViewModel;
 
 import org.hamcrest.CustomTypeSafeMatcher;
 import org.hamcrest.Matcher;
@@ -98,6 +98,7 @@ public class HttpCallActivityTest {
     verifyResponseHeader("content-disposition", "attachment");
     verifyResponseHeader("date", "Sun, 02 Apr 2017 08:54:39 GMT");
 
+    onView(withText(R.string.request_headers)).perform(click());
     verifyRequestHeader("content-type", "application/json");
     verifyRequestHeader("content-length", "403");
     verifyRequestHeader("accept-language", "en-US,en;q=0.8,hi;q=0.6");

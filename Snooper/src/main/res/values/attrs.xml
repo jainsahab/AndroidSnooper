@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <declare-styleable name="AccordionView">
+    <attr name="headerText" format="reference"/>
+    <attr name="state" format="enum">
+      <enum name="collapse" value="0"/>
+      <enum name="expand" value="1"/>
+    </attr>
+  </declare-styleable>
+</resources>

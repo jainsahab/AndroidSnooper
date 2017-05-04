@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:bind="http://schemas.android.com/tools">
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
   <data class="HttpHeaderBinding">
 
@@ -28,45 +27,45 @@
       android:layout_height="wrap_content"
       android:orientation="vertical">
 
-      <LinearLayout
+      <com.prateekj.snooper.customviews.AccordionView
+        app:state="expand"
+        app:headerText="@string/response_headers"
+        android:layout_marginBottom="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/snooper_bg"
-        android:orientation="vertical">
-
-        <TextView
-          android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <LinearLayout
+          android:tag="@string/accordion_body"
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:text="@string/response_headers"
-          android:textColor="@color/snooper_black"
-          android:textSize="21sp"/>
-      </LinearLayout>
+          android:orientation="vertical">
 
-      <com.prateekj.snooper.customviews.NonScrollListView
+          <com.prateekj.snooper.customviews.NonScrollListView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:id="@+id/response_header_list"
+            app:listAdapter="@{HttpHeaderAdapter.newInstance(httpCall.getResponseHeaders())}"/>
+        </LinearLayout>
+      </com.prateekj.snooper.customviews.AccordionView>
+
+      <com.prateekj.snooper.customviews.AccordionView
+        app:state="collapse"
+        app:headerText="@string/request_headers"
+        android:layout_marginBottom="10dp"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:id="@+id/response_header_list"
-        app:listAdapter="@{HttpHeaderAdapter.newInstance(httpCall.getResponseHeaders())}"/>
-
-      <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/snooper_bg"
-        android:orientation="vertical">
-
-        <TextView
-          android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <LinearLayout
+          android:tag="@string/accordion_body"
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:text="@string/request_headers"
-          android:textColor="@color/snooper_black"
-          android:textSize="21sp"/>
-      </LinearLayout>
+          android:orientation="vertical">
 
-      <com.prateekj.snooper.customviews.NonScrollListView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:id="@+id/request_header_list"
-        app:listAdapter="@{HttpHeaderAdapter.newInstance(httpCall.getRequestHeaders())}"/>
+          <com.prateekj.snooper.customviews.NonScrollListView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:id="@+id/request_header_list"
+            app:listAdapter="@{HttpHeaderAdapter.newInstance(httpCall.getRequestHeaders())}"/>
+        </LinearLayout>
+      </com.prateekj.snooper.customviews.AccordionView>
     </LinearLayout>
   </ScrollView>
 </layout>
