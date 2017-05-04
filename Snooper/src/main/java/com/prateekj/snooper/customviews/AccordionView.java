@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -20,6 +21,7 @@ public class AccordionView extends LinearLayout {
   private View bodyView;
   private int state;
   private int headerText;
+  private View headerView;
 
   public AccordionView(Context context) {
     super(context);
@@ -49,6 +51,8 @@ public class AccordionView extends LinearLayout {
 
   public void onStateChange() {
     bodyView.setVisibility(state == COLLAPSE ? View.GONE : View.VISIBLE);
+    ImageView statusIcon = (ImageView) headerView.findViewById(R.id.state_icon);
+    statusIcon.setImageResource(state == COLLAPSE ? R.drawable.arrow_left_white : R.drawable.arrow_down_white);
   }
 
   private void initAttributes(AttributeSet attributeSet) {
@@ -60,8 +64,8 @@ public class AccordionView extends LinearLayout {
 
   private void initViews() {
     setOrientation(VERTICAL);
-    View headerView = from(getContext()).inflate(R.layout.accordion_view_heading, this, false);
-    ((TextView)headerView.findViewById(R.id.headerText)).setText(headerText);
+    headerView = from(getContext()).inflate(R.layout.accordion_view_heading, this, false);
+    ((TextView) headerView.findViewById(R.id.header_text)).setText(headerText);
     addView(headerView, 0);
     bodyView = findViewWithTag(getContext().getString(R.string.accordion_body));
     onStateChange();
