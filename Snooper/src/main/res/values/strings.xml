@@ -14,7 +14,7 @@
   <string name="share">Share</string>
   <string name="mail_subject_share_logs">Log details</string>
   <string name="chooser_title_share_logs">Choose an application to open the log file with:</string>
-  <string name="permission_not_granted">This feature requires Write_EXTERNAL_STORAGE permission</string>
+  <string name="permission_not_granted">This feature requires WRITE_EXTERNAL_STORAGE permission.</string>
   <string name="delete_all_records">Delete all logs</string>
   <string name="delete_records_dialog_confirmation">Delete</string>
   <string name="delete_records_dialog_cancellation">No</string>

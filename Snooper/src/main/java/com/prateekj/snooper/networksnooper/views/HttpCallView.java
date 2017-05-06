@@ -8,6 +8,4 @@ public interface HttpCallView {
   void dismissProgressDialog();
 
   void showMessageShareNotAvailable();
-
-  boolean isWriteStoragePermissionGranted();
 }

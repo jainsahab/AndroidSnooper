@@ -1,12 +1,11 @@
 package com.prateekj.snooper.networksnooper.activity;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.TabLayout.Tab;
@@ -21,14 +20,15 @@ import android.widget.Toast;
 
 import com.prateekj.snooper.R;
 import com.prateekj.snooper.formatter.ResponseFormatterFactory;
+import com.prateekj.snooper.infra.AppPermissionChecker;
+import com.prateekj.snooper.infra.BackgroundTaskExecutor;
 import com.prateekj.snooper.networksnooper.fragment.HttpCallFragment;
 import com.prateekj.snooper.networksnooper.fragment.HttpHeadersFragment;
-import com.prateekj.snooper.infra.BackgroundTaskExecutor;
 import com.prateekj.snooper.networksnooper.presenter.HttpCallPresenter;
-import com.prateekj.snooper.realm.RealmFactory;
 import com.prateekj.snooper.networksnooper.repo.SnooperRepo;
-import com.prateekj.snooper.utils.FileUtil;
 import com.prateekj.snooper.networksnooper.views.HttpCallView;
+import com.prateekj.snooper.realm.RealmFactory;
+import com.prateekj.snooper.utils.FileUtil;
 
 import java.io.File;
 
@@ -40,6 +40,7 @@ public class HttpCallActivity extends SnooperBaseActivity implements HttpCallVie
   public static final String HTTP_CALL_MODE = "HTTP_CALL_MODE";
   public static final int REQUEST_MODE = 1;
   public static final int RESPONSE_MODE = 2;
+  public static final int WRITE_EXTERNAL_STORAGE_REQUEST_CODE = 1;
   private static final String LOGFILE_MIME_TYPE = "*/*";
   private HttpCallPresenter httpCallPresenter;
   private ViewPager pager;
@@ -111,7 +112,7 @@ public class HttpCallActivity extends SnooperBaseActivity implements HttpCallVie
       httpCallPresenter.copyHttpCallBody(pager.getCurrentItem());
       return true;
     } else if (item.getItemId() == R.id.share_menu) {
-      httpCallPresenter.shareHttpCallBody();
+      shareHttpCallData();
     }
     return super.onOptionsItemSelected(item);
   }
@@ -138,15 +139,6 @@ public class HttpCallActivity extends SnooperBaseActivity implements HttpCallVie
   }
 
   @Override
-  public boolean isWriteStoragePermissionGranted() {
-    if (Build.VERSION.SDK_INT >= 23) {
-      return (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
-    } else {
-      return true;
-    }
-  }
-
-  @Override
   public void showMessageShareNotAvailable() {
     Toast.makeText(this, R.string.permission_not_granted, Toast.LENGTH_SHORT).show();
   }
@@ -159,6 +151,20 @@ public class HttpCallActivity extends SnooperBaseActivity implements HttpCallVie
   @Override
   public void dismissProgressDialog() {
     progressDialog.dismiss();
+  }
+
+  private void shareHttpCallData() {
+    appPermissionChecker.handlePermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE_REQUEST_CODE, new AppPermissionChecker.PermissionRequestCallBack() {
+      @Override
+      public void permissionGranted() {
+        httpCallPresenter.shareHttpCallBody();
+      }
+
+      @Override
+      public void permissionDenied() {
+        httpCallPresenter.onPermissionDenied();
+      }
+    });
   }
 
   private HttpCallFragment getResponseBodyFragment() {

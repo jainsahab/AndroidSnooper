@@ -9,10 +9,9 @@ import com.prateekj.snooper.infra.BackgroundTaskExecutor;
 import com.prateekj.snooper.networksnooper.model.HttpCall;
 import com.prateekj.snooper.networksnooper.model.HttpHeader;
 import com.prateekj.snooper.networksnooper.model.HttpHeaderValue;
-import com.prateekj.snooper.networksnooper.presenter.HttpCallPresenter;
 import com.prateekj.snooper.networksnooper.repo.SnooperRepo;
-import com.prateekj.snooper.utils.FileUtil;
 import com.prateekj.snooper.networksnooper.views.HttpCallView;
+import com.prateekj.snooper.utils.FileUtil;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +24,6 @@ import static com.prateekj.snooper.networksnooper.activity.HttpCallActivity.REQU
 import static com.prateekj.snooper.networksnooper.activity.HttpCallActivity.RESPONSE_MODE;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -154,7 +152,6 @@ public class HttpCallPresenterTest {
     when(responseFormatter.format(requestBody)).thenReturn(formatRequestBody);
     when(responseFormatter.format(responseBody)).thenReturn(formatResponseBody);
     when(fileUtil.createLogFile(any(StringBuilder.class))).thenReturn("filePath");
-    when(view.isWriteStoragePermissionGranted()).thenReturn(true);
 
     resolveBackgroundTask();
 
@@ -189,7 +186,6 @@ public class HttpCallPresenterTest {
     when(responseFormatter.format(requestBody)).thenReturn(formatRequestBody);
     when(responseFormatter.format(responseBody)).thenReturn(formatResponseBody);
     when(fileUtil.createLogFile(any(StringBuilder.class))).thenReturn("");
-    when(view.isWriteStoragePermissionGranted()).thenReturn(true);
 
     resolveBackgroundTask();
 
@@ -202,23 +198,10 @@ public class HttpCallPresenterTest {
   }
 
   @Test
-  public void shouldNotShareDataIfPermissionNotGranted() throws Exception {
-    String requestBody = "request body";
-    String responseBody = "response body";
-
-    doNothing().when(view).showMessageShareNotAvailable();
-    when(view.isWriteStoragePermissionGranted()).thenReturn(false);
-
-    resolveBackgroundTask();
-
+  public void shouldShowShareNotAvailableDialogWhenPermissionIsDenied() throws Exception {
     HttpCallPresenter httpCallPresenter = new HttpCallPresenter(1, repo, view, formatterFactory, fileUtil, backgroundTaskExecutor);
+    httpCallPresenter.onPermissionDenied();
 
-    httpCallPresenter.shareHttpCallBody();
-    verify(view).isWriteStoragePermissionGranted();
-    verify(httpCall, never()).getRequestHeader("Content-Type");
-    verify(responseFormatter, never()).format(requestBody);
-    verify(responseFormatter, never()).format(responseBody);
-    verify(view, never()).shareData("filePath");
     verify(view).showMessageShareNotAvailable();
   }
 
