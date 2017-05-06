@@ -68,6 +68,9 @@ public class AccordionView extends LinearLayout {
     ((TextView) headerView.findViewById(R.id.header_text)).setText(headerText);
     addView(headerView, 0);
     bodyView = findViewWithTag(getContext().getString(R.string.accordion_body));
+    MarginLayoutParams layoutParams = (MarginLayoutParams) bodyView.getLayoutParams();
+    int accordionViewBodyMargin = getResources().getDimensionPixelSize(R.dimen.accordion_view_body_margin);
+    layoutParams.setMargins(accordionViewBodyMargin, 0, accordionViewBodyMargin, 0);
     onStateChange();
     headerView.setOnClickListener(new OnClickListener() {
       @Override

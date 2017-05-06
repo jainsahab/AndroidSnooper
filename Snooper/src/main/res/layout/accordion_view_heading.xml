@@ -4,7 +4,7 @@
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
   xmlns:tools="http://schemas.android.com/tools"
-  android:background="@color/snooper_blue"
+  android:background="@drawable/accordion_view_bg"
   android:paddingLeft="5dp"
   android:paddingRight="0dp"
   android:paddingStart="5dp"
