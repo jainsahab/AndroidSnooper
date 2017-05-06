@@ -1,5 +1,6 @@
 package com.prateekj.snooper.networksnooper.viewmodel;
 
+import com.prateekj.snooper.R;
 import com.prateekj.snooper.networksnooper.model.HttpCall;
 import com.prateekj.snooper.networksnooper.viewmodel.HttpCallViewModel;
 import com.prateekj.snooper.utils.TestUtilities;
@@ -9,6 +10,7 @@ import org.junit.Test;
 
 import java.util.Date;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class HttpCallViewModelTest {
@@ -55,5 +57,22 @@ public class HttpCallViewModelTest {
   @Test
   public void getTimeStamp() throws Exception {
     assertTrue(httpCallViewModel.getTimeStamp().equals("06/02/2017 11:22:33"));
+  }
+
+  @Test
+  public void shouldGetColorGreenWhenStatusCode2xx() {
+    assertEquals(httpCallViewModel.getStatusColor(), R.color.snooper_green);
+  }
+
+  @Test
+  public void shouldGetColorRedWhenStatusCode2xx() {
+    HttpCall httpCall = new HttpCall.Builder()
+      .withUrl(" url 1")
+      .withMethod("POST")
+      .withStatusCode(400)
+      .withStatusText("FAIL")
+      .build();
+    HttpCallViewModel viewModel = new HttpCallViewModel(httpCall);
+    assertEquals(viewModel.getStatusColor(), R.color.snooper_red);
   }
 }

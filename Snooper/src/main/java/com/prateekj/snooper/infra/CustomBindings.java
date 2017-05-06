@@ -4,6 +4,7 @@ import android.databinding.BindingAdapter;
 import android.support.v7.widget.RecyclerView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class CustomBindings {
 
@@ -21,4 +22,12 @@ public class CustomBindings {
   public static void setItemDecoration(RecyclerView recyclerView, RecyclerView.ItemDecoration itemDecoration) {
     recyclerView.addItemDecoration(itemDecoration);
   }
+
+  @BindingAdapter({"textColor"})
+  public static void setTextColor(TextView view, int color) {
+    if (color != 0) {
+      view.setTextColor(view.getResources().getColor(color));
+    }
+  }
+
 }

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
   xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:tools="http://schemas.android.com/tools">
+  xmlns:tools="http://schemas.android.com/tools"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
 
   <data>
 
@@ -63,8 +64,9 @@
           android:layout_marginLeft="5dp"
           android:layout_marginRight="5dp"
           android:text="@{String.valueOf(httpCallViewModel.getStatusCode)}"
-          android:textColor="@color/snooper_grey"
           android:textSize="12sp"
+          android:textStyle="bold"
+          app:textColor="@{httpCallViewModel.getStatusColor}"
           tools:text="200"/>
 
         <ImageView
@@ -78,7 +80,9 @@
           android:layout_height="wrap_content"
           android:layout_marginLeft="5dp"
           android:layout_marginStart="5dp"
+          android:textStyle="bold"
           android:text="@{httpCallViewModel.getStatusText}"
+          app:textColor="@{httpCallViewModel.getStatusColor}"
           android:textSize="12sp"
           tools:text="OK"/>
 
