@@ -7,8 +7,9 @@
   <string name="headers">HEADERS</string>
   <string name="copy">Copy</string>
   <string name="done">DONE</string>
-  <string name="response_headers">RESPONSE HEADERS</string>
-  <string name="request_headers">REQUEST HEADERS</string>
+  <string name="response_headers">Response Headers</string>
+  <string name="request_headers">Request Headers</string>
+  <string name="general_info">General</string>
   <string name="header_name_value_separator">" : "</string>
   <string name="progress_wait_message">Just a Moment....</string>
   <string name="share">Share</string>

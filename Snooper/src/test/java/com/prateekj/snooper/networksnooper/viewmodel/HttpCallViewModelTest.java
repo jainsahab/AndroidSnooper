@@ -2,15 +2,18 @@ package com.prateekj.snooper.networksnooper.viewmodel;
 
 import com.prateekj.snooper.R;
 import com.prateekj.snooper.networksnooper.model.HttpCall;
-import com.prateekj.snooper.networksnooper.viewmodel.HttpCallViewModel;
 import com.prateekj.snooper.utils.TestUtilities;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
+import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 public class HttpCallViewModelTest {
@@ -26,6 +29,8 @@ public class HttpCallViewModelTest {
       .withMethod("POST")
       .withStatusCode(200)
       .withStatusText("OK")
+      .withResponseHeaders(new HashMap<String, List<String>>())
+      .withRequestHeaders(new HashMap<String, List<String>>())
       .build();
 
     Date currentDate = TestUtilities.getDate(2017, 5, 2, 11, 22, 33);
@@ -57,6 +62,16 @@ public class HttpCallViewModelTest {
   @Test
   public void getTimeStamp() throws Exception {
     assertTrue(httpCallViewModel.getTimeStamp().equals("06/02/2017 11:22:33"));
+  }
+
+  @Test
+  public void getRequestHeaders() throws Exception {
+    assertThat(httpCallViewModel.getRequestHeaders(), sameInstance(httpCall.getRequestHeaders()));
+  }
+
+  @Test
+  public void getResponseHeaders() throws Exception {
+    assertThat(httpCallViewModel.getResponseHeaders(), sameInstance(httpCall.getResponseHeaders()));
   }
 
   @Test

@@ -43,6 +43,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.prateekj.snooper.networksnooper.activity.HttpCallActivity.HTTP_CALL_ID;
+import static com.prateekj.snooper.utils.TestUtilities.getDate;
 import static com.prateekj.snooper.utils.TestUtilities.readFrom;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
@@ -93,6 +94,13 @@ public class HttpCallActivityTest {
 
     onView(withText("HEADERS")).check(matches(isDisplayed())).perform(click());
 
+    onView(withText("https://www.abc.com/person/1")).check(matches(isDisplayed()));
+    onView(withText("GET")).check(matches(isDisplayed()));
+    onView(withText("200")).check(matches(isDisplayed()));
+    onView(withText("OK")).check(matches(isDisplayed()));
+    onView(withText("06/02/2017 11:22:33")).check(matches(isDisplayed()));
+
+    onView(withText(R.string.response_headers)).perform(click());
     verifyResponseHeader("content-type", "application/json");
     verifyResponseHeader("cache-control", "no-cache");
     verifyResponseHeader("content-disposition", "attachment");
@@ -162,6 +170,7 @@ public class HttpCallActivityTest {
       .withRequestHeaders(requestHeaders)
       .withResponseHeaders(responseHeaders)
       .build();
+    httpCall.setDate(getDate(2017, 5, 2, 11, 22, 33));
     snooperRepo.save(httpCall);
   }
 

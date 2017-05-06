@@ -58,7 +58,7 @@ public class HttpCall extends RealmObject implements IncrementalIdModel {
     return date;
   }
 
-  public RealmList<HttpHeader> getRequestHeaders() {
+  public List<HttpHeader> getRequestHeaders() {
     return requestHeaders;
   }
 
@@ -66,7 +66,7 @@ public class HttpCall extends RealmObject implements IncrementalIdModel {
     return filterFromCollection(name, getRequestHeaders());
   }
 
-  public RealmList<HttpHeader> getResponseHeaders() {
+  public List<HttpHeader> getResponseHeaders() {
     return responseHeaders;
   }
 

@@ -6,11 +6,8 @@
 
     <import type="com.prateekj.snooper.networksnooper.adapter.HttpHeaderAdapter"/>
     <variable
-      name="httpCall"
-      type="com.prateekj.snooper.networksnooper.model.HttpCall"/>
-    <variable
-      name="divider"
-      type="com.prateekj.snooper.customviews.DividerItemDecoration"/>
+      name="httpCallViewModel"
+      type="com.prateekj.snooper.networksnooper.viewmodel.HttpCallViewModel"/>
   </data>
 
   <android.support.v4.widget.NestedScrollView
@@ -29,6 +26,29 @@
 
       <com.prateekj.snooper.customviews.AccordionView
         app:state="expand"
+        app:headerText="@string/general_info"
+        android:layout_marginBottom="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+          android:tag="@string/accordion_body"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical">
+          <include
+            android:tag="@string/accordion_body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            app:httpCallViewModel="@{httpCallViewModel}"
+            layout="@layout/http_call_general_detail">
+          </include>
+
+        </LinearLayout>
+      </com.prateekj.snooper.customviews.AccordionView>
+
+      <com.prateekj.snooper.customviews.AccordionView
+        app:state="collapse"
         app:headerText="@string/response_headers"
         android:layout_marginBottom="10dp"
         android:layout_width="match_parent"
@@ -43,7 +63,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:id="@+id/response_header_list"
-            app:listAdapter="@{HttpHeaderAdapter.newInstance(httpCall.getResponseHeaders())}"/>
+            app:listAdapter="@{HttpHeaderAdapter.newInstance(httpCallViewModel.getResponseHeaders())}"/>
         </LinearLayout>
       </com.prateekj.snooper.customviews.AccordionView>
 
@@ -63,7 +83,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:id="@+id/request_header_list"
-            app:listAdapter="@{HttpHeaderAdapter.newInstance(httpCall.getRequestHeaders())}"/>
+            app:listAdapter="@{HttpHeaderAdapter.newInstance(httpCallViewModel.getRequestHeaders())}"/>
         </LinearLayout>
       </com.prateekj.snooper.customviews.AccordionView>
     </LinearLayout>

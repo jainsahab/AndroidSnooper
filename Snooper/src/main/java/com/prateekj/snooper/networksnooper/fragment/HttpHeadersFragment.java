@@ -10,10 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.prateekj.snooper.R;
-import com.prateekj.snooper.customviews.DividerItemDecoration;
 import com.prateekj.snooper.databinding.HttpHeaderBinding;
-import com.prateekj.snooper.realm.RealmFactory;
+import com.prateekj.snooper.networksnooper.model.HttpCall;
 import com.prateekj.snooper.networksnooper.repo.SnooperRepo;
+import com.prateekj.snooper.networksnooper.viewmodel.HttpCallViewModel;
+import com.prateekj.snooper.realm.RealmFactory;
 
 import io.realm.Realm;
 
@@ -29,8 +30,8 @@ public class HttpHeadersFragment extends Fragment {
     Realm realm = RealmFactory.create(getActivity());
     SnooperRepo snooperRepo = new SnooperRepo(realm);
     int httpCallId = getArguments().getInt(HTTP_CALL_ID);
-    binding.setHttpCall(snooperRepo.findById(httpCallId));
-    binding.setDivider(new DividerItemDecoration(this.getActivity(), DividerItemDecoration.VERTICAL, R.drawable.grey_divider));
+    HttpCall httpCall = snooperRepo.findById(httpCallId);
+    binding.setHttpCallViewModel(new HttpCallViewModel(httpCall));
     return binding.getRoot();
   }
 }

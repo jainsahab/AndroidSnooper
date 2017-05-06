@@ -2,9 +2,11 @@ package com.prateekj.snooper.networksnooper.viewmodel;
 
 import com.prateekj.snooper.R;
 import com.prateekj.snooper.networksnooper.model.HttpCall;
+import com.prateekj.snooper.networksnooper.model.HttpHeader;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import static java.util.Locale.US;
 
@@ -33,6 +35,14 @@ public class HttpCallViewModel {
 
   public String getStatusText() {
     return httpCall.getStatusText();
+  }
+
+  public List<HttpHeader> getRequestHeaders() {
+    return httpCall.getRequestHeaders();
+  }
+
+  public List<HttpHeader> getResponseHeaders() {
+    return httpCall.getResponseHeaders();
   }
 
   public String getTimeStamp() {
