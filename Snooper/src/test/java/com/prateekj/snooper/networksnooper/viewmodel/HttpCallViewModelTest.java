@@ -80,7 +80,19 @@ public class HttpCallViewModelTest {
   }
 
   @Test
-  public void shouldGetColorRedWhenStatusCode2xx() {
+  public void shouldGetColorYellowWhenStatusCode3xx() {
+    HttpCall httpCall = new HttpCall.Builder()
+      .withUrl(" url 1")
+      .withMethod("POST")
+      .withStatusCode(302)
+      .withStatusText("FAIL")
+      .build();
+    HttpCallViewModel viewModel = new HttpCallViewModel(httpCall);
+    assertEquals(viewModel.getStatusColor(), R.color.snooper_yellow);
+  }
+
+  @Test
+  public void shouldGetColorRedWhenStatusCode4xx() {
     HttpCall httpCall = new HttpCall.Builder()
       .withUrl(" url 1")
       .withMethod("POST")

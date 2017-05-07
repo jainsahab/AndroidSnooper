@@ -10,6 +10,7 @@
   <color name="snooper_light_grey">#D8D8D8</color>
   <color name="snooper_black">#000000</color>
   <color name="snooper_green">#4C924C</color>
-  <color name="snooper_red">#FF0000</color>
+  <color name="snooper_red">#D10000</color>
+  <color name="snooper_yellow">#FFBD00</color>
 
 </resources>

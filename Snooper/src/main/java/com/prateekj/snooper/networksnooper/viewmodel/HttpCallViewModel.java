@@ -13,8 +13,9 @@ import static java.util.Locale.US;
 public class HttpCallViewModel {
 
   private static final String TIMESTAMP_FORMAT = "MM/dd/yyyy HH:mm:ss";
-  public static final int RANGE_START_HTTP_OK = 200;
-  public static final int RANGE_END_HTTP_OK = 299;
+  private static final int RANGE_START_HTTP_OK = 200;
+  private static final int RANGE_END_HTTP_OK = 299;
+  private static final int RANGE_END_HTTP_REDIRECTION = 399;
   private final HttpCall httpCall;
 
   public HttpCallViewModel(HttpCall httpCall) {
@@ -55,6 +56,8 @@ public class HttpCallViewModel {
 
     if (statusCode >= RANGE_START_HTTP_OK && statusCode <= RANGE_END_HTTP_OK) {
       return R.color.snooper_green;
+    } else if (statusCode <= RANGE_END_HTTP_REDIRECTION) {
+      return R.color.snooper_yellow;
     } else {
       return R.color.snooper_red;
     }
