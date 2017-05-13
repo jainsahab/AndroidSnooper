@@ -1,5 +1,7 @@
 package com.prateekj.snooper.networksnooper.presenter;
 
+import android.support.annotation.NonNull;
+
 import com.prateekj.snooper.networksnooper.activity.HttpCallTab;
 import com.prateekj.snooper.formatter.ResponseFormatter;
 import com.prateekj.snooper.formatter.ResponseFormatterFactory;
@@ -13,10 +15,15 @@ import com.prateekj.snooper.networksnooper.views.HttpCallView;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 import static com.prateekj.snooper.networksnooper.activity.HttpCallActivity.REQUEST_MODE;
 import static com.prateekj.snooper.networksnooper.activity.HttpCallActivity.RESPONSE_MODE;
 import static com.prateekj.snooper.networksnooper.activity.HttpCallTab.RESPONSE;
 import static com.prateekj.snooper.networksnooper.model.HttpHeader.CONTENT_TYPE;
+import static java.lang.String.format;
+import static java.util.Locale.US;
 
 public class HttpCallPresenter {
 
@@ -43,10 +50,11 @@ public class HttpCallPresenter {
 
   public void shareHttpCallBody() {
     final StringBuilder completeHttpCallData = getHttpCallData();
+    final String logFileName = getLogFileName();
     executor.execute(new BackgroundTask<String>() {
       @Override
       public String onExecute() {
-        return fileUtil.createLogFile(completeHttpCallData);
+        return fileUtil.createLogFile(completeHttpCallData, logFileName);
       }
 
       @Override
@@ -56,6 +64,12 @@ public class HttpCallPresenter {
         }
       }
     });
+  }
+
+  @NonNull
+  private String getLogFileName() {
+    DateFormat df = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", US);
+    return format("%s.txt", df.format(httpCall.getDate()));
   }
 
   public void onPermissionDenied() {

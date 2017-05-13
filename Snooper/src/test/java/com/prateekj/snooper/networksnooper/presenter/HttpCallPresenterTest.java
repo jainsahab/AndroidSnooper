@@ -22,7 +22,9 @@ import java.util.Collections;
 
 import static com.prateekj.snooper.networksnooper.activity.HttpCallActivity.REQUEST_MODE;
 import static com.prateekj.snooper.networksnooper.activity.HttpCallActivity.RESPONSE_MODE;
+import static com.prateekj.snooper.utils.TestUtilities.getDate;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -135,23 +137,16 @@ public class HttpCallPresenterTest {
     String formatRequestBody = "format Request body";
     String responseBody = "response body";
     String formatResponseBody = "format Response body";
-    StringBuilder expectedData = new StringBuilder();
-    expectedData.append("Request Body");
-    expectedData.append("\n");
-    expectedData.append(formatRequestBody);
-    expectedData.append("\n");
-    expectedData.append("Response Body");
-    expectedData.append("\n");
-    expectedData.append(formatResponseBody);
 
     when(httpCall.getRequestHeader("Content-Type")).thenReturn(getJsonContentTypeHeader());
     when(httpCall.getPayload()).thenReturn(requestBody);
     when(httpCall.getResponseHeader("Content-Type")).thenReturn(getJsonContentTypeHeader());
     when(httpCall.getResponseBody()).thenReturn(responseBody);
+    when(httpCall.getDate()).thenReturn(getDate(2017, 4, 12, 1, 2, 3));
     when(formatterFactory.getFor("application/json")).thenReturn(responseFormatter);
     when(responseFormatter.format(requestBody)).thenReturn(formatRequestBody);
     when(responseFormatter.format(responseBody)).thenReturn(formatResponseBody);
-    when(fileUtil.createLogFile(any(StringBuilder.class))).thenReturn("filePath");
+    when(fileUtil.createLogFile(any(StringBuilder.class), eq("2017_05_12_01_02_03.txt"))).thenReturn("filePath");
 
     resolveBackgroundTask();
 
@@ -169,23 +164,16 @@ public class HttpCallPresenterTest {
     String formatRequestBody = "format Request body";
     String responseBody = "response body";
     String formatResponseBody = "format Response body";
-    StringBuilder expectedData = new StringBuilder();
-    expectedData.append("Request Body");
-    expectedData.append("\n");
-    expectedData.append(formatRequestBody);
-    expectedData.append("\n");
-    expectedData.append("Response Body");
-    expectedData.append("\n");
-    expectedData.append(formatResponseBody);
 
     when(httpCall.getRequestHeader("Content-Type")).thenReturn(getJsonContentTypeHeader());
     when(httpCall.getPayload()).thenReturn(requestBody);
     when(httpCall.getResponseHeader("Content-Type")).thenReturn(getJsonContentTypeHeader());
     when(httpCall.getResponseBody()).thenReturn(responseBody);
+    when(httpCall.getDate()).thenReturn(getDate(2017, 4, 12, 1, 2, 3));
     when(formatterFactory.getFor("application/json")).thenReturn(responseFormatter);
     when(responseFormatter.format(requestBody)).thenReturn(formatRequestBody);
     when(responseFormatter.format(responseBody)).thenReturn(formatResponseBody);
-    when(fileUtil.createLogFile(any(StringBuilder.class))).thenReturn("");
+    when(fileUtil.createLogFile(any(StringBuilder.class), eq("2017_05_12_01_02_03.txt"))).thenReturn("");
 
     resolveBackgroundTask();
 

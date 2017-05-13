@@ -11,13 +11,12 @@ import java.io.OutputStreamWriter;
 public class FileUtil {
 
   private static final String TAG = FileUtil.class.getSimpleName();
-  private static final String LOG_FILE_NAME = "/Log.txt";
 
-  public String createLogFile(StringBuilder content) {
+  public String createLogFile(StringBuilder content, String fileName) {
     FileOutputStream fileOutputStream = null;
     String filePath = "";
     try {
-      File file = new File(Environment.getExternalStorageDirectory() + LOG_FILE_NAME);
+      File file = new File(Environment.getExternalStorageDirectory() + "/" + fileName);
       if (file.exists()) {
         file.delete();
       }

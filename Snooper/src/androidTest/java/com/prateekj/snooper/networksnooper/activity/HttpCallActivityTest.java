@@ -175,11 +175,8 @@ public class HttpCallActivityTest {
   }
 
   private void verifyClickActionOnShareMenu() {
-
     intended(allOf(
-      hasExtras(EspressoIntentMatchers.forMailChooserIntent(ACTION_SEND, "*/*", "Log details")),
+      hasExtras(EspressoIntentMatchers.forMailChooserIntent(ACTION_SEND, "*/*", "Log details", "2017_06_02_11_22_33.txt")),
       hasAction(ACTION_CHOOSER)));
   }
-
-
 }
