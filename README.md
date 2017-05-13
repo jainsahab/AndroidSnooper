@@ -39,17 +39,17 @@ The above implementation ought to be part of your custom interceptor where you w
     }
 
     // when using Android Snooper's core module
-    compile ('com.github.jainsahab:Snooper:1.0.1@aar'){
+    compile ('com.github.jainsahab:Snooper:1.0.2@aar'){
       transitive = true
     }
 
     // Android Snooper library for "Spring Android Rest Template"
-    compile ('com.github.jainsahab:Snooper-Spring:1.0.1@aar'){
+    compile ('com.github.jainsahab:Snooper-Spring:1.0.2@aar'){
       transitive = true
     }
     
     // Android Snooper library for "Square's Okhttp"
-    compile ('com.github.jainsahab:Snooper-Okhttp:1.0.1@aar'){
+    compile ('com.github.jainsahab:Snooper-Okhttp:1.0.2@aar'){
       transitive = true
     }
 ```
