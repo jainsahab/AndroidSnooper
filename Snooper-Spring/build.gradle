@@ -32,10 +32,6 @@ android {
     group "com.github.jainsahab"
     version snooperVersion
 
-    dataBinding {
-        enabled = true
-    }
-
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 24

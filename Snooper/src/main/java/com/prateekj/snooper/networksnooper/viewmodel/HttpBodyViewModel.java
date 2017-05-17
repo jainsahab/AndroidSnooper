@@ -1,11 +1,6 @@
 package com.prateekj.snooper.networksnooper.viewmodel;
 
-import android.databinding.BaseObservable;
-import android.databinding.Bindable;
-
-import com.prateekj.snooper.BR;
-
-public class HttpBodyViewModel extends BaseObservable {
+public class HttpBodyViewModel {
 
   private String formattedBody;
 
@@ -13,13 +8,11 @@ public class HttpBodyViewModel extends BaseObservable {
     setFormattedBody(formattedBody);
   }
 
-  @Bindable
   public String getFormattedBody() {
     return this.formattedBody;
   }
 
   public void setFormattedBody(String formattedBody) {
     this.formattedBody = formattedBody;
-    notifyPropertyChanged(BR.formattedBody);
   }
 }

@@ -1,36 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
+<android.support.v4.widget.NestedScrollView
   xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:tools="http://schemas.android.com/tools">
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:paddingBottom="@dimen/activity_vertical_margin"
+  android:paddingLeft="@dimen/activity_horizontal_margin"
+  android:paddingRight="@dimen/activity_horizontal_margin"
+  android:paddingTop="@dimen/activity_vertical_margin"
+  tools:context="com.prateekj.snooper.networksnooper.activity.HttpCallListActivity">
 
-  <data class="HttpBodyBinding">
+  <HorizontalScrollView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
-    <variable
-      name="viewModel"
-      type="com.prateekj.snooper.networksnooper.viewmodel.HttpBodyViewModel"/>
-  </data>
-
-  <android.support.v4.widget.NestedScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.prateekj.snooper.networksnooper.activity.HttpCallListActivity">
-
-    <HorizontalScrollView
+    <TextView
+      android:id="@+id/payload_text"
       android:layout_width="wrap_content"
-      android:layout_height="wrap_content">
-
-      <TextView
-        android:textSize="12sp"
-        android:textColor="@color/snooper_black"
-        android:id="@+id/payload_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scrollHorizontally="true"
-        android:text="@{viewModel.formattedBody}"/>
-    </HorizontalScrollView>
-  </android.support.v4.widget.NestedScrollView>
-</layout>
+      android:layout_height="wrap_content"
+      android:scrollHorizontally="true"
+      android:textColor="@color/snooper_black"
+      android:textSize="12sp"/>
+  </HorizontalScrollView>
+</android.support.v4.widget.NestedScrollView>

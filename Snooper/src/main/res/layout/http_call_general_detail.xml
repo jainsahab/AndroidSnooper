@@ -1,91 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:orientation="vertical">
 
-  <data>
-    <variable
-      name="httpCallViewModel"
-      type="com.prateekj.snooper.networksnooper.viewmodel.HttpCallViewModel"/>
-  </data>
+  <TextView
+    android:id="@+id/url"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="15dp"
+    android:layout_marginRight="15dp"
+    android:textColor="@color/snooper_black"
+    android:textSize="16sp"
+    tools:text="https://google.com"/>
 
   <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
     <TextView
-      android:id="@+id/url"
+      android:id="@+id/method"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginEnd="15dp"
-      android:layout_marginRight="15dp"
-      android:text="@{httpCallViewModel.getUrl}"
-      android:textColor="@color/snooper_black"
-      android:textSize="16sp"
-      tools:text="https://google.com"/>
+      android:layout_marginEnd="5dp"
+      android:layout_marginRight="5dp"
+      android:textColor="@color/snooper_grey"
+      android:textSize="12sp"
+      tools:text="POST"/>
 
-    <LinearLayout
+    <ImageView
+      android:layout_width="5dp"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center_vertical"
+      android:src="@drawable/circle"
+      android:textColor="@color/snooper_grey"/>
+
+    <TextView
+      android:id="@+id/status_code"
       android:layout_width="wrap_content"
-      android:layout_height="wrap_content">
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="5dp"
+      android:layout_marginRight="5dp"
+      android:textSize="12sp"
+      tools:text="200"/>
 
-      <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="5dp"
-        android:layout_marginRight="5dp"
-        android:text="@{httpCallViewModel.getMethod}"
-        android:textColor="@color/snooper_grey"
-        android:textSize="12sp"
-        tools:text="POST"/>
+    <ImageView
+      android:layout_width="5dp"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center_vertical"
+      android:src="@drawable/circle"/>
 
-      <ImageView
-        android:layout_width="5dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:src="@drawable/circle"
-        android:textColor="@color/snooper_grey"/>
+    <TextView
+      android:id="@+id/status_text"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="5dp"
+      android:layout_marginStart="5dp"
+      android:textSize="12sp"
+      tools:text="OK"/>
 
-      <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:text="@{String.valueOf(httpCallViewModel.getStatusCode)}"
-        android:textSize="12sp"
-        tools:text="200"/>
+    <View
+      android:layout_width="0dp"
+      android:layout_height="match_parent"
+      android:layout_weight="1"/>
 
-      <ImageView
-        android:layout_width="5dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:src="@drawable/circle"/>
-
-      <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginStart="5dp"
-        android:text="@{httpCallViewModel.getStatusText}"
-        android:textSize="12sp"
-        tools:text="OK"/>
-
-      <View
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"/>
-
-      <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginStart="5dp"
-        android:text="@{httpCallViewModel.getTimeStamp}"
-        android:textColor="@color/snooper_grey"
-        android:textSize="12sp"
-        tools:text="mm/dd/yyyy hh:mm:ss"/>
-    </LinearLayout>
-
+    <TextView
+      android:id="@+id/time_stamp"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="5dp"
+      android:layout_marginStart="5dp"
+      android:textColor="@color/snooper_grey"
+      android:textSize="12sp"
+      tools:text="mm/dd/yyyy hh:mm:ss"/>
   </LinearLayout>
 
-</layout>
+</LinearLayout>

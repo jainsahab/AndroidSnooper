@@ -30,8 +30,8 @@ public class HttpCallViewModel {
     return httpCall.getMethod();
   }
 
-  public int getStatusCode() {
-    return httpCall.getStatusCode();
+  public String getStatusCode() {
+    return String.valueOf(httpCall.getStatusCode());
   }
 
   public String getStatusText() {

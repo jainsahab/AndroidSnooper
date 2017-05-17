@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
@@ -51,7 +52,7 @@ public class HttpCallViewModelTest {
 
   @Test
   public void getStatusCode() throws Exception {
-    assertTrue(httpCallViewModel.getStatusCode() == httpCall.getStatusCode());
+    assertThat(httpCallViewModel.getStatusCode(),  is("200"));
   }
 
   @Test

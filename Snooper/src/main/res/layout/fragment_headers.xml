@@ -1,91 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+<android.support.v4.widget.NestedScrollView
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical"
+  android:paddingBottom="@dimen/activity_vertical_margin"
+  android:paddingLeft="@dimen/activity_horizontal_margin"
+  android:paddingRight="@dimen/activity_horizontal_margin"
+  android:paddingTop="@dimen/activity_vertical_margin">
 
-  <data class="HttpHeaderBinding">
-
-    <import type="com.prateekj.snooper.networksnooper.adapter.HttpHeaderAdapter"/>
-    <variable
-      name="httpCallViewModel"
-      type="com.prateekj.snooper.networksnooper.viewmodel.HttpCallViewModel"/>
-  </data>
-
-  <android.support.v4.widget.NestedScrollView
+  <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <com.prateekj.snooper.customviews.AccordionView
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:orientation="vertical">
+      android:layout_marginBottom="10dp"
+      app:headerText="@string/general_info"
+      app:state="expand">
 
-      <com.prateekj.snooper.customviews.AccordionView
-        app:state="expand"
-        app:headerText="@string/general_info"
-        android:layout_marginBottom="10dp"
+      <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <LinearLayout
-          android:tag="@string/accordion_body"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:tag="@string/accordion_body">
+
+        <include
+          layout="@layout/http_call_general_detail"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:orientation="vertical">
-          <include
-            android:tag="@string/accordion_body"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            app:httpCallViewModel="@{httpCallViewModel}"
-            layout="@layout/http_call_general_detail">
-          </include>
+          android:layout_marginTop="5dp"
+          android:tag="@string/accordion_body">
+        </include>
 
-        </LinearLayout>
-      </com.prateekj.snooper.customviews.AccordionView>
+      </LinearLayout>
+    </com.prateekj.snooper.customviews.AccordionView>
 
-      <com.prateekj.snooper.customviews.AccordionView
-        app:state="collapse"
-        app:headerText="@string/response_headers"
-        android:layout_marginBottom="10dp"
+    <com.prateekj.snooper.customviews.AccordionView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="10dp"
+      app:headerText="@string/response_headers"
+      app:state="collapse">
+
+      <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <LinearLayout
-          android:tag="@string/accordion_body"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:tag="@string/accordion_body">
+
+        <com.prateekj.snooper.customviews.NonScrollListView
+          android:id="@+id/response_header_list"
           android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:orientation="vertical">
+          android:layout_height="0dp"/>
+      </LinearLayout>
+    </com.prateekj.snooper.customviews.AccordionView>
 
-          <com.prateekj.snooper.customviews.NonScrollListView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:id="@+id/response_header_list"
-            app:listAdapter="@{HttpHeaderAdapter.newInstance(httpCallViewModel.getResponseHeaders())}"/>
-        </LinearLayout>
-      </com.prateekj.snooper.customviews.AccordionView>
+    <com.prateekj.snooper.customviews.AccordionView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="10dp"
+      app:headerText="@string/request_headers"
+      app:state="collapse">
 
-      <com.prateekj.snooper.customviews.AccordionView
-        app:state="collapse"
-        app:headerText="@string/request_headers"
-        android:layout_marginBottom="10dp"
+      <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <LinearLayout
-          android:tag="@string/accordion_body"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:tag="@string/accordion_body">
 
-          <com.prateekj.snooper.customviews.NonScrollListView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:id="@+id/request_header_list"
-            app:listAdapter="@{HttpHeaderAdapter.newInstance(httpCallViewModel.getRequestHeaders())}"/>
-        </LinearLayout>
-      </com.prateekj.snooper.customviews.AccordionView>
-    </LinearLayout>
-  </android.support.v4.widget.NestedScrollView>
-</layout>
+        <com.prateekj.snooper.customviews.NonScrollListView
+          android:id="@+id/request_header_list"
+          android:layout_width="match_parent"
+          android:layout_height="0dp"/>
+      </LinearLayout>
+    </com.prateekj.snooper.customviews.AccordionView>
+  </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

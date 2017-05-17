@@ -1,42 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
+<LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:tools="http://schemas.android.com/tools">
+  xmlns:tools="http://schemas.android.com/tools"
+  android:paddingBottom="@dimen/header_line_item_vertical_margin"
+  android:paddingTop="@dimen/header_line_item_vertical_margin"
+  tools:paddingLeft="@dimen/activity_horizontal_margin"
+  tools:paddingRight="@dimen/activity_horizontal_margin"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content">
 
-  <data>
+  <TextView
+    tools:text="content-type"
+    android:id="@+id/header_name"
+    android:textStyle="bold"
+    android:textColor="@color/snooper_grey"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"/>
 
-    <variable
-      name="viewModel"
-      type="com.prateekj.snooper.networksnooper.viewmodel.HttpHeaderViewModel"/>
-  </data>
+  <TextView
+    android:text="@string/header_name_value_separator"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"/>
 
-  <LinearLayout
-    android:paddingBottom="@dimen/header_line_item_vertical_margin"
-    android:paddingTop="@dimen/header_line_item_vertical_margin"
-    tools:paddingLeft="@dimen/activity_horizontal_margin"
-    tools:paddingRight="@dimen/activity_horizontal_margin"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+  <TextView
+    tools:text="application/x-www-form-urlencoded"
+    android:id="@+id/header_value"
+    android:textColor="@color/snooper_grey"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"/>
 
-    <TextView
-      tools:text="content-type"
-      android:textStyle="bold"
-      android:textColor="@color/snooper_grey"
-      android:text="@{viewModel.headerName()}"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"/>
-
-    <TextView
-      android:text="@string/header_name_value_separator"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"/>
-
-    <TextView
-      tools:text="application/x-www-form-urlencoded"
-      android:textColor="@color/snooper_grey"
-      android:text="@{viewModel.headerValues()}"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"/>
-
-  </LinearLayout>
-</layout>
+</LinearLayout>

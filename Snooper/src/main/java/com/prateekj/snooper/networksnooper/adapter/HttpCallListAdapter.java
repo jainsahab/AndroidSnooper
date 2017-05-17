@@ -1,18 +1,19 @@
 package com.prateekj.snooper.networksnooper.adapter;
 
-import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.prateekj.snooper.R;
-import com.prateekj.snooper.databinding.ActivityHttpCallListItemBinding;
 import com.prateekj.snooper.networksnooper.model.HttpCall;
 import com.prateekj.snooper.networksnooper.repo.SnooperRepo;
 import com.prateekj.snooper.networksnooper.viewmodel.HttpCallViewModel;
 
 import java.util.List;
+
+import static com.prateekj.snooper.utils.UIUtils.setTextColor;
 
 public class HttpCallListAdapter extends RecyclerView.Adapter<HttpCallListAdapter.HttpCallViewHolder> {
 
@@ -26,17 +27,23 @@ public class HttpCallListAdapter extends RecyclerView.Adapter<HttpCallListAdapte
   }
 
   public class HttpCallViewHolder extends RecyclerView.ViewHolder {
-    private ActivityHttpCallListItemBinding binding;
+    private View view;
 
-    public HttpCallViewHolder(ActivityHttpCallListItemBinding binding) {
-      super(binding.getRoot());
-      this.binding = binding;
+    public HttpCallViewHolder(View view) {
+      super(view);
+      this.view = view;
     }
 
     public void bind(HttpCall httpCall) {
       HttpCallViewModel httpCallViewModel = new HttpCallViewModel(httpCall);
-      this.binding.setHttpCallViewModel(httpCallViewModel);
-      this.binding.executePendingBindings();
+      ((TextView) view.findViewById(R.id.url)).setText(httpCallViewModel.getUrl());
+      ((TextView) view.findViewById(R.id.method)).setText(httpCallViewModel.getMethod());
+      ((TextView) view.findViewById(R.id.status_code)).setText(httpCallViewModel.getStatusCode());
+      ((TextView) view.findViewById(R.id.status_text)).setText(httpCallViewModel.getStatusText());
+      ((TextView) view.findViewById(R.id.time_stamp)).setText(httpCallViewModel.getTimeStamp());
+      setTextColor((TextView) view.findViewById(R.id.method), httpCallViewModel.getStatusColor());
+      setTextColor((TextView) view.findViewById(R.id.status_code), httpCallViewModel.getStatusColor());
+      setTextColor((TextView) view.findViewById(R.id.status_text), httpCallViewModel.getStatusColor());
       setClickListener(httpCall);
     }
 
@@ -54,9 +61,8 @@ public class HttpCallListAdapter extends RecyclerView.Adapter<HttpCallListAdapte
   @Override
   public HttpCallViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-    ActivityHttpCallListItemBinding binding = DataBindingUtil.inflate(
-      inflater, R.layout.activity_http_call_list_item, parent, false);
-    return new HttpCallViewHolder(binding);
+    View listItemView = inflater.inflate(R.layout.activity_http_call_list_item, parent, false);
+    return new HttpCallViewHolder(listItemView);
   }
 
   @Override
