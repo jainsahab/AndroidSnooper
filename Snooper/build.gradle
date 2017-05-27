@@ -3,9 +3,6 @@ apply plugin: 'realm-android'
 apply plugin: 'maven-publish'
 apply plugin: 'spoon'
 apply plugin: 'jacoco'
-jacoco {
-    toolVersion = "0.7.1.201405082137"
-}
 
 publishing {
     publications {
@@ -69,6 +66,14 @@ android {
         }
     }
 
+    testOptions {
+        unitTests.all {
+            jacoco {
+                includeNoLocationClasses = true
+            }
+        }
+    }
+
     packagingOptions {
         exclude 'META-INF/notice.txt'
         exclude 'META-INF/license.txt'
@@ -87,27 +92,22 @@ spoon {
     grantAllPermissions = true
 }
 
-task "generateJacocoTestReports"(type: JacocoReport, dependsOn: "testDebugUnitTest") {
-    group = "Reporting"
-    description = "Generate unit test coverage reports"
-    classDirectories = fileTree(
-            dir: "build/intermediates/classes/debug",
-            excludes: ['**/R.class',
-                       '**/R$*.class',
-                       '**/*$ViewInjector*.*',
-                       '**/BuildConfig.*',
-                       '**/Manifest*.*',
-                       '**/*Activity.class',
-                       '**/*Fragment.class',
-                       '**/*Activity$*',
-                       '**/*Fragment$*',]
-    )
-    sourceDirectories = fileTree(
-            dir: 'src/main/java',
-            excludes: ['**/*Activity.java', '**/*Fragment.java']
-    )
-    executionData = files("build/jacoco/testDebugUnitTest.exec")
-    reports.xml.enabled = true
+task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'createDebugCoverageReport']) {
+
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+
+    def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*']
+    def debugTree = fileTree(dir: "$project.buildDir/intermediates/classes/debug", excludes: fileFilter)
+    def mainSrc = "$project.projectDir/src/main/java"
+
+    sourceDirectories = files([mainSrc])
+    classDirectories = files([debugTree])
+    executionData = fileTree(dir: project.buildDir, includes: [
+            'jacoco/testDebugUnitTest.exec', 'outputs/code-coverage/connected/*coverage.ec'
+    ])
 }
 
 dependencies {
