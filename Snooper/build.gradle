@@ -2,6 +2,10 @@ apply plugin: 'com.android.library'
 apply plugin: 'realm-android'
 apply plugin: 'maven-publish'
 apply plugin: 'spoon'
+apply plugin: 'jacoco'
+jacoco {
+    toolVersion = "0.7.1.201405082137"
+}
 
 publishing {
     publications {
@@ -46,6 +50,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug {
+            testCoverageEnabled true
+        }
+
     }
 
     sourceSets {
@@ -75,7 +83,31 @@ android {
 
 spoon {
     debug = true
+    codeCoverage = true
     grantAllPermissions = true
+}
+
+task "generateJacocoTestReports"(type: JacocoReport, dependsOn: "testDebugUnitTest") {
+    group = "Reporting"
+    description = "Generate unit test coverage reports"
+    classDirectories = fileTree(
+            dir: "build/intermediates/classes/debug",
+            excludes: ['**/R.class',
+                       '**/R$*.class',
+                       '**/*$ViewInjector*.*',
+                       '**/BuildConfig.*',
+                       '**/Manifest*.*',
+                       '**/*Activity.class',
+                       '**/*Fragment.class',
+                       '**/*Activity$*',
+                       '**/*Fragment$*',]
+    )
+    sourceDirectories = fileTree(
+            dir: 'src/main/java',
+            excludes: ['**/*Activity.java', '**/*Fragment.java']
+    )
+    executionData = files("build/jacoco/testDebugUnitTest.exec")
+    reports.xml.enabled = true
 }
 
 dependencies {
