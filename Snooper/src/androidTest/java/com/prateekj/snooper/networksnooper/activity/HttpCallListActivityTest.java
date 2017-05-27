@@ -7,8 +7,8 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.prateekj.snooper.R;
 import com.prateekj.snooper.networksnooper.model.HttpCall;
-import com.prateekj.snooper.realm.RealmFactory;
 import com.prateekj.snooper.networksnooper.repo.SnooperRepo;
+import com.prateekj.snooper.realm.RealmFactory;
 import com.prateekj.snooper.rules.RealmCleanRule;
 
 import org.junit.Before;
@@ -22,6 +22,7 @@ import static android.app.Activity.RESULT_OK;
 import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.Intents.intending;
@@ -89,7 +90,7 @@ public class HttpCallListActivityTest {
   }
 
   @Test
-  public void shouldNotRenderAnyRecordWhenDeleteTapped() throws Exception {
+  public void shouldVerifyDeleteBehaviorWhenDeleteTapped() throws Exception {
     Date beforeDate = getDate(2017, 5, 2, 11, 22, 33);
     Date afterDate = getDate(2017, 5, 3, 11, 22, 33);
     saveHttpCall("https://www.google.com", "GET", 200, "OK", beforeDate);
@@ -113,11 +114,13 @@ public class HttpCallListActivityTest {
     )));
 
     onView(withId(R.id.delete_records_menu)).perform(click());
+    onView(withText(R.string.delete_records_dialog_cancellation)).perform(click());
+    onView(withId(R.string.delete_records_dialog_text)).check(doesNotExist());
 
+    onView(withId(R.id.delete_records_menu)).perform(click());
     onView(withText(R.string.delete_records_dialog_confirmation)).perform(click());
     onView(withText(R.string.title_activity_http_call_list)).check(matches(isDisplayed()));
     onView(withId(R.id.list)).check(matches(withListSize(0)));
-
   }
 
   private void verifyClickActionOnListItem(int itemIndex, int httpCallId) {

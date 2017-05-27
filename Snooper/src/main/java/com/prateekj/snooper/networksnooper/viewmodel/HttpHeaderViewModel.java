@@ -12,7 +12,6 @@ import static com.google.common.collect.Collections2.transform;
 
 public class HttpHeaderViewModel {
   private HttpHeader httpHeader;
-  private int headerId;
 
   public HttpHeaderViewModel(HttpHeader httpHeader) {
     this.httpHeader = httpHeader;
@@ -24,10 +23,6 @@ public class HttpHeaderViewModel {
 
   public String headerValues() {
     return StringUtils.join(toHeaderValues(), ";");
-  }
-
-  public int getHeaderId() {
-    return headerId;
   }
 
   private Iterator<String> toHeaderValues() {

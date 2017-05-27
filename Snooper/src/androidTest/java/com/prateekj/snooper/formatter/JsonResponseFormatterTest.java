@@ -26,4 +26,14 @@ public class JsonResponseFormatterTest {
 
     assertThat(formattedResponse, is(expectedResponse));
   }
+
+  @Test
+  public void shouldReturnSameResponseWhenExceptionOccurs() throws Exception {
+    ResponseFormatter formatter = new JsonResponseFormatter();
+    String invalidJSON = "{\"value\":\"Invalid JSON\", \"value\"}";
+    String formattedResponse = formatter.format(invalidJSON);
+
+    assertThat(formattedResponse, is(invalidJSON));
+  }
+
 }

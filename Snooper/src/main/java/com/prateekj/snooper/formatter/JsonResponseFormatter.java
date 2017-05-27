@@ -25,6 +25,6 @@ public class JsonResponseFormatter implements ResponseFormatter {
       e.printStackTrace();
       Log.d(TAG, e.getMessage(), e);
     }
-    return "";
+    return response;
   }
 }

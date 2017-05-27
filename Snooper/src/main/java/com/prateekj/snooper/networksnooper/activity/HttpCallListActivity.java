@@ -91,7 +91,7 @@ public class HttpCallListActivity extends SnooperBaseActivity implements HttpLis
       }
     };
     AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    builder.setMessage(R.string.delete_records_dialog_title).setPositiveButton(getString(R.string.delete_records_dialog_confirmation), dialogClickListener)
+    builder.setMessage(R.string.delete_records_dialog_text).setPositiveButton(getString(R.string.delete_records_dialog_confirmation), dialogClickListener)
       .setNegativeButton(getString(R.string.delete_records_dialog_cancellation), dialogClickListener).show();
   }
 

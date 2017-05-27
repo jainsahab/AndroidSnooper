@@ -1,5 +1,7 @@
 package com.prateekj.snooper.networksnooper.viewmodel;
 
+import android.support.annotation.ColorRes;
+
 import com.prateekj.snooper.R;
 import com.prateekj.snooper.networksnooper.model.HttpCall;
 import com.prateekj.snooper.networksnooper.model.HttpHeader;
@@ -51,7 +53,7 @@ public class HttpCallViewModel {
     return df.format(httpCall.getDate());
   }
 
-  public int getStatusColor() {
+  public @ColorRes int getStatusColor() {
     int statusCode = httpCall.getStatusCode();
 
     if (statusCode >= RANGE_START_HTTP_OK && statusCode <= RANGE_END_HTTP_OK) {
