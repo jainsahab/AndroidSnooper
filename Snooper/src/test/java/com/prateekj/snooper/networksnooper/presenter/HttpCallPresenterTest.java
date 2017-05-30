@@ -20,8 +20,6 @@ import org.mockito.stubbing.Answer;
 
 import java.util.Collections;
 
-import static com.prateekj.snooper.networksnooper.activity.HttpCallActivity.REQUEST_MODE;
-import static com.prateekj.snooper.networksnooper.activity.HttpCallActivity.RESPONSE_MODE;
 import static com.prateekj.snooper.utils.TestUtilities.getDate;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
@@ -110,17 +108,6 @@ public class HttpCallPresenterTest {
     httpCallPresenter.copyHttpCallBody(1);
     verify(responseFormatter, never()).format(requestBody);
     verify(view).copyToClipboard(expectedRequestBody);
-  }
-
-  @Test
-  public void shouldDismissDialogWhenRequestAndResponseDataHasBeenLoaded() throws Exception {
-    HttpCallPresenter httpCallPresenter = new HttpCallPresenter(1, repo, view, formatterFactory, fileUtil, backgroundTaskExecutor);
-
-    httpCallPresenter.onHttpCallBodyFormatted(REQUEST_MODE);
-    verify(view, never()).dismissProgressDialog();
-
-    httpCallPresenter.onHttpCallBodyFormatted(RESPONSE_MODE);
-    verify(view).dismissProgressDialog();
   }
 
   @NonNull

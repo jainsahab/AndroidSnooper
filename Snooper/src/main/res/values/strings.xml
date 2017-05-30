@@ -11,7 +11,7 @@
   <string name="request_headers">Request Headers</string>
   <string name="general_info">General</string>
   <string name="header_name_value_separator">" : "</string>
-  <string name="progress_wait_message">Just a Moment....</string>
+  <string name="progress_wait_message">"Just a Moment&#8230;</string>
   <string name="share">Share</string>
   <string name="mail_subject_share_logs">Log details</string>
   <string name="chooser_title_share_logs">Choose an application to open the log file with:</string>

@@ -18,9 +18,8 @@ public class JsonResponseFormatter implements ResponseFormatter {
       Object json = new JSONTokener(response).nextValue();
       if (json instanceof JSONObject) {
         return new JSONObject(response).toString(INDENT_SPACES);
-      } else if (json instanceof JSONArray) {
-        return new JSONArray(response).toString(INDENT_SPACES);
       }
+      return new JSONArray(response).toString(INDENT_SPACES);
     } catch (JSONException e) {
       e.printStackTrace();
       Log.d(TAG, e.getMessage(), e);

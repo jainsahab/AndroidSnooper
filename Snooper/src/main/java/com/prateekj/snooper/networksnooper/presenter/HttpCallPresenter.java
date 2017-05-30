@@ -2,24 +2,22 @@ package com.prateekj.snooper.networksnooper.presenter;
 
 import android.support.annotation.NonNull;
 
-import com.prateekj.snooper.networksnooper.activity.HttpCallTab;
 import com.prateekj.snooper.formatter.ResponseFormatter;
 import com.prateekj.snooper.formatter.ResponseFormatterFactory;
 import com.prateekj.snooper.infra.BackgroundTask;
 import com.prateekj.snooper.infra.BackgroundTaskExecutor;
+import com.prateekj.snooper.networksnooper.activity.HttpCallTab;
 import com.prateekj.snooper.networksnooper.model.HttpCall;
 import com.prateekj.snooper.networksnooper.model.HttpHeader;
 import com.prateekj.snooper.networksnooper.repo.SnooperRepo;
-import com.prateekj.snooper.utils.FileUtil;
 import com.prateekj.snooper.networksnooper.views.HttpCallView;
+import com.prateekj.snooper.utils.FileUtil;
 
 import org.apache.commons.lang3.StringUtils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-import static com.prateekj.snooper.networksnooper.activity.HttpCallActivity.REQUEST_MODE;
-import static com.prateekj.snooper.networksnooper.activity.HttpCallActivity.RESPONSE_MODE;
 import static com.prateekj.snooper.networksnooper.activity.HttpCallTab.RESPONSE;
 import static com.prateekj.snooper.networksnooper.model.HttpHeader.CONTENT_TYPE;
 import static java.lang.String.format;
@@ -94,17 +92,6 @@ public class HttpCallPresenter {
   private boolean contentHeadersPresent(HttpHeader contentTypeHeader) {
     return contentTypeHeader != null && contentTypeHeader.getValues().size() > 0;
   }
-
-  public void onHttpCallBodyFormatted(int mode) {
-    if (mode == REQUEST_MODE)
-      requestViewLoaded = true;
-    if (mode == RESPONSE_MODE)
-      responseViewLoaded = true;
-    if (requestViewLoaded && responseViewLoaded) {
-      view.dismissProgressDialog();
-    }
-  }
-
 
   private StringBuilder getHttpCallData() {
 

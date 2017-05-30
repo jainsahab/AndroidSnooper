@@ -1,7 +1,6 @@
 package com.prateekj.snooper.networksnooper.activity;
 
 import android.Manifest;
-import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Intent;
@@ -44,7 +43,6 @@ public class HttpCallActivity extends SnooperBaseActivity implements HttpCallVie
   private static final String LOGFILE_MIME_TYPE = "*/*";
   private HttpCallPresenter httpCallPresenter;
   private ViewPager pager;
-  private ProgressDialog progressDialog;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -58,18 +56,7 @@ public class HttpCallActivity extends SnooperBaseActivity implements HttpCallVie
     SnooperRepo repo = new SnooperRepo(RealmFactory.create(this));
     BackgroundTaskExecutor backgroundTaskExecutor = new BackgroundTaskExecutor(this);
     httpCallPresenter = new HttpCallPresenter(httpCallId, repo, this, new ResponseFormatterFactory(), fileUtil, backgroundTaskExecutor);
-    initializeProgressDialog();
     setupUi();
-  }
-
-  private void initializeProgressDialog() {
-    progressDialog = new ProgressDialog(this);
-    progressDialog.setCancelable(false);
-    progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-    progressDialog.setIndeterminate(true);
-    progressDialog.setIndeterminateDrawable(getResources().getDrawable(R.drawable.progress));
-    progressDialog.setMessage(getString(R.string.progress_wait_message));
-    progressDialog.show();
   }
 
   private void setupUi() {
@@ -141,16 +128,6 @@ public class HttpCallActivity extends SnooperBaseActivity implements HttpCallVie
   @Override
   public void showMessageShareNotAvailable() {
     Toast.makeText(this, R.string.permission_not_granted, Toast.LENGTH_SHORT).show();
-  }
-
-  @Override
-  public void onHttpCallBodyFormatted(int mode) {
-    httpCallPresenter.onHttpCallBodyFormatted(mode);
-  }
-
-  @Override
-  public void dismissProgressDialog() {
-    progressDialog.dismiss();
   }
 
   private void shareHttpCallData() {
