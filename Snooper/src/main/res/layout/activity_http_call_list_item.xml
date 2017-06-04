@@ -30,48 +30,67 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content">
 
+      <LinearLayout
+        android:id="@+id/response_info_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+          android:id="@+id/method"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginEnd="5dp"
+          android:layout_marginRight="5dp"
+          android:textSize="12sp"
+          android:textStyle="bold"
+          tools:text="POST"/>
+
+        <ImageView
+          android:layout_width="5dp"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center_vertical"
+          android:src="@drawable/circle"
+          android:textColor="@color/snooper_grey"/>
+
+        <TextView
+          android:id="@+id/status_code"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="5dp"
+          android:layout_marginRight="5dp"
+          android:textSize="12sp"
+          android:textStyle="bold"
+          tools:text="200"/>
+
+        <ImageView
+          android:layout_width="5dp"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center_vertical"
+          android:src="@drawable/circle"/>
+
+        <TextView
+          android:id="@+id/status_text"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="5dp"
+          android:layout_marginStart="5dp"
+          android:textSize="12sp"
+          android:textStyle="bold"
+          tools:text="OK"/>
+      </LinearLayout>
+
       <TextView
-        android:id="@+id/method"
+        android:id="@+id/error_text"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="5dp"
         android:layout_marginRight="5dp"
+        android:textColor="@color/snooper_red"
         android:textSize="12sp"
         android:textStyle="bold"
-        tools:text="POST"/>
-
-      <ImageView
-        android:layout_width="5dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:src="@drawable/circle"
-        android:textColor="@color/snooper_grey"/>
-
-      <TextView
-        android:id="@+id/status_code"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        tools:text="200"/>
-
-      <ImageView
-        android:layout_width="5dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:src="@drawable/circle"/>
-
-      <TextView
-        android:id="@+id/status_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginStart="5dp"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        tools:text="OK"/>
+        android:text="@string/failed"
+        tools:text="@string/failed"/>
 
       <View
         android:layout_width="0dp"

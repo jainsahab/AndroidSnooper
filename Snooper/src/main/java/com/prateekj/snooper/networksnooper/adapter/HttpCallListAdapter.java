@@ -15,6 +15,7 @@ import java.util.List;
 
 import static com.prateekj.snooper.utils.UIUtils.setTextColor;
 
+@SuppressWarnings("ResourceType")
 public class HttpCallListAdapter extends RecyclerView.Adapter<HttpCallListAdapter.HttpCallViewHolder> {
 
 
@@ -41,6 +42,8 @@ public class HttpCallListAdapter extends RecyclerView.Adapter<HttpCallListAdapte
       ((TextView) view.findViewById(R.id.status_code)).setText(httpCallViewModel.getStatusCode());
       ((TextView) view.findViewById(R.id.status_text)).setText(httpCallViewModel.getStatusText());
       ((TextView) view.findViewById(R.id.time_stamp)).setText(httpCallViewModel.getTimeStamp());
+      view.findViewById(R.id.response_info_container).setVisibility(httpCallViewModel.getResponseInfoVisibility());
+      view.findViewById(R.id.error_text).setVisibility(httpCallViewModel.getFailedTextVisibility());
       setTextColor((TextView) view.findViewById(R.id.method), httpCallViewModel.getStatusColor());
       setTextColor((TextView) view.findViewById(R.id.status_code), httpCallViewModel.getStatusColor());
       setTextColor((TextView) view.findViewById(R.id.status_text), httpCallViewModel.getStatusColor());

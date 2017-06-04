@@ -10,6 +10,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import static java.util.Locale.US;
 
 public class HttpCallViewModel {
@@ -63,5 +65,13 @@ public class HttpCallViewModel {
     } else {
       return R.color.snooper_red;
     }
+  }
+
+  public int getResponseInfoVisibility() {
+    return httpCall.hasError() ? GONE : VISIBLE;
+  }
+
+  public int getFailedTextVisibility() {
+    return httpCall.hasError() ? VISIBLE : GONE;
   }
 }

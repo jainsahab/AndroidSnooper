@@ -21,6 +21,7 @@ import io.realm.Realm;
 
 import static com.prateekj.snooper.networksnooper.activity.HttpCallActivity.HTTP_CALL_ID;
 
+@SuppressWarnings("ResourceType")
 public class HttpHeadersFragment extends Fragment {
 
   @Nullable
@@ -38,6 +39,8 @@ public class HttpHeadersFragment extends Fragment {
     ((TextView)view.findViewById(R.id.status_code)).setText(httpCallViewModel.getStatusCode());
     ((TextView)view.findViewById(R.id.status_text)).setText(httpCallViewModel.getStatusText());
     ((TextView)view.findViewById(R.id.time_stamp)).setText(httpCallViewModel.getTimeStamp());
+    view.findViewById(R.id.response_info_container).setVisibility(httpCallViewModel.getResponseInfoVisibility());
+    view.findViewById(R.id.error_text).setVisibility(httpCallViewModel.getFailedTextVisibility());
     ((NonScrollListView)view.findViewById(R.id.response_header_list)).setAdapter(HttpHeaderAdapter.newInstance(httpCallViewModel.getResponseHeaders()));
     ((NonScrollListView)view.findViewById(R.id.request_header_list)).setAdapter(HttpHeaderAdapter.newInstance(httpCallViewModel.getRequestHeaders()));
     return view;

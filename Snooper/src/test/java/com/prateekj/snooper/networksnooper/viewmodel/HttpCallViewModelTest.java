@@ -11,6 +11,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.junit.Assert.assertEquals;
@@ -102,5 +104,29 @@ public class HttpCallViewModelTest {
       .build();
     HttpCallViewModel viewModel = new HttpCallViewModel(httpCall);
     assertEquals(viewModel.getStatusColor(), R.color.snooper_red);
+  }
+
+  @Test
+  public void shouldReturnResponseInfoContainerVisibilityAsVisible() throws Exception {
+    assertThat(httpCallViewModel.getResponseInfoVisibility(), is(VISIBLE));
+  }
+
+  @Test
+  public void shouldReturnResponseInfoContainerVisibilityAsGone() throws Exception {
+    HttpCall httpCall = new HttpCall.Builder().withError("error").build();
+    HttpCallViewModel httpCallViewModel = new HttpCallViewModel(httpCall);
+    assertThat(httpCallViewModel.getResponseInfoVisibility(), is(GONE));
+  }
+
+  @Test
+  public void shouldReturnFailedTextVisibilityAsGone() throws Exception {
+    assertThat(httpCallViewModel.getFailedTextVisibility(), is(GONE));
+  }
+
+  @Test
+  public void shouldReturnFailedTextVisibilityAsVisible() throws Exception {
+    HttpCall httpCall = new HttpCall.Builder().withError("error").build();
+    HttpCallViewModel httpCallViewModel = new HttpCallViewModel(httpCall);
+    assertThat(httpCallViewModel.getFailedTextVisibility(), is(VISIBLE));
   }
 }

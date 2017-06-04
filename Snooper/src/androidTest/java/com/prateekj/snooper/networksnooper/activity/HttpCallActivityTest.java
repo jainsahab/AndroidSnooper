@@ -124,7 +124,7 @@ public class HttpCallActivityTest {
     String requestPayload = readFrom("person_details_raw_request.json");
     String error = "java.net.ConnectException: failed to connect to localhost/127.0.0.1 " +
       "(port 80) after 30000ms: isConnected failed: ECONNREFUSED (Connection refused)";
-    saveHttpCallWithError("https://www.abc.com/person/1", "GET", 200, "OK", error, requestPayload);
+    saveHttpCallWithError("https://www.abc.com/person/1", "GET", error, requestPayload);
 
     Intent intent = new Intent();
     intent.putExtra(HTTP_CALL_ID, 1);
@@ -142,9 +142,7 @@ public class HttpCallActivityTest {
     onView(withText("HEADERS")).check(matches(isDisplayed())).perform(click());
 
     onView(withText("https://www.abc.com/person/1")).check(matches(isDisplayed()));
-    onView(withText("GET")).check(matches(isDisplayed()));
-    onView(withText("200")).check(matches(isDisplayed()));
-    onView(withText("OK")).check(matches(isDisplayed()));
+    onView(withText("FAILED")).check(matches(isDisplayed()));
     onView(withText("06/02/2017 11:22:33")).check(matches(isDisplayed()));
 
     onView(withText(R.string.request_headers)).perform(click());
@@ -200,15 +198,11 @@ public class HttpCallActivityTest {
     snooperRepo.save(httpCall);
   }
 
-  private void saveHttpCallWithError(String url, String method, int statusCode,
-                            String statusText, String error, String requestPayload) {
+  private void saveHttpCallWithError(String url, String method, String error, String requestPayload) {
     Map<String, List<String>> requestHeaders = getRequestHeaders();
     HttpCall httpCall = new HttpCall.Builder()
       .withUrl(url)
       .withMethod(method)
-      .withStatusCode(statusCode)
-      .withStatusText(statusText)
-      .withResponseBody(null)
       .withError(error)
       .withPayload(requestPayload)
       .withRequestHeaders(requestHeaders)

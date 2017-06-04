@@ -23,4 +23,5 @@
   <string name="delete_records_dialog_text">Are you sure you want to delete all the records ?</string>
   <string name="accordion_header">accordion_header</string>
   <string name="accordion_body">accordion_body</string>
+  <string name="failed">FAILED</string>
 </resources>

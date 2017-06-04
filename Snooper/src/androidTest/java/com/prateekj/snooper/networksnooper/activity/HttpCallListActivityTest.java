@@ -91,10 +91,9 @@ public class HttpCallListActivityTest {
 
   @Test
   public void shouldVerifyDeleteBehaviorWhenDeleteTapped() throws Exception {
-    Date beforeDate = getDate(2017, 5, 2, 11, 22, 33);
-    Date afterDate = getDate(2017, 5, 3, 11, 22, 33);
-    saveHttpCall("https://www.google.com", "GET", 200, "OK", beforeDate);
-    saveHttpCall("https://www.facebook.com", "GET", 200, "OK", afterDate);
+    saveErrorHttpCall("https://www.abc.com", "GET", getDate(2017, 5, 1, 11, 22, 33));
+    saveHttpCall("https://www.google.com", "GET", 200, "OK", getDate(2017, 5, 2, 11, 22, 33));
+    saveHttpCall("https://www.facebook.com", "GET", 200, "OK", getDate(2017, 5, 3, 11, 22, 33));
 
     activityRule.launchActivity(null);
     onView(withRecyclerView(R.id.list, 0)).check(matches(allOf(
@@ -111,6 +110,12 @@ public class HttpCallListActivityTest {
       hasDescendant(withText("200")),
       hasDescendant(withText("OK")),
       hasDescendant(withText("06/02/2017 11:22:33"))
+    )));
+
+    onView(withRecyclerView(R.id.list, 2)).check(matches(allOf(
+      hasDescendant(withText("https://www.abc.com")),
+      hasDescendant(withText("FAILED")),
+      hasDescendant(withText("06/01/2017 11:22:33"))
     )));
 
     onView(withId(R.id.delete_records_menu)).perform(click());
@@ -137,6 +142,18 @@ public class HttpCallListActivityTest {
       .withMethod(method)
       .withStatusCode(statusCode)
       .withStatusText(statusText)
+      .build();
+    httpCall.setDate(date);
+    snooperRepo.save(httpCall);
+  }
+
+  private void saveErrorHttpCall(String url, String method, Date date) {
+    String error = "java.net.ConnectException: failed to connect to localhost/127.0.0.1 " +
+      "(port 80) after 30000ms: isConnected failed: ECONNREFUSED (Connection refused)";
+    HttpCall httpCall = new HttpCall.Builder()
+      .withUrl(url)
+      .withMethod(method)
+      .withError(error)
       .build();
     httpCall.setDate(date);
     snooperRepo.save(httpCall);
