@@ -101,7 +101,8 @@ public class HttpCallActivity extends SnooperBaseActivity implements HttpCallVie
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     if (item.getItemId() == R.id.copy_menu) {
-      httpCallPresenter.copyHttpCallBody(pager.getCurrentItem());
+      HttpCallTab currentTab = httpCallRenderer.getTabs().get(pager.getCurrentItem());
+      httpCallPresenter.copyHttpCallBody(currentTab);
       return true;
     } else if (item.getItemId() == R.id.share_menu) {
       shareHttpCallData();

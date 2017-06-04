@@ -116,7 +116,6 @@ public class HttpCallActivityTest {
     intending(anyIntent()).respondWith(new Instrumentation.ActivityResult(RESULT_OK, new Intent()));
     onView(withId(R.id.share_menu)).perform(click());
     verifyClickActionOnShareMenu();
-
   }
 
   @Test
@@ -131,7 +130,10 @@ public class HttpCallActivityTest {
 
     activityRule.launchActivity(intent);
 
+    onView(withText("ERROR")).check(matches(isDisplayed()));
     onView(withText(error)).check(matches(isDisplayed()));
+    onView(withId(R.id.copy_menu)).perform(click());
+    assertThat(clipBoardText(), is(error));
 
     onView(withText("REQUEST")).check(matches(isDisplayed())).perform(click());
     onView(allOf(withId(R.id.payload_text), isDisplayed()))

@@ -20,6 +20,9 @@ import org.mockito.stubbing.Answer;
 
 import java.util.Collections;
 
+import static com.prateekj.snooper.networksnooper.activity.HttpCallTab.ERROR;
+import static com.prateekj.snooper.networksnooper.activity.HttpCallTab.REQUEST;
+import static com.prateekj.snooper.networksnooper.activity.HttpCallTab.RESPONSE;
 import static com.prateekj.snooper.utils.TestUtilities.getDate;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
@@ -63,22 +66,30 @@ public class HttpCallPresenterTest {
     when(formatterFactory.getFor("application/json")).thenReturn(responseFormatter);
     when(responseFormatter.format(responseBody)).thenReturn(formatResponseBody);
 
-    httpCallPresenter.copyHttpCallBody(0);
+    httpCallPresenter.copyHttpCallBody(RESPONSE);
     verify(responseFormatter).format(responseBody);
     verify(view).copyToClipboard(formatResponseBody);
   }
 
   @Test
-  public void shouldCopyEmptyStringIfContentHeaderIsMissingInResponseData() throws Exception {
+  public void shouldCopyResponseWithoutFormattingIfContentHeaderIsMissingInResponseData() throws Exception {
     String responseBody = "response body";
-    String expectedCopiedData = "";
     when(httpCall.getResponseHeader("Content-Type")).thenReturn(null);
-    when(httpCall.getResponseBody()).thenReturn(null);
+    when(httpCall.getResponseBody()).thenReturn(responseBody);
     when(formatterFactory.getFor("application/json")).thenReturn(responseFormatter);
 
-    httpCallPresenter.copyHttpCallBody(0);
+    httpCallPresenter.copyHttpCallBody(RESPONSE);
     verify(responseFormatter, never()).format(responseBody);
-    verify(view).copyToClipboard(expectedCopiedData);
+    verify(view).copyToClipboard(responseBody);
+  }
+
+  @Test
+  public void shouldCopyEmptyStringWhenResponseIsNotPresent() throws Exception {
+    when(httpCall.getResponseBody()).thenReturn(null);
+
+    httpCallPresenter.copyHttpCallBody(RESPONSE);
+
+    verify(view).copyToClipboard("");
   }
 
   @Test
@@ -90,22 +101,41 @@ public class HttpCallPresenterTest {
     when(formatterFactory.getFor("application/json")).thenReturn(responseFormatter);
     when(responseFormatter.format(requestBody)).thenReturn(formatRequestBody);
 
-    httpCallPresenter.copyHttpCallBody(1);
+    httpCallPresenter.copyHttpCallBody(REQUEST);
     verify(responseFormatter).format(requestBody);
     verify(view).copyToClipboard(formatRequestBody);
   }
 
   @Test
-  public void shouldCopyEmptyStringIfContentHeaderIsMissingInRequestData() throws Exception {
+  public void shouldCopyRequestWithoutFormattingIfContentHeaderIsMissingInRequestData() throws Exception {
     String requestBody = "response body";
-    String expectedRequestBody = "";
     when(httpCall.getRequestHeader("Content-Type")).thenReturn(null);
     when(httpCall.getPayload()).thenReturn(requestBody);
     when(formatterFactory.getFor("application/json")).thenReturn(responseFormatter);
 
-    httpCallPresenter.copyHttpCallBody(1);
+    httpCallPresenter.copyHttpCallBody(REQUEST);
     verify(responseFormatter, never()).format(requestBody);
-    verify(view).copyToClipboard(expectedRequestBody);
+    verify(view).copyToClipboard(requestBody);
+  }
+
+  @Test
+  public void shouldCopyEmptyStringWhenRequestIsNotPresent() throws Exception {
+    when(httpCall.getResponseBody()).thenReturn(null);
+
+    httpCallPresenter.copyHttpCallBody(REQUEST);
+
+    verify(view).copyToClipboard("");
+  }
+
+
+  @Test
+  public void shouldAskViewToCopyTheError() throws Exception {
+    String error = "error";
+    when(httpCall.getError()).thenReturn(error);
+
+    httpCallPresenter.copyHttpCallBody(ERROR);
+
+    verify(view).copyToClipboard(error);
   }
 
   @Test
