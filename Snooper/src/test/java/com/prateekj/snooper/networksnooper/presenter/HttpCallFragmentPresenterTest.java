@@ -9,7 +9,6 @@ import com.prateekj.snooper.infra.BackgroundTaskExecutor;
 import com.prateekj.snooper.networksnooper.model.HttpCall;
 import com.prateekj.snooper.networksnooper.model.HttpHeader;
 import com.prateekj.snooper.networksnooper.model.HttpHeaderValue;
-import com.prateekj.snooper.networksnooper.presenter.HttpCallFragmentPresenter;
 import com.prateekj.snooper.networksnooper.repo.SnooperRepo;
 import com.prateekj.snooper.networksnooper.viewmodel.HttpBodyViewModel;
 import com.prateekj.snooper.networksnooper.views.HttpCallBodyView;
@@ -22,6 +21,7 @@ import org.mockito.stubbing.Answer;
 
 import java.util.Collections;
 
+import static com.prateekj.snooper.networksnooper.activity.HttpCallActivity.ERROR_MODE;
 import static com.prateekj.snooper.networksnooper.activity.HttpCallActivity.REQUEST_MODE;
 import static com.prateekj.snooper.networksnooper.activity.HttpCallActivity.RESPONSE_MODE;
 import static org.mockito.Matchers.any;
@@ -43,6 +43,7 @@ public class HttpCallFragmentPresenterTest {
   private ResponseFormatter responseFormatter;
   private String responseBody;
   private String requestPayload;
+  private String error;
   private String formattedBody;
   private BackgroundTaskExecutor mockExecutor;
   private HttpCallBodyView httpCallBodyView;
@@ -51,6 +52,7 @@ public class HttpCallFragmentPresenterTest {
   public void setUp() throws Exception {
     responseBody = "response body";
     requestPayload = "payload";
+    error = "error";
     formattedBody = "formatted body";
     httpCall = mock(HttpCall.class);
     repo = mock(SnooperRepo.class);
@@ -62,6 +64,7 @@ public class HttpCallFragmentPresenterTest {
     responseFormatter = mock(ResponseFormatter.class);
     when(httpCall.getResponseBody()).thenReturn(responseBody);
     when(httpCall.getPayload()).thenReturn(requestPayload);
+    when(httpCall.getError()).thenReturn(error);
     when(repo.findById(HTTP_CALL_ID)).thenReturn(httpCall);
     when(factory.getFor(anyString())).thenReturn(responseFormatter);
     when(responseFormatter.format(anyString())).thenReturn(formattedBody);
@@ -89,6 +92,15 @@ public class HttpCallFragmentPresenterTest {
     verify(factory).getFor("application/xml");
     verify(responseFormatter).format(responseBody);
     verify(viewModel).init(formattedBody);
+  }
+
+  @Test
+  public void shouldInitializeWithErrorContent() throws Exception {
+    resolveBackgroundTask();
+
+    presenter.init(viewModel, ERROR_MODE);
+
+    verify(viewModel).init(error);
   }
 
   @Test

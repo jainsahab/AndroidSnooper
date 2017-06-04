@@ -13,11 +13,18 @@ public class SnooperInterceptor implements ClientHttpRequestInterceptor {
   public ClientHttpResponse intercept(HttpRequest request, byte[] byteArray,
                                       ClientHttpRequestExecution execution) throws IOException {
 
-    ClientHttpResponse streamResponse = execution.execute(request, byteArray);
-    BufferingClientHttpResponseWrapper httpResponse = new BufferingClientHttpResponseWrapper(streamResponse);
+    SpringHttpRequestTransformer transformer = new SpringHttpRequestTransformer();
     AndroidSnooper snooper = AndroidSnooper.getInstance();
-
-    HttpCall call = new SpringHttpRequestTransformer().transform(request, byteArray, httpResponse);
+    ClientHttpResponse streamResponse;
+    try {
+      streamResponse = execution.execute(request, byteArray);
+    } catch (Exception e) {
+      HttpCall call = transformer.transform(request, byteArray, e);
+      snooper.record(call);
+      throw e;
+    }
+    BufferingClientHttpResponseWrapper httpResponse = new BufferingClientHttpResponseWrapper(streamResponse);
+    HttpCall call = transformer.transform(request, byteArray, httpResponse);
     snooper.record(call);
     return httpResponse;
   }

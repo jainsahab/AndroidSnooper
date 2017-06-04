@@ -5,6 +5,7 @@
   <string name="request">REQUEST</string>
   <string name="response">RESPONSE</string>
   <string name="headers">HEADERS</string>
+  <string name="error">ERROR</string>
   <string name="copy">Copy</string>
   <string name="done">DONE</string>
   <string name="response_headers">Response Headers</string>

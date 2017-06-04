@@ -3,6 +3,7 @@ package com.prateekj.snooper.networksnooper.activity;
 import android.app.Instrumentation;
 import android.content.ClipboardManager;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 
 import com.google.common.collect.ImmutableMap;
@@ -118,6 +119,41 @@ public class HttpCallActivityTest {
 
   }
 
+  @Test
+  public void shouldRenderRequestAndErrorBody() throws Exception {
+    String requestPayload = readFrom("person_details_raw_request.json");
+    String error = "java.net.ConnectException: failed to connect to localhost/127.0.0.1 " +
+      "(port 80) after 30000ms: isConnected failed: ECONNREFUSED (Connection refused)";
+    saveHttpCallWithError("https://www.abc.com/person/1", "GET", 200, "OK", error, requestPayload);
+
+    Intent intent = new Intent();
+    intent.putExtra(HTTP_CALL_ID, 1);
+
+    activityRule.launchActivity(intent);
+
+    onView(withText(error)).check(matches(isDisplayed()));
+
+    onView(withText("REQUEST")).check(matches(isDisplayed())).perform(click());
+    onView(allOf(withId(R.id.payload_text), isDisplayed()))
+      .check(matches(withText(readFrom("person_details_formatted_request.json"))));
+    onView(withId(R.id.copy_menu)).perform(click());
+    assertThat(clipBoardText(), is(readFrom("person_details_formatted_request.json")));
+
+    onView(withText("HEADERS")).check(matches(isDisplayed())).perform(click());
+
+    onView(withText("https://www.abc.com/person/1")).check(matches(isDisplayed()));
+    onView(withText("GET")).check(matches(isDisplayed()));
+    onView(withText("200")).check(matches(isDisplayed()));
+    onView(withText("OK")).check(matches(isDisplayed()));
+    onView(withText("06/02/2017 11:22:33")).check(matches(isDisplayed()));
+
+    onView(withText(R.string.request_headers)).perform(click());
+    verifyRequestHeader("content-type", "application/json");
+    verifyRequestHeader("content-length", "403");
+    verifyRequestHeader("accept-language", "en-US,en;q=0.8,hi;q=0.6");
+    verifyRequestHeader(":scheme", "https");
+  }
+
   private void verifyResponseHeader(String headerName, String headerValue) {
     onData(withHeaderData(headerName, headerValue)).
       inAdapterView(withId(R.id.response_header_list)).
@@ -146,20 +182,10 @@ public class HttpCallActivityTest {
     return clipboard.getPrimaryClip().getItemAt(lastItemIndex).getText().toString();
   }
 
-  private void saveHttpCall(String url, String method,
-                            int statusCode, String statusText, String responseBody, String requestPayload) {
-    Map<String, List<String>> requestHeaders = ImmutableMap.of(
-      "content-type", singletonList("application/json"),
-      "content-length", singletonList("403"),
-      "accept-language", asList("en-US,en", "q=0.8,hi", "q=0.6"),
-      ":scheme", singletonList("https")
-    );
-    Map<String, List<String>> responseHeaders = ImmutableMap.of(
-      "content-type", singletonList("application/json"),
-      "cache-control", singletonList("no-cache"),
-      "content-disposition", singletonList("attachment"),
-      "date", singletonList("Sun, 02 Apr 2017 08:54:39 GMT")
-    );
+  private void saveHttpCall(String url, String method, int statusCode,
+                            String statusText, String responseBody, String requestPayload) {
+    Map<String, List<String>> requestHeaders = getRequestHeaders();
+    Map<String, List<String>> responseHeaders = getResponseHeaders();
     HttpCall httpCall = new HttpCall.Builder()
       .withUrl(url)
       .withMethod(method)
@@ -172,6 +198,43 @@ public class HttpCallActivityTest {
       .build();
     httpCall.setDate(getDate(2017, 5, 2, 11, 22, 33));
     snooperRepo.save(httpCall);
+  }
+
+  private void saveHttpCallWithError(String url, String method, int statusCode,
+                            String statusText, String error, String requestPayload) {
+    Map<String, List<String>> requestHeaders = getRequestHeaders();
+    HttpCall httpCall = new HttpCall.Builder()
+      .withUrl(url)
+      .withMethod(method)
+      .withStatusCode(statusCode)
+      .withStatusText(statusText)
+      .withResponseBody(null)
+      .withError(error)
+      .withPayload(requestPayload)
+      .withRequestHeaders(requestHeaders)
+      .build();
+    httpCall.setDate(getDate(2017, 5, 2, 11, 22, 33));
+    snooperRepo.save(httpCall);
+  }
+
+  @NonNull
+  private Map<String, List<String>> getResponseHeaders() {
+    return ImmutableMap.of(
+        "content-type", singletonList("application/json"),
+        "cache-control", singletonList("no-cache"),
+        "content-disposition", singletonList("attachment"),
+        "date", singletonList("Sun, 02 Apr 2017 08:54:39 GMT")
+      );
+  }
+
+  @NonNull
+  private Map<String, List<String>> getRequestHeaders() {
+    return ImmutableMap.of(
+        "content-type", singletonList("application/json"),
+        "content-length", singletonList("403"),
+        "accept-language", asList("en-US,en", "q=0.8,hi", "q=0.6"),
+        ":scheme", singletonList("https")
+      );
   }
 
   private void verifyClickActionOnShareMenu() {

@@ -7,8 +7,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.UnknownHostException;
 import java.util.Arrays;
 
 import static com.prateekj.snooper.networksnooper.model.HttpHeader.CONTENT_TYPE;
@@ -56,6 +58,33 @@ public class SpringHttpRequestTransformerTest {
     assertThat(httpCall.getResponseHeaders().size(), is(1));
     assertNotNull(httpCall.getResponseHeader(CONTENT_TYPE));
     assertNotNull(httpCall.getRequestHeader(CONTENT_TYPE));
+  }
+
+  @Test
+  public void shouldTransformHttpCallFromClientSideError() throws Exception {
+    String url = "https://ajax.googleapis.com/ajax/services/search/web?v=1.0";
+    URI uri = create(url);
+    String requestBody = "requestBody";
+    HttpHeaders httpHeaders = new HttpHeaders();
+    httpHeaders.put("Content-Type", Arrays.asList("application/json"));
+
+    HttpRequest httpRequest = mock(HttpRequest.class);
+    when(httpRequest.getMethod()).thenReturn(POST);
+    when(httpRequest.getURI()).thenReturn(uri);
+    when(httpRequest.getHeaders()).thenReturn(httpHeaders);
+
+    IOException ioException = new UnknownHostException("Unable to connect");
+
+    SpringHttpRequestTransformer transformer = new SpringHttpRequestTransformer();
+
+    HttpCall httpCall = transformer.transform(httpRequest, toBytes(requestBody), ioException);
+
+    assertThat(httpCall.getMethod(), is("POST"));
+    assertThat(httpCall.getPayload(), is(requestBody));
+    assertThat(httpCall.getUrl(), is(url));
+    assertThat(httpCall.getRequestHeaders().size(), is(1));
+    assertNotNull(httpCall.getRequestHeader(CONTENT_TYPE));
+    assertThat(httpCall.getError(), is("java.net.UnknownHostException: Unable to connect"));
   }
 
   public byte[] toBytes(String string) {

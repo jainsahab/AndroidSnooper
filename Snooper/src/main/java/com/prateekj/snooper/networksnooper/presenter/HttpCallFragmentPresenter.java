@@ -14,6 +14,7 @@ import com.prateekj.snooper.networksnooper.repo.SnooperRepo;
 import com.prateekj.snooper.networksnooper.viewmodel.HttpBodyViewModel;
 import com.prateekj.snooper.networksnooper.views.HttpCallBodyView;
 
+import static com.prateekj.snooper.networksnooper.activity.HttpCallActivity.ERROR_MODE;
 import static com.prateekj.snooper.networksnooper.activity.HttpCallActivity.REQUEST_MODE;
 import static com.prateekj.snooper.networksnooper.model.HttpHeader.CONTENT_TYPE;
 
@@ -57,6 +58,9 @@ public class HttpCallFragmentPresenter {
   }
 
   private String getBodyToFormat(HttpCall httpCall) {
+    if (this.mode == ERROR_MODE) {
+      return httpCall.getError();
+    }
     return this.mode == REQUEST_MODE ? httpCall.getPayload() : httpCall.getResponseBody();
   }
 

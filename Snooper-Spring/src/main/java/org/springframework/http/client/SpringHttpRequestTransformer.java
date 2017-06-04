@@ -22,4 +22,14 @@ public class SpringHttpRequestTransformer {
       .withResponseHeaders(httpResponse.getHeaders())
       .build();
   }
+
+  public HttpCall transform(HttpRequest httpRequest, byte[] requestPayload, Exception e) throws IOException {
+    return new HttpCall.Builder()
+      .withUrl(httpRequest.getURI().toString())
+      .withPayload(new String(requestPayload))
+      .withMethod(httpRequest.getMethod().toString())
+      .withRequestHeaders(httpRequest.getHeaders())
+      .withError(e.toString())
+      .build();
+  }
 }

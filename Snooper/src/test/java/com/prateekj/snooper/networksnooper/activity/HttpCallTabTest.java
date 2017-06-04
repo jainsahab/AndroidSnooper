@@ -4,8 +4,6 @@ import com.prateekj.snooper.R;
 
 import org.junit.Test;
 
-import java.util.List;
-
 import static com.prateekj.snooper.networksnooper.activity.HttpCallTab.HEADERS;
 import static com.prateekj.snooper.networksnooper.activity.HttpCallTab.REQUEST;
 import static com.prateekj.snooper.networksnooper.activity.HttpCallTab.RESPONSE;
@@ -41,14 +39,5 @@ public class HttpCallTabTest {
     assertThat(HttpCallTab.byIndex(1), is(REQUEST));
     assertThat(HttpCallTab.byIndex(2), is(HEADERS));
     assertNull(HttpCallTab.byIndex(3));
-  }
-
-  @Test
-  public void shouldReturnSortedTabs() throws Exception {
-    List<HttpCallTab> values = HttpCallTab.sortedValues();
-    assertThat(values.size(), is(3));
-    assertThat(values.get(0), is(RESPONSE));
-    assertThat(values.get(1), is(REQUEST));
-    assertThat(values.get(2), is(HEADERS));
   }
 }

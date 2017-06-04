@@ -24,6 +24,7 @@ import com.prateekj.snooper.infra.BackgroundTaskExecutor;
 import com.prateekj.snooper.networksnooper.fragment.HttpCallFragment;
 import com.prateekj.snooper.networksnooper.fragment.HttpHeadersFragment;
 import com.prateekj.snooper.networksnooper.presenter.HttpCallPresenter;
+import com.prateekj.snooper.networksnooper.renderer.HttpCallRenderer;
 import com.prateekj.snooper.networksnooper.repo.SnooperRepo;
 import com.prateekj.snooper.networksnooper.views.HttpCallView;
 import com.prateekj.snooper.realm.RealmFactory;
@@ -39,10 +40,12 @@ public class HttpCallActivity extends SnooperBaseActivity implements HttpCallVie
   public static final String HTTP_CALL_MODE = "HTTP_CALL_MODE";
   public static final int REQUEST_MODE = 1;
   public static final int RESPONSE_MODE = 2;
+  public static final int ERROR_MODE = 3;
   public static final int WRITE_EXTERNAL_STORAGE_REQUEST_CODE = 1;
   private static final String LOGFILE_MIME_TYPE = "*/*";
   private HttpCallPresenter httpCallPresenter;
   private ViewPager pager;
+  private HttpCallRenderer httpCallRenderer;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -56,13 +59,15 @@ public class HttpCallActivity extends SnooperBaseActivity implements HttpCallVie
     SnooperRepo repo = new SnooperRepo(RealmFactory.create(this));
     BackgroundTaskExecutor backgroundTaskExecutor = new BackgroundTaskExecutor(this);
     httpCallPresenter = new HttpCallPresenter(httpCallId, repo, this, new ResponseFormatterFactory(), fileUtil, backgroundTaskExecutor);
+    boolean hasError = repo.findById(httpCallId).getError() != null;
+    httpCallRenderer = new HttpCallRenderer(this, hasError);
     setupUi();
   }
 
   private void setupUi() {
     pager = (ViewPager) findViewById(R.id.pager);
     TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-    for (HttpCallTab tab : HttpCallTab.sortedValues()) {
+    for (HttpCallTab tab : httpCallRenderer.getTabs()) {
       tabLayout.addTab(tabLayout.newTab().setText(tab.getTabTitle()));
     }
     tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
@@ -144,7 +149,8 @@ public class HttpCallActivity extends SnooperBaseActivity implements HttpCallVie
     });
   }
 
-  private HttpCallFragment getResponseBodyFragment() {
+  @Override
+  public Fragment getResponseBodyFragment() {
     HttpCallFragment fragment = new HttpCallFragment();
     Bundle extras = getIntent().getExtras();
     extras.putInt(HTTP_CALL_MODE, RESPONSE_MODE);
@@ -152,7 +158,8 @@ public class HttpCallActivity extends SnooperBaseActivity implements HttpCallVie
     return fragment;
   }
 
-  private HttpCallFragment getRequestBodyFragment() {
+  @Override
+  public Fragment getRequestBodyFragment() {
     HttpCallFragment fragment = new HttpCallFragment();
     Bundle extras = getIntent().getExtras();
     extras.putInt(HTTP_CALL_MODE, REQUEST_MODE);
@@ -160,9 +167,19 @@ public class HttpCallActivity extends SnooperBaseActivity implements HttpCallVie
     return fragment;
   }
 
-  private HttpHeadersFragment getHeadersFragment() {
+  @Override
+  public Fragment getHeadersFragment() {
     HttpHeadersFragment fragment = new HttpHeadersFragment();
     fragment.setArguments(getIntent().getExtras());
+    return fragment;
+  }
+
+  @Override
+  public Fragment getExceptionFragment() {
+    HttpCallFragment fragment = new HttpCallFragment();
+    Bundle extras = getIntent().getExtras();
+    extras.putInt(HTTP_CALL_MODE, ERROR_MODE);
+    fragment.setArguments(extras);
     return fragment;
   }
 
@@ -174,16 +191,12 @@ public class HttpCallActivity extends SnooperBaseActivity implements HttpCallVie
 
     @Override
     public Fragment getItem(int position) {
-      if (position == 0)
-        return getResponseBodyFragment();
-      if (position == 1)
-        return getRequestBodyFragment();
-      return getHeadersFragment();
+      return httpCallRenderer.getFragment(position);
     }
 
     @Override
     public int getCount() {
-      return HttpCallTab.values().length;
+      return httpCallRenderer.getTabs().size();
     }
   }
 }

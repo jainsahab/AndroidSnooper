@@ -18,28 +18,33 @@ import okio.Buffer;
 
 import static okhttp3.ResponseBody.create;
 
-public class SnooperInterceptor implements Interceptor{
+public class SnooperInterceptor implements Interceptor {
 
   public static final String TAG = SnooperInterceptor.class.getSimpleName();
 
   @Override
   public Response intercept(Chain chain) throws IOException {
+    Response response;
+    String responseBody;
     Request request = chain.request();
-    Response response = chain.proceed(request);
-    String responseBody = response.body().string();
-
-    HttpCall httpCall = new HttpCall.Builder()
+    HttpCall.Builder builder = new HttpCall.Builder()
       .withUrl(request.url().toString())
       .withPayload(getRequestBody(request))
       .withMethod(request.method())
-      .withResponseBody(responseBody)
+      .withRequestHeaders(headers(request.headers()));
+    try {
+      response = chain.proceed(request);
+      responseBody = response.body().string();
+    } catch (Exception e) {
+      HttpCall httpCall = builder.withError(e.toString()).build();
+      AndroidSnooper.getInstance().record(httpCall);
+      throw e;
+    }
+    HttpCall httpCall = builder.withResponseBody(responseBody)
       .withStatusCode(response.code())
       .withStatusText(response.message())
-      .withRequestHeaders(headers(request.headers()))
-      .withResponseHeaders(headers(response.headers()))
-      .build();
+      .withResponseHeaders(headers(response.headers())).build();
     AndroidSnooper.getInstance().record(httpCall);
-
     return response.newBuilder().body(create(response.body().contentType(), responseBody)).build();
   }
 
@@ -48,14 +53,14 @@ public class SnooperInterceptor implements Interceptor{
     for (String headerName : headers.names()) {
       extractedHeaders.put(headerName, headers.values(headerName));
     }
-    return  extractedHeaders;
+    return extractedHeaders;
   }
 
   private String getRequestBody(Request request) {
     try {
       final Request copy = request.newBuilder().build();
       final Buffer buffer = new Buffer();
-      if(copy.body() == null) {
+      if (copy.body() == null) {
         return "";
       }
       copy.body().writeTo(buffer);

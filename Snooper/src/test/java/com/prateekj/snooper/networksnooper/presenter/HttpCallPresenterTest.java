@@ -39,6 +39,7 @@ public class HttpCallPresenterTest {
   private SnooperRepo repo;
   private FileUtil fileUtil;
   private BackgroundTaskExecutor backgroundTaskExecutor;
+  private HttpCallPresenter httpCallPresenter;
 
   @Before
   public void setUp() throws Exception {
@@ -50,6 +51,7 @@ public class HttpCallPresenterTest {
     fileUtil = mock(FileUtil.class);
     backgroundTaskExecutor = mock(BackgroundTaskExecutor.class);
     when(repo.findById(1)).thenReturn(httpCall);
+    httpCallPresenter = new HttpCallPresenter(1, repo, view, formatterFactory, fileUtil, backgroundTaskExecutor);
   }
 
   @Test
@@ -60,7 +62,6 @@ public class HttpCallPresenterTest {
     when(httpCall.getResponseBody()).thenReturn(responseBody);
     when(formatterFactory.getFor("application/json")).thenReturn(responseFormatter);
     when(responseFormatter.format(responseBody)).thenReturn(formatResponseBody);
-    HttpCallPresenter httpCallPresenter = new HttpCallPresenter(1, repo, view, formatterFactory, fileUtil, backgroundTaskExecutor);
 
     httpCallPresenter.copyHttpCallBody(0);
     verify(responseFormatter).format(responseBody);
@@ -74,7 +75,6 @@ public class HttpCallPresenterTest {
     when(httpCall.getResponseHeader("Content-Type")).thenReturn(null);
     when(httpCall.getResponseBody()).thenReturn(null);
     when(formatterFactory.getFor("application/json")).thenReturn(responseFormatter);
-    HttpCallPresenter httpCallPresenter = new HttpCallPresenter(1, repo, view, formatterFactory, fileUtil, backgroundTaskExecutor);
 
     httpCallPresenter.copyHttpCallBody(0);
     verify(responseFormatter, never()).format(responseBody);
@@ -89,7 +89,6 @@ public class HttpCallPresenterTest {
     when(httpCall.getPayload()).thenReturn(requestBody);
     when(formatterFactory.getFor("application/json")).thenReturn(responseFormatter);
     when(responseFormatter.format(requestBody)).thenReturn(formatRequestBody);
-    HttpCallPresenter httpCallPresenter = new HttpCallPresenter(1, repo, view, formatterFactory, fileUtil, backgroundTaskExecutor);
 
     httpCallPresenter.copyHttpCallBody(1);
     verify(responseFormatter).format(requestBody);
@@ -103,19 +102,10 @@ public class HttpCallPresenterTest {
     when(httpCall.getRequestHeader("Content-Type")).thenReturn(null);
     when(httpCall.getPayload()).thenReturn(requestBody);
     when(formatterFactory.getFor("application/json")).thenReturn(responseFormatter);
-    HttpCallPresenter httpCallPresenter = new HttpCallPresenter(1, repo, view, formatterFactory, fileUtil, backgroundTaskExecutor);
 
     httpCallPresenter.copyHttpCallBody(1);
     verify(responseFormatter, never()).format(requestBody);
     verify(view).copyToClipboard(expectedRequestBody);
-  }
-
-  @NonNull
-  private HttpHeader getJsonContentTypeHeader() {
-    HttpHeaderValue headerValue = new HttpHeaderValue("application/json");
-    HttpHeader httpHeader = new HttpHeader("Content-Type");
-    httpHeader.setValues(Collections.singletonList(headerValue));
-    return httpHeader;
   }
 
   @Test
@@ -134,10 +124,8 @@ public class HttpCallPresenterTest {
     when(responseFormatter.format(requestBody)).thenReturn(formatRequestBody);
     when(responseFormatter.format(responseBody)).thenReturn(formatResponseBody);
     when(fileUtil.createLogFile(any(StringBuilder.class), eq("2017_05_12_01_02_03.txt"))).thenReturn("filePath");
-
     resolveBackgroundTask();
 
-    HttpCallPresenter httpCallPresenter = new HttpCallPresenter(1, repo, view, formatterFactory, fileUtil, backgroundTaskExecutor);
 
     httpCallPresenter.shareHttpCallBody();
     verify(responseFormatter, times(1)).format(requestBody);
@@ -161,10 +149,8 @@ public class HttpCallPresenterTest {
     when(responseFormatter.format(requestBody)).thenReturn(formatRequestBody);
     when(responseFormatter.format(responseBody)).thenReturn(formatResponseBody);
     when(fileUtil.createLogFile(any(StringBuilder.class), eq("2017_05_12_01_02_03.txt"))).thenReturn("");
-
     resolveBackgroundTask();
 
-    HttpCallPresenter httpCallPresenter = new HttpCallPresenter(1, repo, view, formatterFactory, fileUtil, backgroundTaskExecutor);
 
     httpCallPresenter.shareHttpCallBody();
     verify(responseFormatter, times(1)).format(requestBody);
@@ -174,10 +160,17 @@ public class HttpCallPresenterTest {
 
   @Test
   public void shouldShowShareNotAvailableDialogWhenPermissionIsDenied() throws Exception {
-    HttpCallPresenter httpCallPresenter = new HttpCallPresenter(1, repo, view, formatterFactory, fileUtil, backgroundTaskExecutor);
     httpCallPresenter.onPermissionDenied();
 
     verify(view).showMessageShareNotAvailable();
+  }
+
+  @NonNull
+  private HttpHeader getJsonContentTypeHeader() {
+    HttpHeaderValue headerValue = new HttpHeaderValue("application/json");
+    HttpHeader httpHeader = new HttpHeader("Content-Type");
+    httpHeader.setValues(Collections.singletonList(headerValue));
+    return httpHeader;
   }
 
   private void resolveBackgroundTask() {

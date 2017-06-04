@@ -30,8 +30,6 @@ public class HttpCallPresenter {
   private HttpCall httpCall;
   private HttpCallView view;
   private ResponseFormatterFactory formatterFactory;
-  private boolean requestViewLoaded;
-  private boolean responseViewLoaded;
 
   public HttpCallPresenter(int callId, SnooperRepo snooperRepo, HttpCallView view, ResponseFormatterFactory formatterFactory, FileUtil fileUtil, BackgroundTaskExecutor executor) {
     this.httpCall = snooperRepo.findById(callId);
@@ -64,14 +62,14 @@ public class HttpCallPresenter {
     });
   }
 
+  public void onPermissionDenied() {
+    view.showMessageShareNotAvailable();
+  }
+
   @NonNull
   private String getLogFileName() {
     DateFormat df = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", US);
     return format("%s.txt", df.format(httpCall.getDate()));
-  }
-
-  public void onPermissionDenied() {
-    view.showMessageShareNotAvailable();
   }
 
   private String getTextToCopy(int selectedItem) {

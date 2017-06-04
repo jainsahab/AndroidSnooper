@@ -2,15 +2,11 @@ package com.prateekj.snooper.networksnooper.activity;
 
 import com.prateekj.snooper.R;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
 public enum HttpCallTab {
   RESPONSE(0, R.string.response),
   REQUEST(1, R.string.request),
-  HEADERS(2, R.string.headers);
+  HEADERS(2, R.string.headers),
+  ERROR(0, R.string.error);
 
   private int index;
 
@@ -35,16 +31,5 @@ public enum HttpCallTab {
       }
     }
     return null;
-  }
-
-  public static List<HttpCallTab> sortedValues() {
-    List<HttpCallTab> tabs = Arrays.asList(HttpCallTab.values());
-    Collections.sort(tabs, new Comparator<HttpCallTab>() {
-      @Override
-      public int compare(HttpCallTab o1, HttpCallTab o2) {
-        return o1.getIndex() - o2.getIndex();
-      }
-    });
-    return tabs;
   }
 }

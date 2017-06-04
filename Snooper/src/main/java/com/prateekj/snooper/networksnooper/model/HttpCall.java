@@ -25,6 +25,7 @@ public class HttpCall extends RealmObject implements IncrementalIdModel {
   private Date date;
   private RealmList<HttpHeader> requestHeaders;
   private RealmList<HttpHeader> responseHeaders;
+  private String error;
 
   public HttpCall() {
     this.date = new Date();
@@ -72,6 +73,10 @@ public class HttpCall extends RealmObject implements IncrementalIdModel {
 
   public HttpHeader getResponseHeader(final String name) {
     return filterFromCollection(name, getResponseHeaders());
+  }
+
+  public String getError() {
+    return error;
   }
 
   private HttpHeader filterFromCollection(final String name, List<HttpHeader> collection) {
@@ -155,6 +160,11 @@ public class HttpCall extends RealmObject implements IncrementalIdModel {
       RealmList<HttpHeader> realmList = new RealmList<>();
       realmList.addAll(HttpHeader.from(headers));
       httpCall.responseHeaders = realmList;
+      return this;
+    }
+
+    public Builder withError(String error) {
+      httpCall.error = error;
       return this;
     }
   }
