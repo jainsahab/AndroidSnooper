@@ -1,5 +1,11 @@
 # Release Notes
 
+## Version 1.3.0 (June 6, 2017)
+* Removed Data Binding dependency
+* Fixing infinite loader issue
+* Showing client side errors
+* Using timestamp to name the log file
+
 ## Version 1.0.2 (May 9, 2017)
 * Ability to share HTTP call data
 * Ability to delete old requests
