@@ -40,6 +40,7 @@
     </com.prateekj.snooper.customviews.AccordionView>
 
     <com.prateekj.snooper.customviews.AccordionView
+      android:id="@+id/response_header_container"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginBottom="10dp"
@@ -60,6 +61,7 @@
     </com.prateekj.snooper.customviews.AccordionView>
 
     <com.prateekj.snooper.customviews.AccordionView
+      android:id="@+id/request_header_container"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginBottom="10dp"

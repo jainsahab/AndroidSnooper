@@ -2,11 +2,13 @@ package com.prateekj.snooper.networksnooper.viewmodel;
 
 import com.prateekj.snooper.R;
 import com.prateekj.snooper.networksnooper.model.HttpCall;
+import com.prateekj.snooper.networksnooper.model.HttpCall.Builder;
 import com.prateekj.snooper.utils.TestUtilities;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +29,7 @@ public class HttpCallViewModelTest {
   public void setUp() throws Exception {
     final String url = "https://ajax.googleapis.com/ajax/services/search/web?v=1.0";
 
-    httpCall = new HttpCall.Builder()
+    httpCall = new Builder()
       .withUrl(url)
       .withMethod("POST")
       .withStatusCode(200)
@@ -83,8 +85,18 @@ public class HttpCallViewModelTest {
   }
 
   @Test
+  public void shouldGetResponseHeaderVisibilityAsGone() {
+    assertThat(httpCallViewModel.getResponseHeaderVisibility(), is(GONE));
+  }
+
+  @Test
+  public void shouldGetRequestHeaderVisibilityAsGone() {
+    assertThat(httpCallViewModel.getRequestHeaderVisibility(), is(GONE));
+  }
+
+  @Test
   public void shouldGetColorYellowWhenStatusCode3xx() {
-    HttpCall httpCall = new HttpCall.Builder()
+    HttpCall httpCall = new Builder()
       .withUrl(" url 1")
       .withMethod("POST")
       .withStatusCode(302)
@@ -96,7 +108,7 @@ public class HttpCallViewModelTest {
 
   @Test
   public void shouldGetColorRedWhenStatusCode4xx() {
-    HttpCall httpCall = new HttpCall.Builder()
+    HttpCall httpCall = new Builder()
       .withUrl(" url 1")
       .withMethod("POST")
       .withStatusCode(400)
@@ -113,7 +125,7 @@ public class HttpCallViewModelTest {
 
   @Test
   public void shouldReturnResponseInfoContainerVisibilityAsGone() throws Exception {
-    HttpCall httpCall = new HttpCall.Builder().withError("error").build();
+    HttpCall httpCall = new Builder().withError("error").build();
     HttpCallViewModel httpCallViewModel = new HttpCallViewModel(httpCall);
     assertThat(httpCallViewModel.getResponseInfoVisibility(), is(GONE));
   }
@@ -125,8 +137,28 @@ public class HttpCallViewModelTest {
 
   @Test
   public void shouldReturnFailedTextVisibilityAsVisible() throws Exception {
-    HttpCall httpCall = new HttpCall.Builder().withError("error").build();
+    HttpCall httpCall = new Builder().withError("error").build();
     HttpCallViewModel httpCallViewModel = new HttpCallViewModel(httpCall);
     assertThat(httpCallViewModel.getFailedTextVisibility(), is(VISIBLE));
+  }
+
+  @Test
+  public void shouldGetResponseHeaderVisibilityAsVisible() {
+    HttpCall httpCall = new Builder().withResponseHeaders(singleHeader()).build();
+    HttpCallViewModel httpCallViewModel = new HttpCallViewModel(httpCall);
+    assertThat(httpCallViewModel.getResponseHeaderVisibility(), is(VISIBLE));
+  }
+
+  @Test
+  public void shouldGetRequestHeaderVisibilityAsVisible() {
+    HttpCall httpCall = new Builder().withRequestHeaders(singleHeader()).build();
+    HttpCallViewModel httpCallViewModel = new HttpCallViewModel(httpCall);
+    assertThat(httpCallViewModel.getRequestHeaderVisibility(), is(VISIBLE));
+  }
+
+  private HashMap<String, List<String>> singleHeader() {
+    return new HashMap<String, List<String>>() {{
+      put("header1", Arrays.asList("headerValue"));
+    }};
   }
 }

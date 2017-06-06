@@ -43,6 +43,8 @@ public class HttpHeadersFragment extends Fragment {
     view.findViewById(R.id.error_text).setVisibility(httpCallViewModel.getFailedTextVisibility());
     ((NonScrollListView)view.findViewById(R.id.response_header_list)).setAdapter(HttpHeaderAdapter.newInstance(httpCallViewModel.getResponseHeaders()));
     ((NonScrollListView)view.findViewById(R.id.request_header_list)).setAdapter(HttpHeaderAdapter.newInstance(httpCallViewModel.getRequestHeaders()));
+    view.findViewById(R.id.response_header_container).setVisibility(httpCallViewModel.getResponseHeaderVisibility());
+    view.findViewById(R.id.request_header_container).setVisibility(httpCallViewModel.getRequestHeaderVisibility());
     return view;
   }
 }

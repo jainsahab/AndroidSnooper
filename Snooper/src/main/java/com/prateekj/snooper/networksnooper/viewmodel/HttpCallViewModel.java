@@ -74,4 +74,16 @@ public class HttpCallViewModel {
   public int getFailedTextVisibility() {
     return httpCall.hasError() ? VISIBLE : GONE;
   }
+
+  public int getResponseHeaderVisibility() {
+    return hasHeaders(httpCall.getResponseHeaders()) ? VISIBLE : GONE;
+  }
+
+  public int getRequestHeaderVisibility() {
+    return hasHeaders(httpCall.getRequestHeaders()) ? VISIBLE : GONE;
+  }
+
+  private boolean hasHeaders(List<HttpHeader> headers) {
+    return headers != null && headers.size() > 0;
+  }
 }
