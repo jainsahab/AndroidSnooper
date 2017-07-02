@@ -56,8 +56,8 @@ public class SpringHttpRequestTransformerTest {
     assertThat(httpCall.getStatusCode(), is(200));
     assertThat(httpCall.getRequestHeaders().size(), is(1));
     assertThat(httpCall.getResponseHeaders().size(), is(1));
-    assertNotNull(httpCall.getResponseHeader(CONTENT_TYPE));
-    assertNotNull(httpCall.getRequestHeader(CONTENT_TYPE));
+    assertNotNull(httpCall.getResponseHeaders().get(CONTENT_TYPE));
+    assertNotNull(httpCall.getRequestHeaders().get(CONTENT_TYPE));
   }
 
   @Test
@@ -83,7 +83,7 @@ public class SpringHttpRequestTransformerTest {
     assertThat(httpCall.getPayload(), is(requestBody));
     assertThat(httpCall.getUrl(), is(url));
     assertThat(httpCall.getRequestHeaders().size(), is(1));
-    assertNotNull(httpCall.getRequestHeader(CONTENT_TYPE));
+    assertNotNull(httpCall.getRequestHeaders().get(CONTENT_TYPE));
     assertThat(httpCall.getError(), is("java.net.UnknownHostException: Unable to connect"));
   }
 

@@ -40,7 +40,6 @@ public class HttpCallListActivity extends SnooperBaseActivity implements HttpLis
     httpCallList.addItemDecoration(itemDecoration);
     httpCallList.setItemAnimator(new DefaultItemAnimator());
     httpCallList.setAdapter(httpCallListAdapter);
-    httpCallList.invalidate();
   }
 
   @Override

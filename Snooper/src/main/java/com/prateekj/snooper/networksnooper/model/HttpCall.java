@@ -1,18 +1,12 @@
 package com.prateekj.snooper.networksnooper.model;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 public class HttpCall {
 
-  private int id;
   private String url;
   private String payload;
   private String method;
@@ -20,11 +14,8 @@ public class HttpCall {
   private String statusText;
   private int statusCode;
   private Date date;
-  private List<HttpHeader> requestHeaders;
-  private List<HttpHeader> responseHeaders;
-
-  private Map<String, List<String>> rawRequestHeaders = new HashMap<>();
-  private Map<String, List<String>> rawResponseHeaders = new HashMap<>();
+  private Map<String, List<String>> requestHeaders = new HashMap<>();
+  private Map<String, List<String>> responseHeaders = new HashMap<>();
   private String error;
 
   public HttpCall() {
@@ -59,54 +50,20 @@ public class HttpCall {
     return date;
   }
 
-  public List<HttpHeader> getRequestHeaders() {
+  public Map<String, List<String>> getRequestHeaders() {
     return requestHeaders;
   }
 
-  public Map<String, List<String>> getRawRequestHeaders() {
-    return rawRequestHeaders;
-  }
-
-  public Map<String, List<String>> getRawResponseHeaders() {
-    return rawResponseHeaders;
-  }
-
-  public HttpHeader getRequestHeader(final String name) {
-    return filterFromCollection(name, getRequestHeaders());
-  }
-
-  public List<HttpHeader> getResponseHeaders() {
+  public Map<String, List<String>> getResponseHeaders() {
     return responseHeaders;
-  }
-
-  public HttpHeader getResponseHeader(final String name) {
-    return filterFromCollection(name, getResponseHeaders());
   }
 
   public String getError() {
     return error;
   }
 
-  public boolean hasError() {
-    return getError() != null;
-  }
-
-  private HttpHeader filterFromCollection(final String name, List<HttpHeader> collection) {
-    Iterator<HttpHeader> iterator = Collections2.filter(collection, new Predicate<HttpHeader>() {
-      @Override
-      public boolean apply(HttpHeader header) {
-        return header.getName().equalsIgnoreCase(name);
-      }
-    }).iterator();
-    return iterator.hasNext() ? iterator.next() : null;
-  }
-
   public void setDate(Date date) {
     this.date = date;
-  }
-
-  public int getId() {
-    return id;
   }
 
   public static class Builder {
@@ -152,18 +109,12 @@ public class HttpCall {
     }
 
     public Builder withRequestHeaders(Map<String, List<String>> headers) {
-      List<HttpHeader> realmList = new ArrayList<>();
-      realmList.addAll(HttpHeader.from(headers));
-      httpCall.rawRequestHeaders = headers;
-      httpCall.requestHeaders = realmList;
+      httpCall.requestHeaders = headers;
       return this;
     }
 
     public Builder withResponseHeaders(Map<String, List<String>> headers) {
-      List<HttpHeader> realmList = new ArrayList<>();
-      realmList.addAll(HttpHeader.from(headers));
-      httpCall.rawResponseHeaders = headers;
-      httpCall.responseHeaders = realmList;
+      httpCall.responseHeaders = headers;
       return this;
     }
 

@@ -1,8 +1,5 @@
 package com.prateekj.snooper.networksnooper.model;
 
-import com.prateekj.snooper.networksnooper.model.HttpCall;
-import com.prateekj.snooper.networksnooper.model.HttpHeader;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,21 +9,20 @@ import java.util.List;
 import java.util.Map;
 
 import static java.util.Collections.singletonList;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 
-public class HttpCallTest {
-
-  private HttpCall call;
+public class HttpCallRecordTest {
+  private HttpCallRecord httpCallRecord;
 
   @Before
   public void setUp() throws Exception {
     final String url = "https://ajax.googleapis.com/ajax/services/search/web?v=1.0";
     final String responseBody = "responseBody";
     final String requestBody = "requestBody";
-    call = new HttpCall.Builder()
+    httpCallRecord = HttpCallRecord.from(new HttpCall.Builder()
       .withUrl(url)
       .withMethod("POST")
       .withPayload(requestBody)
@@ -35,43 +31,43 @@ public class HttpCallTest {
       .withStatusText("OK")
       .withRequestHeaders(getRequestHeaders())
       .withResponseHeaders(getResponseHeaders())
-      .build();
-    assertNotNull(call.getDate());
+      .build());
+    assertNotNull(httpCallRecord.getDate());
   }
 
   @Test
   public void shouldReturnRequestHeaderByGivenName() throws Exception {
-    HttpHeader requestHeader = call.getRequestHeader("User-Agent");
+    HttpHeader requestHeader = httpCallRecord.getRequestHeader("User-Agent");
     assertThat(requestHeader.getValues().get(0).getValue(), is("Android Browser"));
   }
 
   @Test
   public void shouldReturnRequestHeaderByGivenNameByIgnoringCase() throws Exception {
-    HttpHeader requestHeader = call.getRequestHeader("USER-AGENT");
+    HttpHeader requestHeader = httpCallRecord.getRequestHeader("USER-AGENT");
     assertThat(requestHeader.getValues().get(0).getValue(), is("Android Browser"));
   }
 
   @Test
   public void shouldReturnNullWhenHeaderByGivenNameNotFound() throws Exception {
-    HttpHeader requestHeader = call.getRequestHeader("Invalid Name");
+    HttpHeader requestHeader = httpCallRecord.getRequestHeader("Invalid Name");
     assertNull(requestHeader);
   }
 
   @Test
   public void shouldReturnResponseHeaderByGivenName() throws Exception {
-    HttpHeader responseHeader = call.getResponseHeader("date");
+    HttpHeader responseHeader = httpCallRecord.getResponseHeader("date");
     assertThat(responseHeader.getValues().get(0).getValue(), is("Thu, 02 Mar 2017 13:03:11 GMT"));
   }
 
   @Test
   public void shouldReturnResponseHeaderByGivenNameByIgnoringCase() throws Exception {
-    HttpHeader responseHeader = call.getResponseHeader("DATE");
+    HttpHeader responseHeader = httpCallRecord.getResponseHeader("DATE");
     assertThat(responseHeader.getValues().get(0).getValue(), is("Thu, 02 Mar 2017 13:03:11 GMT"));
   }
 
   @Test
   public void shouldReturnNullWhenResponseHeaderByGivenNameNotFound() throws Exception {
-    HttpHeader responseHeader = call.getResponseHeader("Invalid Name");
+    HttpHeader responseHeader = httpCallRecord.getResponseHeader("Invalid Name");
     assertNull(responseHeader);
   }
 
@@ -92,5 +88,6 @@ public class HttpCallTest {
     headers.put("cache-control", cacheControlHeader);
     return headers;
   }
+
 
 }

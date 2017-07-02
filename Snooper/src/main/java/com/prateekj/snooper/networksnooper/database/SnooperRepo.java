@@ -64,7 +64,7 @@ public class SnooperRepo {
   public List<HttpCallRecord> findAllSortByDate() {
     ArrayList<HttpCallRecord> httpCallRecords = new ArrayList<>();
     HttpCallRecordCursorParser cursorParser = new HttpCallRecordCursorParser();
-    SQLiteDatabase database = snooperDbHelper.getWritableDatabase();
+    SQLiteDatabase database = snooperDbHelper.getReadableDatabase();
     Cursor cursor = database.rawQuery(HTTP_CALL_RECORD_GET_SORT_BY_DATE, null);
     while (cursor.moveToNext()) {
       httpCallRecords.add(cursorParser.parse(cursor));
@@ -75,7 +75,7 @@ public class SnooperRepo {
   }
 
   public HttpCallRecord findById(long id) {
-    SQLiteDatabase database = snooperDbHelper.getWritableDatabase();
+    SQLiteDatabase database = snooperDbHelper.getReadableDatabase();
     HttpCallRecordCursorParser cursorParser = new HttpCallRecordCursorParser();
     Cursor cursor = database.rawQuery(HTTP_CALL_RECORD_GET_BY_ID, new String[]{Long.toString(id)});
     cursor.moveToNext();

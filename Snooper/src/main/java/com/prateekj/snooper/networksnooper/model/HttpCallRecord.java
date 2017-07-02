@@ -140,8 +140,8 @@ public class HttpCallRecord {
     httpCallRecord.statusCode = httpCall.getStatusCode();
     httpCallRecord.date = httpCall.getDate();
     httpCallRecord.error = httpCall.getError();
-    httpCallRecord.requestHeaders = HttpHeader.from(httpCall.getRawRequestHeaders());
-    httpCallRecord.responseHeaders = HttpHeader.from(httpCall.getRawResponseHeaders());
+    httpCallRecord.requestHeaders = HttpHeader.from(httpCall.getRequestHeaders());
+    httpCallRecord.responseHeaders = HttpHeader.from(httpCall.getResponseHeaders());
     return httpCallRecord;
   }
 }
