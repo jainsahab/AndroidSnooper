@@ -3,18 +3,15 @@ package com.prateekj.snooper.networksnooper.model;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import io.realm.RealmList;
-import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
+public class HttpCall {
 
-public class HttpCall extends RealmObject implements IncrementalIdModel {
-
-  @PrimaryKey
   private int id;
   private String url;
   private String payload;
@@ -23,8 +20,11 @@ public class HttpCall extends RealmObject implements IncrementalIdModel {
   private String statusText;
   private int statusCode;
   private Date date;
-  private RealmList<HttpHeader> requestHeaders;
-  private RealmList<HttpHeader> responseHeaders;
+  private List<HttpHeader> requestHeaders;
+  private List<HttpHeader> responseHeaders;
+
+  private Map<String, List<String>> rawRequestHeaders = new HashMap<>();
+  private Map<String, List<String>> rawResponseHeaders = new HashMap<>();
   private String error;
 
   public HttpCall() {
@@ -63,6 +63,14 @@ public class HttpCall extends RealmObject implements IncrementalIdModel {
     return requestHeaders;
   }
 
+  public Map<String, List<String>> getRawRequestHeaders() {
+    return rawRequestHeaders;
+  }
+
+  public Map<String, List<String>> getRawResponseHeaders() {
+    return rawResponseHeaders;
+  }
+
   public HttpHeader getRequestHeader(final String name) {
     return filterFromCollection(name, getRequestHeaders());
   }
@@ -91,16 +99,6 @@ public class HttpCall extends RealmObject implements IncrementalIdModel {
       }
     }).iterator();
     return iterator.hasNext() ? iterator.next() : null;
-  }
-
-  @Override
-  public Class getClazz() {
-    return HttpCall.class;
-  }
-
-  @Override
-  public void setId(int id) {
-    this.id = id;
   }
 
   public void setDate(Date date) {
@@ -154,15 +152,17 @@ public class HttpCall extends RealmObject implements IncrementalIdModel {
     }
 
     public Builder withRequestHeaders(Map<String, List<String>> headers) {
-      RealmList<HttpHeader> realmList = new RealmList<>();
+      List<HttpHeader> realmList = new ArrayList<>();
       realmList.addAll(HttpHeader.from(headers));
+      httpCall.rawRequestHeaders = headers;
       httpCall.requestHeaders = realmList;
       return this;
     }
 
     public Builder withResponseHeaders(Map<String, List<String>> headers) {
-      RealmList<HttpHeader> realmList = new RealmList<>();
+      List<HttpHeader> realmList = new ArrayList<>();
       realmList.addAll(HttpHeader.from(headers));
+      httpCall.rawResponseHeaders = headers;
       httpCall.responseHeaders = realmList;
       return this;
     }

@@ -12,11 +12,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.prateekj.snooper.R;
-import com.prateekj.snooper.networksnooper.adapter.HttpCallListAdapter;
 import com.prateekj.snooper.customviews.DividerItemDecoration;
+import com.prateekj.snooper.networksnooper.adapter.HttpCallListAdapter;
+import com.prateekj.snooper.networksnooper.database.SnooperRepo;
 import com.prateekj.snooper.networksnooper.presenter.HttpCallListPresenter;
-import com.prateekj.snooper.realm.RealmFactory;
-import com.prateekj.snooper.networksnooper.repo.SnooperRepo;
 import com.prateekj.snooper.networksnooper.views.HttpListView;
 
 import static com.prateekj.snooper.networksnooper.activity.HttpCallActivity.HTTP_CALL_ID;
@@ -32,7 +31,7 @@ public class HttpCallListActivity extends SnooperBaseActivity implements HttpLis
     setContentView(R.layout.activity_http_call_list);
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
-    SnooperRepo repo = new SnooperRepo(RealmFactory.create(this));
+    SnooperRepo repo = new SnooperRepo(this);
     presenter = new HttpCallListPresenter(this, repo);
     RecyclerView httpCallList = (RecyclerView) findViewById(R.id.list);
     httpCallListAdapter = new HttpCallListAdapter(repo, presenter);
@@ -41,6 +40,7 @@ public class HttpCallListActivity extends SnooperBaseActivity implements HttpLis
     httpCallList.addItemDecoration(itemDecoration);
     httpCallList.setItemAnimator(new DefaultItemAnimator());
     httpCallList.setAdapter(httpCallListAdapter);
+    httpCallList.invalidate();
   }
 
   @Override
@@ -62,7 +62,7 @@ public class HttpCallListActivity extends SnooperBaseActivity implements HttpLis
 
 
   @Override
-  public void navigateToResponseBody(int httpCallId) {
+  public void navigateToResponseBody(long httpCallId) {
     Intent intent = new Intent(this, HttpCallActivity.class);
     intent.putExtra(HTTP_CALL_ID, httpCallId);
     startActivity(intent);
@@ -97,6 +97,7 @@ public class HttpCallListActivity extends SnooperBaseActivity implements HttpLis
 
   @Override
   public void updateListView() {
+    httpCallListAdapter.refreshData();
     httpCallListAdapter.notifyDataSetChanged();
   }
 }

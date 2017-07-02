@@ -9,12 +9,12 @@ import android.hardware.SensorManager;
 import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
 
-import com.prateekj.snooper.networksnooper.activity.HttpCallListActivity;
-import com.prateekj.snooper.infra.CurrentActivityManager;
-import com.prateekj.snooper.networksnooper.model.HttpCall;
-import com.prateekj.snooper.realm.RealmFactory;
-import com.prateekj.snooper.networksnooper.repo.SnooperRepo;
 import com.prateekj.snooper.infra.BackgroundManager;
+import com.prateekj.snooper.infra.CurrentActivityManager;
+import com.prateekj.snooper.networksnooper.activity.HttpCallListActivity;
+import com.prateekj.snooper.networksnooper.database.SnooperRepo;
+import com.prateekj.snooper.networksnooper.model.HttpCall;
+import com.prateekj.snooper.networksnooper.model.HttpCallRecord;
 
 import java.io.IOException;
 
@@ -23,9 +23,9 @@ public class AndroidSnooper implements BackgroundManager.Listener, SnooperShakeA
   public static final String ACTION_END_SNOOPER_FLOW = "com.snooper.END_SNOOPER_FLOW";
   private Context context;
   private static AndroidSnooper androidSnooper;
-  private SnooperRepo snooperRepo;
   private ShakeDetector shakeDetector;
   private Activity currentActivity;
+  private SnooperRepo snooperRepo;
 
   private AndroidSnooper() {}
 
@@ -34,7 +34,7 @@ public class AndroidSnooper implements BackgroundManager.Listener, SnooperShakeA
     handler.post(new Runnable() {
       @Override
       public void run() {
-        AndroidSnooper.this.snooperRepo.save(httpCall);
+        AndroidSnooper.this.snooperRepo.save(HttpCallRecord.from(httpCall));
       }
     });
   }
@@ -72,7 +72,7 @@ public class AndroidSnooper implements BackgroundManager.Listener, SnooperShakeA
     }
     androidSnooper = new AndroidSnooper();
     androidSnooper.context = application;
-    androidSnooper.snooperRepo = new SnooperRepo(RealmFactory.create(androidSnooper.context));
+    androidSnooper.snooperRepo = new SnooperRepo(androidSnooper.context);
     androidSnooper.shakeDetector = new ShakeDetector(new SnooperShakeListener(androidSnooper));
     BackgroundManager.getInstance(application).registerListener(androidSnooper);
     CurrentActivityManager.getInstance(application).registerListener(androidSnooper);

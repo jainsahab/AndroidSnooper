@@ -4,11 +4,10 @@ import com.google.common.base.Function;
 
 import java.util.List;
 
-import io.realm.RealmObject;
-
 import static com.google.common.collect.Lists.transform;
 
-public class HttpHeaderValue extends RealmObject{
+public class HttpHeaderValue {
+  private int id;
   private String value;
 
   public HttpHeaderValue() {
@@ -20,6 +19,14 @@ public class HttpHeaderValue extends RealmObject{
 
   public String getValue() {
     return value;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
+  public void setValue(String value) {
+    this.value = value;
   }
 
   public static List<HttpHeaderValue> from(List<String> strings) {

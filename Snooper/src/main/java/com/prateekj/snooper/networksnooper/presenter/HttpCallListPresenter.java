@@ -1,8 +1,8 @@
 package com.prateekj.snooper.networksnooper.presenter;
 
 import com.prateekj.snooper.networksnooper.adapter.HttpCallListClickListener;
-import com.prateekj.snooper.networksnooper.model.HttpCall;
-import com.prateekj.snooper.networksnooper.repo.SnooperRepo;
+import com.prateekj.snooper.networksnooper.database.SnooperRepo;
+import com.prateekj.snooper.networksnooper.model.HttpCallRecord;
 import com.prateekj.snooper.networksnooper.views.HttpListView;
 
 public class HttpCallListPresenter implements HttpCallListClickListener {
@@ -15,7 +15,7 @@ public class HttpCallListPresenter implements HttpCallListClickListener {
   }
 
   @Override
-  public void onClick(HttpCall httpCall) {
+  public void onClick(HttpCallRecord httpCall) {
     httpListView.navigateToResponseBody(httpCall.getId());
   }
 

@@ -15,8 +15,8 @@ import java.util.List;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import static com.prateekj.snooper.networksnooper.model.HttpCallRecord.from;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -34,14 +34,14 @@ public class HttpCallViewModelTest {
       .withMethod("POST")
       .withStatusCode(200)
       .withStatusText("OK")
-      .withResponseHeaders(new HashMap<String, List<String>>())
-      .withRequestHeaders(new HashMap<String, List<String>>())
+      .withResponseHeaders(singleHeader())
+      .withRequestHeaders(singleHeader())
       .build();
 
     Date currentDate = TestUtilities.getDate(2017, 5, 2, 11, 22, 33);
     httpCall.setDate(currentDate);
 
-    httpCallViewModel = new HttpCallViewModel(httpCall);
+    httpCallViewModel = new HttpCallViewModel(from(httpCall));
   }
 
   @Test
@@ -71,12 +71,12 @@ public class HttpCallViewModelTest {
 
   @Test
   public void getRequestHeaders() throws Exception {
-    assertThat(httpCallViewModel.getRequestHeaders(), sameInstance(httpCall.getRequestHeaders()));
+    assertThat(httpCallViewModel.getRequestHeaders().get(0).getName(), is("header1"));
   }
 
   @Test
   public void getResponseHeaders() throws Exception {
-    assertThat(httpCallViewModel.getResponseHeaders(), sameInstance(httpCall.getResponseHeaders()));
+    assertThat(httpCallViewModel.getResponseHeaders().get(0).getName(), is("header1"));
   }
 
   @Test
@@ -86,11 +86,13 @@ public class HttpCallViewModelTest {
 
   @Test
   public void shouldGetResponseHeaderVisibilityAsGone() {
+    HttpCallViewModel httpCallViewModel = new HttpCallViewModel(from(new Builder().build()));
     assertThat(httpCallViewModel.getResponseHeaderVisibility(), is(GONE));
   }
 
   @Test
   public void shouldGetRequestHeaderVisibilityAsGone() {
+    HttpCallViewModel httpCallViewModel = new HttpCallViewModel(from(new Builder().build()));
     assertThat(httpCallViewModel.getRequestHeaderVisibility(), is(GONE));
   }
 
@@ -102,7 +104,7 @@ public class HttpCallViewModelTest {
       .withStatusCode(302)
       .withStatusText("FAIL")
       .build();
-    HttpCallViewModel viewModel = new HttpCallViewModel(httpCall);
+    HttpCallViewModel viewModel = new HttpCallViewModel(from(httpCall));
     assertEquals(viewModel.getStatusColor(), R.color.snooper_yellow);
   }
 
@@ -114,7 +116,7 @@ public class HttpCallViewModelTest {
       .withStatusCode(400)
       .withStatusText("FAIL")
       .build();
-    HttpCallViewModel viewModel = new HttpCallViewModel(httpCall);
+    HttpCallViewModel viewModel = new HttpCallViewModel(from(httpCall));
     assertEquals(viewModel.getStatusColor(), R.color.snooper_red);
   }
 
@@ -126,7 +128,7 @@ public class HttpCallViewModelTest {
   @Test
   public void shouldReturnResponseInfoContainerVisibilityAsGone() throws Exception {
     HttpCall httpCall = new Builder().withError("error").build();
-    HttpCallViewModel httpCallViewModel = new HttpCallViewModel(httpCall);
+    HttpCallViewModel httpCallViewModel = new HttpCallViewModel(from(httpCall));
     assertThat(httpCallViewModel.getResponseInfoVisibility(), is(GONE));
   }
 
@@ -138,21 +140,17 @@ public class HttpCallViewModelTest {
   @Test
   public void shouldReturnFailedTextVisibilityAsVisible() throws Exception {
     HttpCall httpCall = new Builder().withError("error").build();
-    HttpCallViewModel httpCallViewModel = new HttpCallViewModel(httpCall);
+    HttpCallViewModel httpCallViewModel = new HttpCallViewModel(from(httpCall));
     assertThat(httpCallViewModel.getFailedTextVisibility(), is(VISIBLE));
   }
 
   @Test
   public void shouldGetResponseHeaderVisibilityAsVisible() {
-    HttpCall httpCall = new Builder().withResponseHeaders(singleHeader()).build();
-    HttpCallViewModel httpCallViewModel = new HttpCallViewModel(httpCall);
     assertThat(httpCallViewModel.getResponseHeaderVisibility(), is(VISIBLE));
   }
 
   @Test
   public void shouldGetRequestHeaderVisibilityAsVisible() {
-    HttpCall httpCall = new Builder().withRequestHeaders(singleHeader()).build();
-    HttpCallViewModel httpCallViewModel = new HttpCallViewModel(httpCall);
     assertThat(httpCallViewModel.getRequestHeaderVisibility(), is(VISIBLE));
   }
 

@@ -21,13 +21,12 @@ import com.prateekj.snooper.R;
 import com.prateekj.snooper.formatter.ResponseFormatterFactory;
 import com.prateekj.snooper.infra.AppPermissionChecker;
 import com.prateekj.snooper.infra.BackgroundTaskExecutor;
+import com.prateekj.snooper.networksnooper.database.SnooperRepo;
 import com.prateekj.snooper.networksnooper.fragment.HttpCallFragment;
 import com.prateekj.snooper.networksnooper.fragment.HttpHeadersFragment;
 import com.prateekj.snooper.networksnooper.presenter.HttpCallPresenter;
 import com.prateekj.snooper.networksnooper.renderer.HttpCallRenderer;
-import com.prateekj.snooper.networksnooper.repo.SnooperRepo;
 import com.prateekj.snooper.networksnooper.views.HttpCallView;
-import com.prateekj.snooper.realm.RealmFactory;
 import com.prateekj.snooper.utils.FileUtil;
 
 import java.io.File;
@@ -54,9 +53,9 @@ public class HttpCallActivity extends SnooperBaseActivity implements HttpCallVie
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    int httpCallId = getIntent().getIntExtra(HTTP_CALL_ID, 0);
+    long httpCallId = getIntent().getLongExtra(HTTP_CALL_ID, 0);
     FileUtil fileUtil = new FileUtil();
-    SnooperRepo repo = new SnooperRepo(RealmFactory.create(this));
+    SnooperRepo repo = new SnooperRepo(this);
     BackgroundTaskExecutor backgroundTaskExecutor = new BackgroundTaskExecutor(this);
     httpCallPresenter = new HttpCallPresenter(httpCallId, repo, this, new ResponseFormatterFactory(), fileUtil, backgroundTaskExecutor);
     boolean hasError = repo.findById(httpCallId).getError() != null;

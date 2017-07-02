@@ -6,10 +6,10 @@ import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.prateekj.snooper.R;
+import com.prateekj.snooper.networksnooper.database.SnooperRepo;
 import com.prateekj.snooper.networksnooper.model.HttpCall;
-import com.prateekj.snooper.networksnooper.repo.SnooperRepo;
-import com.prateekj.snooper.realm.RealmFactory;
-import com.prateekj.snooper.rules.RealmCleanRule;
+import com.prateekj.snooper.networksnooper.model.HttpCallRecord;
+import com.prateekj.snooper.rules.DataResetRule;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -43,7 +43,7 @@ import static org.hamcrest.Matchers.allOf;
 public class HttpCallListActivityTest {
 
   @Rule
-  public RealmCleanRule rule = new RealmCleanRule();
+  public DataResetRule dataResetRule = new DataResetRule();
 
   @Rule
   public IntentsTestRule<HttpCallListActivity> activityRule =
@@ -52,15 +52,15 @@ public class HttpCallListActivityTest {
 
   @Before
   public void setUp() throws Exception {
-    snooperRepo = new SnooperRepo(RealmFactory.create(getTargetContext()));
+    snooperRepo = new SnooperRepo(getTargetContext());
   }
 
   @Test
   public void shouldRenderHttpCalls() throws Exception {
     Date beforeDate = getDate(2017, 5, 2, 11, 22, 33);
     Date afterDate = getDate(2017, 5, 3, 11, 22, 33);
-    saveHttpCall("https://www.google.com", "GET", 200, "OK", beforeDate);
-    saveHttpCall("https://www.facebook.com", "GET", 200, "OK", afterDate);
+    long googleCallId = saveHttpCall("https://www.google.com", "GET", 200, "OK", beforeDate);
+    long facebookCallId = saveHttpCall("https://www.facebook.com", "GET", 200, "OK", afterDate);
 
     activityRule.launchActivity(null);
 
@@ -82,8 +82,8 @@ public class HttpCallListActivityTest {
       hasDescendant(withText("06/02/2017 11:22:33"))
     )));
 
-    verifyClickActionOnListItem(0, 2);
-    verifyClickActionOnListItem(1, 1);
+    verifyClickActionOnListItem(0, facebookCallId);
+    verifyClickActionOnListItem(1, googleCallId);
 
     onView(withText(R.string.done)).perform(click());
     assertTrue(activityRule.getActivity().isFinishing());
@@ -128,7 +128,7 @@ public class HttpCallListActivityTest {
     onView(withId(R.id.list)).check(matches(withListSize(0)));
   }
 
-  private void verifyClickActionOnListItem(int itemIndex, int httpCallId) {
+  private void verifyClickActionOnListItem(int itemIndex, long httpCallId) {
     intending(anyIntent()).respondWith(new Instrumentation.ActivityResult(RESULT_OK, new Intent()));
     onView(withRecyclerView(R.id.list, itemIndex)).perform(click());
     intended(allOf(
@@ -136,7 +136,7 @@ public class HttpCallListActivityTest {
       hasExtra(HttpCallActivity.HTTP_CALL_ID, httpCallId)));
   }
 
-  private void saveHttpCall(String url, String method, int statusCode, String statusText, Date date) {
+  private long saveHttpCall(String url, String method, int statusCode, String statusText, Date date) {
     HttpCall httpCall = new HttpCall.Builder()
       .withUrl(url)
       .withMethod(method)
@@ -144,7 +144,7 @@ public class HttpCallListActivityTest {
       .withStatusText(statusText)
       .build();
     httpCall.setDate(date);
-    snooperRepo.save(httpCall);
+    return snooperRepo.save(HttpCallRecord.from(httpCall));
   }
 
   private void saveErrorHttpCall(String url, String method, Date date) {
@@ -156,6 +156,6 @@ public class HttpCallListActivityTest {
       .withError(error)
       .build();
     httpCall.setDate(date);
-    snooperRepo.save(httpCall);
+    snooperRepo.save(HttpCallRecord.from(httpCall));
   }
 }

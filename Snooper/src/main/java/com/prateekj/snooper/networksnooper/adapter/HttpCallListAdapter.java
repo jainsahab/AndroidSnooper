@@ -7,8 +7,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.prateekj.snooper.R;
-import com.prateekj.snooper.networksnooper.model.HttpCall;
-import com.prateekj.snooper.networksnooper.repo.SnooperRepo;
+import com.prateekj.snooper.networksnooper.database.SnooperRepo;
+import com.prateekj.snooper.networksnooper.model.HttpCallRecord;
 import com.prateekj.snooper.networksnooper.viewmodel.HttpCallViewModel;
 
 import java.util.List;
@@ -19,23 +19,25 @@ import static com.prateekj.snooper.utils.UIUtils.setTextColor;
 public class HttpCallListAdapter extends RecyclerView.Adapter<HttpCallListAdapter.HttpCallViewHolder> {
 
 
-  private final List<HttpCall> httpCalls;
+  private List<HttpCallRecord> httpCallRecords;
+  private SnooperRepo repo;
   private HttpCallListClickListener listener;
 
   public HttpCallListAdapter(SnooperRepo repo, HttpCallListClickListener listener) {
+    this.repo = repo;
     this.listener = listener;
-    httpCalls = repo.findAll();
+    httpCallRecords = repo.findAllSortByDate();
   }
 
-  public class HttpCallViewHolder extends RecyclerView.ViewHolder {
+  class HttpCallViewHolder extends RecyclerView.ViewHolder {
     private View view;
 
-    public HttpCallViewHolder(View view) {
+    HttpCallViewHolder(View view) {
       super(view);
       this.view = view;
     }
 
-    public void bind(HttpCall httpCall) {
+    void bind(HttpCallRecord httpCall) {
       HttpCallViewModel httpCallViewModel = new HttpCallViewModel(httpCall);
       ((TextView) view.findViewById(R.id.url)).setText(httpCallViewModel.getUrl());
       ((TextView) view.findViewById(R.id.method)).setText(httpCallViewModel.getMethod());
@@ -50,7 +52,7 @@ public class HttpCallListAdapter extends RecyclerView.Adapter<HttpCallListAdapte
       setClickListener(httpCall);
     }
 
-    private void setClickListener(final HttpCall httpCall) {
+    private void setClickListener(final HttpCallRecord httpCall) {
       this.itemView.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -70,11 +72,15 @@ public class HttpCallListAdapter extends RecyclerView.Adapter<HttpCallListAdapte
 
   @Override
   public void onBindViewHolder(HttpCallViewHolder holder, int position) {
-    holder.bind(httpCalls.get(position));
+    holder.bind(httpCallRecords.get(position));
   }
 
   @Override
   public int getItemCount() {
-    return httpCalls.size();
+    return httpCallRecords.size();
+  }
+
+  public void refreshData() {
+    httpCallRecords = repo.findAllSortByDate();
   }
 }

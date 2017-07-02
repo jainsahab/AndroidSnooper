@@ -8,10 +8,11 @@ import android.support.test.espresso.intent.rule.IntentsTestRule;
 
 import com.google.common.collect.ImmutableMap;
 import com.prateekj.snooper.R;
+import com.prateekj.snooper.networksnooper.database.SnooperRepo;
 import com.prateekj.snooper.networksnooper.model.HttpCall;
-import com.prateekj.snooper.networksnooper.repo.SnooperRepo;
+import com.prateekj.snooper.networksnooper.model.HttpCallRecord;
 import com.prateekj.snooper.networksnooper.viewmodel.HttpHeaderViewModel;
-import com.prateekj.snooper.rules.RealmCleanRule;
+import com.prateekj.snooper.rules.DataResetRule;
 import com.prateekj.snooper.rules.RunUsingLooper;
 import com.prateekj.snooper.utils.EspressoIntentMatchers;
 
@@ -54,7 +55,7 @@ import static org.hamcrest.Matchers.allOf;
 public class HttpCallActivityTest {
 
   @Rule
-  public RealmCleanRule rule = new RealmCleanRule();
+  public DataResetRule rule = new DataResetRule();
 
   @Rule
   public RunUsingLooper runUsingLooper = new RunUsingLooper();
@@ -67,17 +68,17 @@ public class HttpCallActivityTest {
 
   @Before
   public void setUp() throws Exception {
-    snooperRepo = new SnooperRepo(rule.getRealm());
+    snooperRepo = new SnooperRepo(getTargetContext());
   }
 
   @Test
   public void shouldRenderRequestAndResponseBody() throws Exception {
     String responseBody = readFrom("person_details_raw_response.json");
     String requestPayload = readFrom("person_details_raw_request.json");
-    saveHttpCall("https://www.abc.com/person/1", "GET", 200, "OK", responseBody, requestPayload);
+    long callId = saveHttpCall("https://www.abc.com/person/1", "GET", 200, "OK", responseBody, requestPayload);
 
     Intent intent = new Intent();
-    intent.putExtra(HTTP_CALL_ID, 1);
+    intent.putExtra(HTTP_CALL_ID, callId);
 
     activityRule.launchActivity(intent);
 
@@ -123,10 +124,10 @@ public class HttpCallActivityTest {
     String requestPayload = readFrom("person_details_raw_request.json");
     String error = "java.net.ConnectException: failed to connect to localhost/127.0.0.1 " +
       "(port 80) after 30000ms: isConnected failed: ECONNREFUSED (Connection refused)";
-    saveHttpCallWithError("https://www.abc.com/person/1", "GET", error, requestPayload);
+    long callId = saveHttpCallWithError("https://www.abc.com/person/1", "GET", error, requestPayload);
 
     Intent intent = new Intent();
-    intent.putExtra(HTTP_CALL_ID, 1);
+    intent.putExtra(HTTP_CALL_ID, callId);
 
     activityRule.launchActivity(intent);
 
@@ -182,7 +183,7 @@ public class HttpCallActivityTest {
     return clipboard.getPrimaryClip().getItemAt(lastItemIndex).getText().toString();
   }
 
-  private void saveHttpCall(String url, String method, int statusCode,
+  private long saveHttpCall(String url, String method, int statusCode,
                             String statusText, String responseBody, String requestPayload) {
     Map<String, List<String>> requestHeaders = getRequestHeaders();
     Map<String, List<String>> responseHeaders = getResponseHeaders();
@@ -197,10 +198,10 @@ public class HttpCallActivityTest {
       .withResponseHeaders(responseHeaders)
       .build();
     httpCall.setDate(getDate(2017, 5, 2, 11, 22, 33));
-    snooperRepo.save(httpCall);
+    return snooperRepo.save(HttpCallRecord.from(httpCall));
   }
 
-  private void saveHttpCallWithError(String url, String method, String error, String requestPayload) {
+  private long saveHttpCallWithError(String url, String method, String error, String requestPayload) {
     Map<String, List<String>> requestHeaders = getRequestHeaders();
     HttpCall httpCall = new HttpCall.Builder()
       .withUrl(url)
@@ -210,7 +211,7 @@ public class HttpCallActivityTest {
       .withRequestHeaders(requestHeaders)
       .build();
     httpCall.setDate(getDate(2017, 5, 2, 11, 22, 33));
-    snooperRepo.save(httpCall);
+    return snooperRepo.save(HttpCallRecord.from(httpCall));
   }
 
   @NonNull

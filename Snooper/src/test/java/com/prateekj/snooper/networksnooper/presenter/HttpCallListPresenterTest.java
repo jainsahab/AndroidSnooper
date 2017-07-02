@@ -1,8 +1,7 @@
 package com.prateekj.snooper.networksnooper.presenter;
 
-import com.prateekj.snooper.networksnooper.model.HttpCall;
-import com.prateekj.snooper.networksnooper.presenter.HttpCallListPresenter;
-import com.prateekj.snooper.networksnooper.repo.SnooperRepo;
+import com.prateekj.snooper.networksnooper.database.SnooperRepo;
+import com.prateekj.snooper.networksnooper.model.HttpCallRecord;
 import com.prateekj.snooper.networksnooper.views.HttpListView;
 
 import org.junit.Test;
@@ -24,8 +23,8 @@ public class HttpCallListPresenterTest {
 
   @Test
   public void shouldNotifyViewToNavigateToResponseBody() throws Exception {
-    HttpCall httpCall = mock(HttpCall.class);
-    when(httpCall.getId()).thenReturn(2);
+    HttpCallRecord httpCall = mock(HttpCallRecord.class);
+    when(httpCall.getId()).thenReturn(2L);
 
     HttpCallListPresenter httpCallListPresenter = new HttpCallListPresenter(view, repo);
     httpCallListPresenter.onClick(httpCall);

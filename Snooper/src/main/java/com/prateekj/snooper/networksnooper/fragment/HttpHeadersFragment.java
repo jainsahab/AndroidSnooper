@@ -12,12 +12,9 @@ import android.widget.TextView;
 import com.prateekj.snooper.R;
 import com.prateekj.snooper.customviews.NonScrollListView;
 import com.prateekj.snooper.networksnooper.adapter.HttpHeaderAdapter;
-import com.prateekj.snooper.networksnooper.model.HttpCall;
-import com.prateekj.snooper.networksnooper.repo.SnooperRepo;
+import com.prateekj.snooper.networksnooper.database.SnooperRepo;
+import com.prateekj.snooper.networksnooper.model.HttpCallRecord;
 import com.prateekj.snooper.networksnooper.viewmodel.HttpCallViewModel;
-import com.prateekj.snooper.realm.RealmFactory;
-
-import io.realm.Realm;
 
 import static com.prateekj.snooper.networksnooper.activity.HttpCallActivity.HTTP_CALL_ID;
 
@@ -29,11 +26,10 @@ public class HttpHeadersFragment extends Fragment {
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
     super.onCreateView(inflater, container, savedInstanceState);
     View view = inflater.inflate(R.layout.fragment_headers, container, false);
-    Realm realm = RealmFactory.create(getActivity());
-    SnooperRepo snooperRepo = new SnooperRepo(realm);
-    int httpCallId = getArguments().getInt(HTTP_CALL_ID);
-    HttpCall httpCall = snooperRepo.findById(httpCallId);
-    HttpCallViewModel httpCallViewModel = new HttpCallViewModel(httpCall);
+    SnooperRepo snooperRepo = new SnooperRepo(getActivity());
+    long httpCallId = getArguments().getLong(HTTP_CALL_ID);
+    HttpCallRecord httpCallRecord = snooperRepo.findById(httpCallId);
+    HttpCallViewModel httpCallViewModel = new HttpCallViewModel(httpCallRecord);
     ((TextView)view.findViewById(R.id.url)).setText(httpCallViewModel.getUrl());
     ((TextView)view.findViewById(R.id.method)).setText(httpCallViewModel.getMethod());
     ((TextView)view.findViewById(R.id.status_code)).setText(httpCallViewModel.getStatusCode());

@@ -3,7 +3,7 @@ package com.prateekj.snooper.networksnooper.viewmodel;
 import android.support.annotation.ColorRes;
 
 import com.prateekj.snooper.R;
-import com.prateekj.snooper.networksnooper.model.HttpCall;
+import com.prateekj.snooper.networksnooper.model.HttpCallRecord;
 import com.prateekj.snooper.networksnooper.model.HttpHeader;
 
 import java.text.DateFormat;
@@ -20,9 +20,9 @@ public class HttpCallViewModel {
   private static final int RANGE_START_HTTP_OK = 200;
   private static final int RANGE_END_HTTP_OK = 299;
   private static final int RANGE_END_HTTP_REDIRECTION = 399;
-  private final HttpCall httpCall;
+  private final HttpCallRecord httpCall;
 
-  public HttpCallViewModel(HttpCall httpCall) {
+  public HttpCallViewModel(HttpCallRecord httpCall) {
     this.httpCall = httpCall;
   }
 

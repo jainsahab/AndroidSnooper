@@ -2,21 +2,20 @@ package com.prateekj.snooper.networksnooper.model;
 
 import com.google.common.base.Function;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import io.realm.RealmList;
-import io.realm.RealmObject;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Lists.transform;
 
-public class HttpHeader extends RealmObject {
+public class HttpHeader {
 
   public static final String CONTENT_TYPE = "Content-Type";
 
+  private int id;
   private String name;
-  private RealmList<HttpHeaderValue> values;
+  private List<HttpHeaderValue> values;
 
   public HttpHeader() {
   }
@@ -26,16 +25,28 @@ public class HttpHeader extends RealmObject {
   }
 
   public void setValues(List<HttpHeaderValue> values) {
-    RealmList<HttpHeaderValue> headerValues = new RealmList<>();
+    List<HttpHeaderValue> headerValues = new ArrayList<>();
     headerValues.addAll(values);
     this.values = headerValues;
+  }
+
+  public int getId() {
+    return id;
   }
 
   public String getName() {
     return name;
   }
 
-  public RealmList<HttpHeaderValue> getValues() {
+  public void setId(int id) {
+    this.id = id;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public List<HttpHeaderValue> getValues() {
     return values;
   }
 

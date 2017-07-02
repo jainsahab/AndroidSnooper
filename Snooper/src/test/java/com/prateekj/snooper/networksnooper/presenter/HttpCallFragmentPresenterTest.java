@@ -6,10 +6,10 @@ import com.prateekj.snooper.formatter.ResponseFormatter;
 import com.prateekj.snooper.formatter.ResponseFormatterFactory;
 import com.prateekj.snooper.infra.BackgroundTask;
 import com.prateekj.snooper.infra.BackgroundTaskExecutor;
-import com.prateekj.snooper.networksnooper.model.HttpCall;
+import com.prateekj.snooper.networksnooper.database.SnooperRepo;
+import com.prateekj.snooper.networksnooper.model.HttpCallRecord;
 import com.prateekj.snooper.networksnooper.model.HttpHeader;
 import com.prateekj.snooper.networksnooper.model.HttpHeaderValue;
-import com.prateekj.snooper.networksnooper.repo.SnooperRepo;
 import com.prateekj.snooper.networksnooper.viewmodel.HttpBodyViewModel;
 import com.prateekj.snooper.networksnooper.views.HttpCallBodyView;
 
@@ -37,8 +37,8 @@ public class HttpCallFragmentPresenterTest {
   private HttpCallFragmentPresenter presenter;
   private SnooperRepo repo;
   private HttpBodyViewModel viewModel;
-  public static final int HTTP_CALL_ID = 5;
-  private HttpCall httpCall;
+  public static final long HTTP_CALL_ID = 5;
+  private HttpCallRecord httpCallRecord;
   private ResponseFormatterFactory factory;
   private ResponseFormatter responseFormatter;
   private String responseBody;
@@ -54,7 +54,7 @@ public class HttpCallFragmentPresenterTest {
     requestPayload = "payload";
     error = "error";
     formattedBody = "formatted body";
-    httpCall = mock(HttpCall.class);
+    httpCallRecord = mock(HttpCallRecord.class);
     repo = mock(SnooperRepo.class);
     viewModel = mock(HttpBodyViewModel.class);
     factory = mock(ResponseFormatterFactory.class);
@@ -62,10 +62,10 @@ public class HttpCallFragmentPresenterTest {
     httpCallBodyView = mock(HttpCallBodyView.class);
     presenter = new HttpCallFragmentPresenter(repo, HTTP_CALL_ID, httpCallBodyView, factory, mockExecutor);
     responseFormatter = mock(ResponseFormatter.class);
-    when(httpCall.getResponseBody()).thenReturn(responseBody);
-    when(httpCall.getPayload()).thenReturn(requestPayload);
-    when(httpCall.getError()).thenReturn(error);
-    when(repo.findById(HTTP_CALL_ID)).thenReturn(httpCall);
+    when(httpCallRecord.getResponseBody()).thenReturn(responseBody);
+    when(httpCallRecord.getPayload()).thenReturn(requestPayload);
+    when(httpCallRecord.getError()).thenReturn(error);
+    when(repo.findById(HTTP_CALL_ID)).thenReturn(httpCallRecord);
     when(factory.getFor(anyString())).thenReturn(responseFormatter);
     when(responseFormatter.format(anyString())).thenReturn(formattedBody);
   }
@@ -73,7 +73,7 @@ public class HttpCallFragmentPresenterTest {
   @Test
   public void shouldInitializeWithJsonFormatterForResponseMode() throws Exception {
     HttpHeader httpHeader = getJsonContentTypeHeader();
-    when(httpCall.getResponseHeader("Content-Type")).thenReturn(httpHeader);
+    when(httpCallRecord.getResponseHeader("Content-Type")).thenReturn(httpHeader);
     resolveBackgroundTask();
     presenter.init(viewModel, RESPONSE_MODE);
 
@@ -85,7 +85,7 @@ public class HttpCallFragmentPresenterTest {
   @Test
   public void shouldInitializeWithXmlFormatterForResponseMode() throws Exception {
     HttpHeader httpHeader = getXmlContentTypeHeader();
-    when(httpCall.getResponseHeader("Content-Type")).thenReturn(httpHeader);
+    when(httpCallRecord.getResponseHeader("Content-Type")).thenReturn(httpHeader);
     resolveBackgroundTask();
     presenter.init(viewModel, RESPONSE_MODE);
 
@@ -106,7 +106,7 @@ public class HttpCallFragmentPresenterTest {
   @Test
   public void shouldInitializeWithJsonFormatterForRequestMode() throws Exception {
     HttpHeader httpHeader = getJsonContentTypeHeader();
-    when(httpCall.getRequestHeader("Content-Type")).thenReturn(httpHeader);
+    when(httpCallRecord.getRequestHeader("Content-Type")).thenReturn(httpHeader);
     resolveBackgroundTask();
     presenter.init(viewModel, REQUEST_MODE);
 
@@ -118,7 +118,7 @@ public class HttpCallFragmentPresenterTest {
   @Test
   public void shouldInitializeWithXmlFormatterForRequestMode() throws Exception {
     HttpHeader httpHeader = getXmlContentTypeHeader();
-    when(httpCall.getRequestHeader("Content-Type")).thenReturn(httpHeader);
+    when(httpCallRecord.getRequestHeader("Content-Type")).thenReturn(httpHeader);
     resolveBackgroundTask();
     presenter.init(viewModel, REQUEST_MODE);
 
@@ -129,7 +129,7 @@ public class HttpCallFragmentPresenterTest {
 
   @Test
   public void shouldUsePlainTextFormatterWhenContentTypeHeaderNotFound() throws Exception {
-    when(httpCall.getRequestHeader("Content-Type")).thenReturn(null);
+    when(httpCallRecord.getRequestHeader("Content-Type")).thenReturn(null);
     resolveBackgroundTask();
     presenter.init(viewModel, REQUEST_MODE);
 
@@ -140,7 +140,7 @@ public class HttpCallFragmentPresenterTest {
   @Test
   public void shouldNotifyViewOnFormattingDone() throws Exception {
     HttpHeader httpHeader = getXmlContentTypeHeader();
-    when(httpCall.getRequestHeader("Content-Type")).thenReturn(httpHeader);
+    when(httpCallRecord.getRequestHeader("Content-Type")).thenReturn(httpHeader);
     resolveBackgroundTask();
     presenter.init(viewModel, REQUEST_MODE);
 

@@ -6,10 +6,10 @@ import com.prateekj.snooper.formatter.ResponseFormatter;
 import com.prateekj.snooper.formatter.ResponseFormatterFactory;
 import com.prateekj.snooper.infra.BackgroundTask;
 import com.prateekj.snooper.infra.BackgroundTaskExecutor;
-import com.prateekj.snooper.networksnooper.model.HttpCall;
+import com.prateekj.snooper.networksnooper.database.SnooperRepo;
+import com.prateekj.snooper.networksnooper.model.HttpCallRecord;
 import com.prateekj.snooper.networksnooper.model.HttpHeader;
 import com.prateekj.snooper.networksnooper.model.HttpHeaderValue;
-import com.prateekj.snooper.networksnooper.repo.SnooperRepo;
 import com.prateekj.snooper.networksnooper.views.HttpCallView;
 import com.prateekj.snooper.utils.FileUtil;
 
@@ -37,7 +37,7 @@ public class HttpCallPresenterTest {
 
   private ResponseFormatterFactory formatterFactory;
   private HttpCallView view;
-  private HttpCall httpCall;
+  private HttpCallRecord httpCall;
   private ResponseFormatter responseFormatter;
   private SnooperRepo repo;
   private FileUtil fileUtil;
@@ -48,13 +48,13 @@ public class HttpCallPresenterTest {
   public void setUp() throws Exception {
     formatterFactory = mock(ResponseFormatterFactory.class);
     view = mock(HttpCallView.class);
-    httpCall = mock(HttpCall.class);
+    httpCall = mock(HttpCallRecord.class);
     repo = mock(SnooperRepo.class);
     responseFormatter = mock(ResponseFormatter.class);
     fileUtil = mock(FileUtil.class);
     backgroundTaskExecutor = mock(BackgroundTaskExecutor.class);
     when(repo.findById(1)).thenReturn(httpCall);
-    httpCallPresenter = new HttpCallPresenter(1, repo, view, formatterFactory, fileUtil, backgroundTaskExecutor);
+    httpCallPresenter = new HttpCallPresenter(1L, repo, view, formatterFactory, fileUtil, backgroundTaskExecutor);
   }
 
   @Test

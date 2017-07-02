@@ -7,10 +7,10 @@ import com.prateekj.snooper.formatter.ResponseFormatter;
 import com.prateekj.snooper.formatter.ResponseFormatterFactory;
 import com.prateekj.snooper.infra.BackgroundTask;
 import com.prateekj.snooper.infra.BackgroundTaskExecutor;
-import com.prateekj.snooper.networksnooper.model.HttpCall;
+import com.prateekj.snooper.networksnooper.database.SnooperRepo;
+import com.prateekj.snooper.networksnooper.model.HttpCallRecord;
 import com.prateekj.snooper.networksnooper.model.HttpHeader;
 import com.prateekj.snooper.networksnooper.model.HttpHeaderValue;
-import com.prateekj.snooper.networksnooper.repo.SnooperRepo;
 import com.prateekj.snooper.networksnooper.viewmodel.HttpBodyViewModel;
 import com.prateekj.snooper.networksnooper.views.HttpCallBodyView;
 
@@ -20,14 +20,14 @@ import static com.prateekj.snooper.networksnooper.model.HttpHeader.CONTENT_TYPE;
 
 public class HttpCallFragmentPresenter {
   private SnooperRepo repo;
-  private int httpCallId;
+  private long httpCallId;
   private HttpCallBodyView httpCallBodyView;
   private ResponseFormatterFactory formatterFactory;
   private BackgroundTaskExecutor executor;
   private int mode;
 
   public HttpCallFragmentPresenter(SnooperRepo repo,
-                                   int httpCallId,
+                                   long httpCallId,
                                    HttpCallBodyView httpCallBodyView,
                                    ResponseFormatterFactory formatterFactory,
                                    BackgroundTaskExecutor executor) {
@@ -40,9 +40,9 @@ public class HttpCallFragmentPresenter {
 
   public void init(final HttpBodyViewModel viewModel, int mode) {
     this.mode = mode;
-    final HttpCall httpCall = this.repo.findById(httpCallId);
-    final ResponseFormatter formatter = getFormatter(httpCall);
-    final String bodyToFormat = getBodyToFormat(httpCall);
+    final HttpCallRecord httpCallRecord = this.repo.findById(httpCallId);
+    final ResponseFormatter formatter = getFormatter(httpCallRecord);
+    final String bodyToFormat = getBodyToFormat(httpCallRecord);
     executor.execute(new BackgroundTask<String>() {
       @Override
       public String onExecute() {
@@ -57,16 +57,16 @@ public class HttpCallFragmentPresenter {
     });
   }
 
-  private String getBodyToFormat(HttpCall httpCall) {
+  private String getBodyToFormat(HttpCallRecord httpCallRecord) {
     if (this.mode == ERROR_MODE) {
-      return httpCall.getError();
+      return httpCallRecord.getError();
     }
-    return this.mode == REQUEST_MODE ? httpCall.getPayload() : httpCall.getResponseBody();
+    return this.mode == REQUEST_MODE ? httpCallRecord.getPayload() : httpCallRecord.getResponseBody();
   }
 
   @NonNull
-  private ResponseFormatter getFormatter(HttpCall httpCall) {
-    HttpHeader contentTypeHeader = getContentTypeHeader(httpCall);
+  private ResponseFormatter getFormatter(HttpCallRecord httpCallRecord) {
+    HttpHeader contentTypeHeader = getContentTypeHeader(httpCallRecord);
     if (contentTypeHeader == null) {
       return new PlainTextFormatter();
     }
@@ -74,7 +74,7 @@ public class HttpCallFragmentPresenter {
     return this.formatterFactory.getFor(headerValue.getValue());
   }
 
-  private HttpHeader getContentTypeHeader(HttpCall httpCall) {
+  private HttpHeader getContentTypeHeader(HttpCallRecord httpCall) {
     if (this.mode == REQUEST_MODE) {
       return httpCall.getRequestHeader(CONTENT_TYPE);
     }

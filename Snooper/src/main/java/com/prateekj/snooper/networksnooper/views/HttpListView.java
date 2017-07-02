@@ -1,7 +1,7 @@
 package com.prateekj.snooper.networksnooper.views;
 
 public interface HttpListView {
-  void navigateToResponseBody(int httpCallId);
+  void navigateToResponseBody(long httpCallId);
 
   void finishView();
 
