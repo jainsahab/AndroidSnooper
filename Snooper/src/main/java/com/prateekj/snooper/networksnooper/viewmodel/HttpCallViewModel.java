@@ -84,6 +84,6 @@ public class HttpCallViewModel {
   }
 
   private boolean hasHeaders(List<HttpHeader> headers) {
-    return headers != null && headers.size() > 0;
+    return headers != null && !headers.isEmpty();
   }
 }

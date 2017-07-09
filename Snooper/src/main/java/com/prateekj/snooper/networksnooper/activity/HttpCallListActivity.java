@@ -120,7 +120,12 @@ public class HttpCallListActivity extends SnooperBaseActivity implements HttpLis
   public void appendRecordList(List<HttpCallRecord> httpCallRecords) {
     httpCallListAdapter.appendData(httpCallRecords);
     checkIfAllPagesAreLoaded(httpCallRecords);
-    httpCallListAdapter.notifyDataSetChanged();
+    httpCallList.post(new Runnable() {
+      @Override
+      public void run() {
+        httpCallListAdapter.notifyDataSetChanged();
+      }
+    });
   }
 
   @Override
