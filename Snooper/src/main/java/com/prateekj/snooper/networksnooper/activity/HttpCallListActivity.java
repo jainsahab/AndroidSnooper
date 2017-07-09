@@ -24,6 +24,7 @@ public class HttpCallListActivity extends SnooperBaseActivity implements HttpLis
 
   private HttpCallListPresenter presenter;
   private HttpCallListAdapter httpCallListAdapter;
+  private SnooperRepo repo;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +32,10 @@ public class HttpCallListActivity extends SnooperBaseActivity implements HttpLis
     setContentView(R.layout.activity_http_call_list);
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
-    SnooperRepo repo = new SnooperRepo(this);
+    repo = new SnooperRepo(this);
     presenter = new HttpCallListPresenter(this, repo);
     RecyclerView httpCallList = (RecyclerView) findViewById(R.id.list);
-    httpCallListAdapter = new HttpCallListAdapter(repo, presenter);
+    httpCallListAdapter = new HttpCallListAdapter(repo.findAllSortByDate(), presenter);
     httpCallList.setLayoutManager(new LinearLayoutManager(this));
     DividerItemDecoration itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL, R.drawable.grey_divider);
     httpCallList.addItemDecoration(itemDecoration);
@@ -96,7 +97,7 @@ public class HttpCallListActivity extends SnooperBaseActivity implements HttpLis
 
   @Override
   public void updateListView() {
-    httpCallListAdapter.refreshData();
+    httpCallListAdapter.refreshData(repo.findAllSortByDate());
     httpCallListAdapter.notifyDataSetChanged();
   }
 }

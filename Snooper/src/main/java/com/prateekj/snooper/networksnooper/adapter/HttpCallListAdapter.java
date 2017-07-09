@@ -20,13 +20,11 @@ public class HttpCallListAdapter extends RecyclerView.Adapter<HttpCallListAdapte
 
 
   private List<HttpCallRecord> httpCallRecords;
-  private SnooperRepo repo;
   private HttpCallListClickListener listener;
 
-  public HttpCallListAdapter(SnooperRepo repo, HttpCallListClickListener listener) {
-    this.repo = repo;
+  public HttpCallListAdapter(List<HttpCallRecord> httpCallRecords, HttpCallListClickListener listener) {
     this.listener = listener;
-    httpCallRecords = repo.findAllSortByDate();
+    this.httpCallRecords = httpCallRecords;
   }
 
   class HttpCallViewHolder extends RecyclerView.ViewHolder {
@@ -80,7 +78,7 @@ public class HttpCallListAdapter extends RecyclerView.Adapter<HttpCallListAdapte
     return httpCallRecords.size();
   }
 
-  public void refreshData() {
-    httpCallRecords = repo.findAllSortByDate();
+  public void refreshData(List<HttpCallRecord> httpCallRecords) {
+    this.httpCallRecords = httpCallRecords;
   }
 }
