@@ -26,6 +26,7 @@ import javax.annotation.Nullable;
 
 import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static android.support.test.espresso.core.deps.guava.collect.Iterables.any;
+import static com.prateekj.snooper.utils.CollectionUtilities.last;
 import static com.prateekj.snooper.utils.TestUtilities.getCalendar;
 import static com.prateekj.snooper.utils.TestUtilities.getDate;
 import static java.util.Calendar.DATE;
@@ -106,6 +107,40 @@ public class SnooperRepoTest {
   }
 
   @Test
+  public void shouldGetNextSetOfHttpCallsAfterTheGivenId() throws Exception {
+    saveCalls(50);
+
+    List<HttpCallRecord> httpCalls = repo.findAllSortByDateAfter(-1, 20);
+    assertThat(httpCalls.size(), is(20));
+    assertThat(httpCalls, areSortedAccordingToDate());
+
+    httpCalls = repo.findAllSortByDateAfter(last(httpCalls).getId(), 20);
+    assertThat(httpCalls.size(), is(20));
+    assertThat(httpCalls, areSortedAccordingToDate());
+
+    httpCalls = repo.findAllSortByDateAfter(last(httpCalls).getId(), 20);
+    assertThat(httpCalls.size(), is(10));
+    assertThat(httpCalls, areSortedAccordingToDate());
+  }
+
+  @NonNull
+  private CustomTypeSafeMatcher<List<HttpCallRecord>> areSortedAccordingToDate() {
+    return new CustomTypeSafeMatcher<List<HttpCallRecord>>("are sorted") {
+      @Override
+      protected boolean matchesSafely(List<HttpCallRecord> list) {
+        for (int index = 0 ; index < list.size() - 1 ; index++) {
+          long firstRecordTime = list.get(index).getDate().getTime();
+          long secondRecordTime = list.get(index + 1).getDate().getTime();
+          if (firstRecordTime < secondRecordTime) {
+            return  false;
+          }
+        }
+        return true;
+      }
+    };
+  }
+
+  @Test
   public void shouldDeleteAllTheRecords() throws Exception {
     HttpCall httpCall = new HttpCall.Builder()
       .withUrl("url1")
@@ -126,6 +161,14 @@ public class SnooperRepoTest {
     assertThat(httpCalls.size(), is(0));
   }
 
+  private void saveCalls(int number) {
+    for (int i = 0; i < number; i++) {
+      HttpCall httpCall = new HttpCall.Builder().withUrl("url" + i).build();
+      Date date = new Date(getDate(2016, 5, 23).getTime() + (i * 1000));
+      httpCall.setDate(date);
+      repo.save(HttpCallRecord.from(httpCall));
+    }
+  }
 
   private Map<String, List<String>> getResponseHeaders() {
     Map<String, List<String>> headers = new HashMap<>();

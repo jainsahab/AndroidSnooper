@@ -28,6 +28,12 @@ public class HttpCallRecordContract implements BaseColumns {
   static final String HTTP_CALL_RECORD_GET_SORT_BY_DATE =
     "select * from " + HTTP_CALL_RECORD_TABLE_NAME + " order by date DESC";
 
+  static final String HTTP_CALL_RECORD_GET_SORT_BY_DATE_WITH_SIZE =
+    String.format("select * from %s order by date DESC LIMIT ?", HTTP_CALL_RECORD_TABLE_NAME);
+
+  static final String HTTP_CALL_RECORD_GET_NEXT_SORT_BY_DATE_WITH_SIZE =
+    String.format("select * from %s WHERE %s < ? order by date DESC LIMIT ?", HTTP_CALL_RECORD_TABLE_NAME, _ID);
+
   static final String HTTP_CALL_RECORD_GET_BY_ID =
     "select * from " + HTTP_CALL_RECORD_TABLE_NAME + " WHERE " + _ID + " = ?";
 

@@ -31,9 +31,12 @@ import static com.prateekj.snooper.networksnooper.database.HttpCallRecordContrac
 import static com.prateekj.snooper.networksnooper.database.HttpCallRecordContract.HEADER_VALUE_TABLE_NAME;
 import static com.prateekj.snooper.networksnooper.database.HttpCallRecordContract.HTTP_CALL_RECORD_GET_BY_ID;
 import static com.prateekj.snooper.networksnooper.database.HttpCallRecordContract.HTTP_CALL_RECORD_GET_SORT_BY_DATE;
+import static com.prateekj.snooper.networksnooper.database.HttpCallRecordContract.HTTP_CALL_RECORD_GET_NEXT_SORT_BY_DATE_WITH_SIZE;
+import static com.prateekj.snooper.networksnooper.database.HttpCallRecordContract.HTTP_CALL_RECORD_GET_SORT_BY_DATE_WITH_SIZE;
 import static com.prateekj.snooper.networksnooper.database.HttpCallRecordContract.HTTP_CALL_RECORD_TABLE_NAME;
 import static com.prateekj.snooper.networksnooper.database.HttpCallRecordContract.HTTP_HEADER_GET_BY_CALL_ID;
 import static com.prateekj.snooper.networksnooper.database.HttpCallRecordContract.HTTP_HEADER_VALUE_GET_BY_HEADER_ID;
+import static java.lang.String.valueOf;
 
 public class SnooperRepo {
 
@@ -73,6 +76,26 @@ public class SnooperRepo {
     database.close();
     return httpCallRecords;
   }
+
+
+  public List<HttpCallRecord> findAllSortByDateAfter(long id, int pageSize) {
+    ArrayList<HttpCallRecord> httpCallRecords = new ArrayList<>();
+    HttpCallRecordCursorParser cursorParser = new HttpCallRecordCursorParser();
+    SQLiteDatabase database = snooperDbHelper.getReadableDatabase();
+    Cursor cursor;
+    if (id == -1) {
+      cursor = database.rawQuery(HTTP_CALL_RECORD_GET_SORT_BY_DATE_WITH_SIZE, new String[]{valueOf(pageSize)});
+    } else {
+      cursor = database.rawQuery(HTTP_CALL_RECORD_GET_NEXT_SORT_BY_DATE_WITH_SIZE, new String[]{valueOf(id), valueOf(pageSize)});
+    }
+    while (cursor.moveToNext()) {
+      httpCallRecords.add(cursorParser.parse(cursor));
+    }
+    cursor.close();
+    database.close();
+    return httpCallRecords;
+  }
+
 
   public HttpCallRecord findById(long id) {
     SQLiteDatabase database = snooperDbHelper.getReadableDatabase();
