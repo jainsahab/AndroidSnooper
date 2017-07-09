@@ -13,18 +13,26 @@ import android.view.MenuItem;
 
 import com.prateekj.snooper.R;
 import com.prateekj.snooper.customviews.DividerItemDecoration;
+import com.prateekj.snooper.customviews.NextPageRequestListener;
+import com.prateekj.snooper.customviews.PaginatedRecyclerView;
 import com.prateekj.snooper.networksnooper.adapter.HttpCallListAdapter;
 import com.prateekj.snooper.networksnooper.database.SnooperRepo;
+import com.prateekj.snooper.networksnooper.model.HttpCallRecord;
 import com.prateekj.snooper.networksnooper.presenter.HttpCallListPresenter;
 import com.prateekj.snooper.networksnooper.views.HttpListView;
 
-import static com.prateekj.snooper.networksnooper.activity.HttpCallActivity.HTTP_CALL_ID;
+import java.util.List;
 
-public class HttpCallListActivity extends SnooperBaseActivity implements HttpListView {
+import static com.prateekj.snooper.networksnooper.activity.HttpCallActivity.HTTP_CALL_ID;
+import static com.prateekj.snooper.networksnooper.presenter.HttpCallListPresenter.PAGE_SIZE;
+
+public class HttpCallListActivity extends SnooperBaseActivity implements HttpListView, NextPageRequestListener{
 
   private HttpCallListPresenter presenter;
   private HttpCallListAdapter httpCallListAdapter;
   private SnooperRepo repo;
+  private PaginatedRecyclerView httpCallList;
+  private boolean areAllPagesLoaded;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -34,13 +42,13 @@ public class HttpCallListActivity extends SnooperBaseActivity implements HttpLis
     setSupportActionBar(toolbar);
     repo = new SnooperRepo(this);
     presenter = new HttpCallListPresenter(this, repo);
-    RecyclerView httpCallList = (RecyclerView) findViewById(R.id.list);
-    httpCallListAdapter = new HttpCallListAdapter(repo.findAllSortByDate(), presenter);
+    httpCallList = (PaginatedRecyclerView) findViewById(R.id.list);
     httpCallList.setLayoutManager(new LinearLayoutManager(this));
     DividerItemDecoration itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL, R.drawable.grey_divider);
     httpCallList.addItemDecoration(itemDecoration);
     httpCallList.setItemAnimator(new DefaultItemAnimator());
-    httpCallList.setAdapter(httpCallListAdapter);
+    httpCallList.setNextPageListener(this);
+    presenter.init();
   }
 
   @Override
@@ -96,8 +104,38 @@ public class HttpCallListActivity extends SnooperBaseActivity implements HttpLis
   }
 
   @Override
-  public void updateListView() {
-    httpCallListAdapter.refreshData(repo.findAllSortByDate());
+  public void updateListViewAfterDelete() {
+    httpCallListAdapter.refreshData(repo.findAllSortByDateAfter(-1, 20));
     httpCallListAdapter.notifyDataSetChanged();
+  }
+
+  @Override
+  public void initHttpCallRecordList(List<HttpCallRecord> httpCallRecords) {
+    httpCallListAdapter = new HttpCallListAdapter(httpCallRecords, presenter);
+    checkIfAllPagesAreLoaded(httpCallRecords);
+    httpCallList.setAdapter(httpCallListAdapter);
+  }
+
+  @Override
+  public void appendRecordList(List<HttpCallRecord> httpCallRecords) {
+    httpCallListAdapter.appendData(httpCallRecords);
+    checkIfAllPagesAreLoaded(httpCallRecords);
+    httpCallListAdapter.notifyDataSetChanged();
+  }
+
+  @Override
+  public void requestNextPage() {
+    presenter.onNextPageCall();
+  }
+
+  @Override
+  public boolean areAllPagesLoaded() {
+    return areAllPagesLoaded;
+  }
+
+  private void checkIfAllPagesAreLoaded(List<HttpCallRecord> httpCallRecords) {
+    if (httpCallRecords.size() < PAGE_SIZE) {
+      areAllPagesLoaded = true;
+    }
   }
 }

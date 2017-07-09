@@ -81,4 +81,8 @@ public class HttpCallListAdapter extends RecyclerView.Adapter<HttpCallListAdapte
   public void refreshData(List<HttpCallRecord> httpCallRecords) {
     this.httpCallRecords = httpCallRecords;
   }
+
+  public void appendData(List<HttpCallRecord> httpCallRecords) {
+    this.httpCallRecords.addAll(httpCallRecords);
+  }
 }

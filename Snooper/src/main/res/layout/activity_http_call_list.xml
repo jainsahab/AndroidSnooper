@@ -27,7 +27,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin">
 
-    <android.support.v7.widget.RecyclerView
+    <com.prateekj.snooper.customviews.PaginatedRecyclerView
       android:id="@+id/list"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"/>

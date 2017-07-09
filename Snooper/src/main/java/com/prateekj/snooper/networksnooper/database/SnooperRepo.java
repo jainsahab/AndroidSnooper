@@ -30,8 +30,8 @@ import static com.prateekj.snooper.networksnooper.database.HttpCallRecordContrac
 import static com.prateekj.snooper.networksnooper.database.HttpCallRecordContract.HEADER_TABLE_NAME;
 import static com.prateekj.snooper.networksnooper.database.HttpCallRecordContract.HEADER_VALUE_TABLE_NAME;
 import static com.prateekj.snooper.networksnooper.database.HttpCallRecordContract.HTTP_CALL_RECORD_GET_BY_ID;
-import static com.prateekj.snooper.networksnooper.database.HttpCallRecordContract.HTTP_CALL_RECORD_GET_SORT_BY_DATE;
 import static com.prateekj.snooper.networksnooper.database.HttpCallRecordContract.HTTP_CALL_RECORD_GET_NEXT_SORT_BY_DATE_WITH_SIZE;
+import static com.prateekj.snooper.networksnooper.database.HttpCallRecordContract.HTTP_CALL_RECORD_GET_SORT_BY_DATE;
 import static com.prateekj.snooper.networksnooper.database.HttpCallRecordContract.HTTP_CALL_RECORD_GET_SORT_BY_DATE_WITH_SIZE;
 import static com.prateekj.snooper.networksnooper.database.HttpCallRecordContract.HTTP_CALL_RECORD_TABLE_NAME;
 import static com.prateekj.snooper.networksnooper.database.HttpCallRecordContract.HTTP_HEADER_GET_BY_CALL_ID;
