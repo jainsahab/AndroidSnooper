@@ -5,6 +5,11 @@
                 android:layout_height="match_parent"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+  <include
+    android:id="@+id/embedded_loader"
+    layout="@layout/embedded_loader"
+    android:visibility="gone"/>
+
   <android.support.v7.widget.Toolbar
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
@@ -18,9 +23,9 @@
   <android.support.v7.widget.RecyclerView
     android:id="@+id/recycler_view"
     android:layout_width="match_parent"
-    android:padding="4dp"
     android:layout_height="wrap_content"
     android:layout_below="@id/toolbar"
+    android:padding="4dp"
     android:scrollbars="vertical"/>
 
 </RelativeLayout>
