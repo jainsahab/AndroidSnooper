@@ -115,7 +115,7 @@ dependencies {
     compile 'com.android.support:design:24.2.1'
     compile "com.android.support:recyclerview-v7:24.2.1"
     compile 'org.apache.commons:commons-lang3:3.5'
-    compile 'com.google.collections:google-collections:1.0'
+    compile 'com.google.guava:guava:22.0-android'
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:1.10.19'
     androidTestCompile 'com.android.support:support-annotations:24.0.0'
