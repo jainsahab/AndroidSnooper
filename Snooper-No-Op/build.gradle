@@ -1,0 +1,15 @@
+apply plugin: 'com.android.library'
+apply from: '../Publish.gradle'
+
+android {
+    compileSdkVersion 24
+    buildToolsVersion "25.0.2"
+    group "com.github.jainsahab"
+    version snooperVersion
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 24
+    }
+}
+apply from: '../maven-push.gradle'
