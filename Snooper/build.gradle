@@ -4,14 +4,14 @@ apply plugin: 'jacoco'
 apply from: '../Publish.gradle'
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "25.0.2"
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
     group "com.github.jainsahab"
     version snooperVersion
 
     defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 24
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName snooperVersion
         testInstrumentationRunner "com.prateekj.snooper.SnooperInstrumentationRunner"

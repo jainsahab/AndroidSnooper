@@ -1,5 +1,12 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
+ext {
+    minSdkVersion = 15
+    targetSdkVersion = 24
+    compileSdkVersion = 24
+    buildToolsVersion = "25.0.2"
+}
+
 buildscript {
     ext {
         snooperVersion = '1.4.0-SNAPSHOT'
