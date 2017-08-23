@@ -7,63 +7,48 @@ import java.util.Map;
 
 public class HttpCall {
 
-  private String url;
-  private String payload;
-  private String method;
-  private String responseBody;
-  private String statusText;
-  private int statusCode;
-  private Date date;
-  private Map<String, List<String>> requestHeaders = new HashMap<>();
-  private Map<String, List<String>> responseHeaders = new HashMap<>();
-  private String error;
-
-  public HttpCall() {
-    this.date = new Date();
-  }
-
   public String getPayload() {
-    return payload;
+    return "";
   }
 
   public String getMethod() {
-    return method;
+    return "";
   }
 
   public String getUrl() {
-    return url;
+    return "";
   }
 
   public String getResponseBody() {
-    return responseBody;
+    return "";
   }
 
   public String getStatusText() {
-    return statusText;
+    return "";
   }
 
   public int getStatusCode() {
-    return statusCode;
+    return -1;
   }
 
   public Date getDate() {
-    return date;
+    return new Date();
   }
 
   public Map<String, List<String>> getRequestHeaders() {
-    return requestHeaders;
+    return new HashMap<>();
   }
 
   public Map<String, List<String>> getResponseHeaders() {
-    return responseHeaders;
+    return new HashMap<>();
   }
 
   public String getError() {
-    return error;
+    return "";
   }
 
   public void setDate(Date date) {
-    this.date = date;
+    ;
   }
 
   public static class Builder {
@@ -75,12 +60,10 @@ public class HttpCall {
     }
 
     public Builder withMethod(String httpMethod) {
-      httpCall.method = httpMethod;
       return this;
     }
 
     public Builder withUrl(String url) {
-      httpCall.url = url;
       return this;
     }
 
@@ -89,37 +72,30 @@ public class HttpCall {
     }
 
     public Builder withPayload(String payload) {
-      httpCall.payload = payload;
       return this;
     }
 
     public Builder withResponseBody(String responseBody) {
-      httpCall.responseBody = responseBody;
       return this;
     }
 
     public Builder withStatusText(String statusText) {
-      httpCall.statusText = statusText;
       return this;
     }
 
     public Builder withStatusCode(int rawStatusCode) {
-      httpCall.statusCode = rawStatusCode;
       return this;
     }
 
     public Builder withRequestHeaders(Map<String, List<String>> headers) {
-      httpCall.requestHeaders = headers;
       return this;
     }
 
     public Builder withResponseHeaders(Map<String, List<String>> headers) {
-      httpCall.responseHeaders = headers;
       return this;
     }
 
     public Builder withError(String error) {
-      httpCall.error = error;
       return this;
     }
   }
