@@ -1,5 +1,10 @@
 # Release Notes
 
+## Version 1.4.0 (August 25, 2017)
+* Eliminating Realm dependency and using traditional database support from Android
+* Using new guava library instead of old google-collection
+* No-op versions
+
 ## Version 1.3.0 (June 6, 2017)
 * Removed Data Binding dependency
 * Fixing infinite loader issue
