@@ -39,7 +39,7 @@ public class HttpClassSearchPresenter {
     return new BackgroundTask<List<HttpCallRecord>>() {
       @Override
       public List<HttpCallRecord> onExecute() {
-        return snooperRepo.searchHttpRecord(text, -1, 20);
+        return snooperRepo.searchHttpRecord(text);
       }
 
       @Override

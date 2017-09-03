@@ -55,11 +55,11 @@ public class HttpCallSearchActivity extends SnooperBaseActivity implements HttpC
   }
 
   private void setupSearchBar(Toolbar toolbar) {
-    ((ViewGroup.MarginLayoutParams)findView(toolbar, "android:id/search_edit_frame").getLayoutParams()).setMarginStart(0);
-    ((ViewGroup.MarginLayoutParams)findView(toolbar, "android:id/search_edit_frame").getLayoutParams()).setMarginEnd(0);
+    ViewGroup.MarginLayoutParams searchEditConContainer = (ViewGroup.MarginLayoutParams) findView(toolbar, "android:id/search_edit_frame").getLayoutParams();
+    searchEditConContainer.setMargins(0, searchEditConContainer.topMargin, 0, searchEditConContainer.bottomMargin);
     View searchIcon = findView(toolbar, "android:id/search_mag_icon");
-    ((ViewGroup.MarginLayoutParams) searchIcon.getLayoutParams()).setMarginStart(0);
-    ((ViewGroup.MarginLayoutParams) searchIcon.getLayoutParams()).setMarginEnd(0);
+    ViewGroup.MarginLayoutParams searchIconLayoutParams = (ViewGroup.MarginLayoutParams) searchIcon.getLayoutParams();
+    searchIconLayoutParams.setMargins(0, searchIconLayoutParams.topMargin, 0, searchIconLayoutParams.bottomMargin);
     ((ImageView) searchIcon).setImageDrawable(getResources().getDrawable(R.drawable.white_back_arrow));
     searchIcon.setOnClickListener(getBackPressedListener());
     ((SearchView)toolbar.findViewById(R.id.searchView)).setOnQueryTextListener(this);

@@ -29,17 +29,8 @@ public class HttpCallRecordContract implements BaseColumns {
     "select * from " + HTTP_CALL_RECORD_TABLE_NAME + " order by date DESC";
 
   static final String HTTP_CALL_RECORD_SEARCH =
-    String.format("select * from %s WHERE %s LIKE ? OR %s LIKE ? OR %s LIKE ? OR %s LIKE ? order by date DESC LIMIT ?",
+    String.format("select * from %s WHERE %s LIKE ? OR %s LIKE ? OR %s LIKE ? OR %s LIKE ? order by date DESC",
       HTTP_CALL_RECORD_TABLE_NAME,
-      COLUMN_URL,
-      COLUMN_PAYLOAD,
-      COLUMN_RESPONSE_BODY,
-      COLUMN_ERROR);
-
-  static final String HTTP_CALL_RECORD_SEARCH_NEXT =
-    String.format("select * from %s WHERE %s < ? AND %s LIKE ? OR %s LIKE ? OR %s LIKE ? OR %s LIKE ? order by date DESC LIMIT ?",
-      HTTP_CALL_RECORD_TABLE_NAME,
-      _ID,
       COLUMN_URL,
       COLUMN_PAYLOAD,
       COLUMN_RESPONSE_BODY,

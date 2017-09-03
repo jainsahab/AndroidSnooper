@@ -117,7 +117,7 @@ public class SnooperRepoTest {
     repo.save(HttpCallRecord.from(beforeHttpCall));
     repo.save(HttpCallRecord.from(afterHttpCall));
 
-    List<HttpCallRecord> httpCalls = repo.searchHttpRecord("url", -1, 20);
+    List<HttpCallRecord> httpCalls = repo.searchHttpRecord("url");
 
     assertThat(httpCalls, hasCallWithUrl("url1"));
     assertThat(httpCalls, hasCallWithUrl("url2"));
@@ -136,7 +136,7 @@ public class SnooperRepoTest {
     repo.save(HttpCallRecord.from(beforeHttpCall));
     repo.save(HttpCallRecord.from(afterHttpCall));
 
-    List<HttpCallRecord> httpCalls = repo.searchHttpRecord("request", -1, 20);
+    List<HttpCallRecord> httpCalls = repo.searchHttpRecord("request");
 
     assertThat(httpCalls.get(0).getPayload(), is("requestBody2"));
     assertThat(httpCalls.get(1).getPayload(), is("requestBody1"));
@@ -155,7 +155,7 @@ public class SnooperRepoTest {
     repo.save(HttpCallRecord.from(beforeHttpCall));
     repo.save(HttpCallRecord.from(afterHttpCall));
 
-    List<HttpCallRecord> httpCalls = repo.searchHttpRecord("response", -1, 20);
+    List<HttpCallRecord> httpCalls = repo.searchHttpRecord("response");
 
     assertThat(httpCalls.get(0).getResponseBody(), is("responseBody2"));
     assertThat(httpCalls.get(1).getResponseBody(), is("responseBody1"));
@@ -174,29 +174,12 @@ public class SnooperRepoTest {
     repo.save(HttpCallRecord.from(beforeHttpCall));
     repo.save(HttpCallRecord.from(afterHttpCall));
 
-    List<HttpCallRecord> httpCalls = repo.searchHttpRecord("error", -1, 20);
+    List<HttpCallRecord> httpCalls = repo.searchHttpRecord("error");
 
     assertThat(httpCalls.get(0).getError(), is("error2"));
     assertThat(httpCalls.get(1).getError(), is("error1"));
     assertThat(httpCalls.get(0), hasDate(getCalendar(afterDate)));
     assertThat(httpCalls.get(1), hasDate(getCalendar(beforeDate)));
-  }
-
-  @Test
-  public void shouldSearchNextSetOfHttpCallsAfterTheGivenId() throws Exception {
-    saveCalls(50);
-
-    List<HttpCallRecord> httpCalls = repo.searchHttpRecord("url", -1, 20);
-    assertThat(httpCalls.size(), is(20));
-    assertThat(httpCalls, areSortedAccordingToDate());
-
-    httpCalls = repo.searchHttpRecord("url", last(httpCalls).getId(), 20);
-    assertThat(httpCalls.size(), is(20));
-    assertThat(httpCalls, areSortedAccordingToDate());
-
-    httpCalls = repo.searchHttpRecord("url", last(httpCalls).getId(), 20);
-    assertThat(httpCalls.size(), is(10));
-    assertThat(httpCalls, areSortedAccordingToDate());
   }
 
   @Test

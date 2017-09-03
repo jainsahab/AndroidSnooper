@@ -46,11 +46,11 @@ public class HttpClassSearchPresenterTest {
   public void shouldShowSearchedHttpCallRecordsOnView() throws Exception {
     List<HttpCallRecord> httpCallRecordList = Arrays.asList(mock(HttpCallRecord.class));
     resolveBackgroundTask();
-    when(repo.searchHttpRecord("url", -1, 20)).thenReturn(httpCallRecordList);
+    when(repo.searchHttpRecord("url")).thenReturn(httpCallRecordList);
 
     searchPresenter.searchCalls("url");
 
-    verify(repo).searchHttpRecord("url", -1, 20);
+    verify(repo).searchHttpRecord("url");
 
     verify(httpCallSearchView).hideResultList();
     verify(httpCallSearchView).showLoader();
@@ -62,7 +62,7 @@ public class HttpClassSearchPresenterTest {
   public void shouldShowEmptySearchedHttpCallRecordsWhenTextIsEmpty() throws Exception {
     searchPresenter.searchCalls("");
 
-    verify(repo, times(0)).searchHttpRecord("url", -1, 20);
+    verify(repo, times(0)).searchHttpRecord("url");
 
     verify(httpCallSearchView).hideLoader();
     verify(httpCallSearchView).showResults(argThat(withSize(0)));

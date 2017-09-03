@@ -35,7 +35,6 @@ import static com.prateekj.snooper.networksnooper.database.HttpCallRecordContrac
 import static com.prateekj.snooper.networksnooper.database.HttpCallRecordContract.HTTP_CALL_RECORD_GET_SORT_BY_DATE;
 import static com.prateekj.snooper.networksnooper.database.HttpCallRecordContract.HTTP_CALL_RECORD_GET_SORT_BY_DATE_WITH_SIZE;
 import static com.prateekj.snooper.networksnooper.database.HttpCallRecordContract.HTTP_CALL_RECORD_SEARCH;
-import static com.prateekj.snooper.networksnooper.database.HttpCallRecordContract.HTTP_CALL_RECORD_SEARCH_NEXT;
 import static com.prateekj.snooper.networksnooper.database.HttpCallRecordContract.HTTP_CALL_RECORD_TABLE_NAME;
 import static com.prateekj.snooper.networksnooper.database.HttpCallRecordContract.HTTP_HEADER_GET_BY_CALL_ID;
 import static com.prateekj.snooper.networksnooper.database.HttpCallRecordContract.HTTP_HEADER_VALUE_GET_BY_HEADER_ID;
@@ -80,16 +79,11 @@ public class SnooperRepo {
     return httpCallRecords;
   }
 
-  public List<HttpCallRecord> searchHttpRecord(String text, long id, int pageSize) {
+  public List<HttpCallRecord> searchHttpRecord(String text) {
     ArrayList<HttpCallRecord> httpCallRecords = new ArrayList<>();
     HttpCallRecordCursorParser cursorParser = new HttpCallRecordCursorParser();
     SQLiteDatabase database = snooperDbHelper.getReadableDatabase();
-    Cursor cursor;
-    if (id == -1) {
-      cursor = database.rawQuery(HTTP_CALL_RECORD_SEARCH, new String[]{likeParam(text), likeParam(text), likeParam(text), likeParam(text), valueOf(pageSize)});
-    } else {
-      cursor = database.rawQuery(HTTP_CALL_RECORD_SEARCH_NEXT, new String[]{valueOf(id), likeParam(text), likeParam(text), likeParam(text), likeParam(text), valueOf(pageSize)});
-    }
+    Cursor cursor = database.rawQuery(HTTP_CALL_RECORD_SEARCH, new String[]{likeParam(text), likeParam(text), likeParam(text), likeParam(text)});
     while (cursor.moveToNext()) {
       httpCallRecords.add(cursorParser.parse(cursor));
     }
