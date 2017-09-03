@@ -18,15 +18,17 @@
     android:paddingLeft="0dp"
     android:elevation="6dp"
     android:minHeight="?attr/actionBarSize"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+    android:theme="@style/SnooperToolbarTheme"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-    <SearchView
+    <android.support.v7.widget.SearchView
       android:id="@+id/searchView"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:iconifiedByDefault="false"
-      app:searchIcon="@drawable/white_back_arrow"
+      app:iconifiedByDefault="false"
+      app:searchIcon="@null"
       app:searchHintIcon="@null"
+      android:paddingLeft="-16dp"
+      android:paddingStart="-16dp"
       android:queryHint="@string/search_hint"/>
 
   </android.support.v7.widget.Toolbar>

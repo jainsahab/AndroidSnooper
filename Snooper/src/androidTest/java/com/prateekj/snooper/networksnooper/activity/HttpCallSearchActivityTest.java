@@ -63,7 +63,7 @@ public class HttpCallSearchActivityTest {
 
     activityRule.launchActivity(null);
 
-    onView(withId(idOf("android:id/search_src_text"))).perform(typeText(".com"));
+    onView(withId(R.id.search_src_text)).perform(typeText(".com"));
     onView(withRecyclerView(R.id.list, 0)).check(matches(allOf(
       hasDescendant(withText("https://www.facebook.com")),
       hasDescendant(withText("GET")),
@@ -80,14 +80,10 @@ public class HttpCallSearchActivityTest {
       hasDescendant(withText("06/02/2017 11:22:33"))
     )));
 
-    onView(withId(idOf("android:id/search_src_text"))).perform(clearText(), typeText("facebook"));
+    onView(withId(R.id.search_src_text)).perform(clearText(), typeText("facebook"));
     verifyClickActionOnListItem(0, facebookCallId);
 
     assertTrue(activityRule.getActivity().isFinishing());
-  }
-
-  private int idOf(String name) {
-    return getTargetContext().getResources().getIdentifier(name, null, null);
   }
 
   private void verifyClickActionOnListItem(int itemIndex, long httpCallId) {

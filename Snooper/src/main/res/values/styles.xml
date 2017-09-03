@@ -16,4 +16,10 @@
     <item name="windowNoTitle">true</item>
     <item name="toolbarNavigationButtonStyle">@style/SnooperToolbarNavigationButtonStyle</item>
   </style>
+
+  <style name="SnooperToolbarTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+    <item name="colorPrimary">@color/colorPrimary</item>
+    <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    <item name="colorAccent">@color/snooper_white</item>
+  </style>
 </resources>

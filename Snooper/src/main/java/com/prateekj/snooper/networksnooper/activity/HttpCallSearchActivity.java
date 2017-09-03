@@ -5,11 +5,9 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.SearchView;
 
 import com.prateekj.snooper.R;
 import com.prateekj.snooper.customviews.DividerItemDecoration;
@@ -41,7 +39,8 @@ public class HttpCallSearchActivity extends SnooperBaseActivity implements HttpC
     setContentView(R.layout.activity_http_call_search);
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
-    setupSearchBar(toolbar);
+    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    ((SearchView)toolbar.findViewById(R.id.searchView)).setOnQueryTextListener(this);
     loaderView = findViewById(R.id.embedded_loader);
     recyclerView = (RecyclerView) findViewById(R.id.list);
     recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -52,30 +51,6 @@ public class HttpCallSearchActivity extends SnooperBaseActivity implements HttpC
     recyclerView.setAdapter(httpCallListAdapter);
     httpClassSearchPresenter = new HttpClassSearchPresenter(new SnooperRepo(this), this, new BackgroundTaskExecutor(this));
 
-  }
-
-  private void setupSearchBar(Toolbar toolbar) {
-    ViewGroup.MarginLayoutParams searchEditConContainer = (ViewGroup.MarginLayoutParams) findView(toolbar, "android:id/search_edit_frame").getLayoutParams();
-    searchEditConContainer.setMargins(0, searchEditConContainer.topMargin, 0, searchEditConContainer.bottomMargin);
-    View searchIcon = findView(toolbar, "android:id/search_mag_icon");
-    ViewGroup.MarginLayoutParams searchIconLayoutParams = (ViewGroup.MarginLayoutParams) searchIcon.getLayoutParams();
-    searchIconLayoutParams.setMargins(0, searchIconLayoutParams.topMargin, 0, searchIconLayoutParams.bottomMargin);
-    ((ImageView) searchIcon).setImageDrawable(getResources().getDrawable(R.drawable.white_back_arrow));
-    searchIcon.setOnClickListener(getBackPressedListener());
-    ((SearchView)toolbar.findViewById(R.id.searchView)).setOnQueryTextListener(this);
-  }
-
-  private View findView(Toolbar toolbar, String id) {
-    return toolbar.findViewById(toolbar.getContext().getResources().getIdentifier(id, null, null));
-  }
-
-  public View.OnClickListener getBackPressedListener() {
-    return new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        onBackPressed();
-      }
-    };
   }
 
   @Override
