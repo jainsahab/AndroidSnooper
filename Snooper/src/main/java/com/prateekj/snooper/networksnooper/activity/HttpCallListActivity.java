@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -64,8 +63,14 @@ public class HttpCallListActivity extends SnooperBaseActivity implements HttpLis
       return true;
     } else if (item.getItemId() == R.id.delete_records_menu) {
       presenter.onDeleteRecordsClicked();
+    } else if (item.getItemId() == R.id.search) {
+      openSearchActivity();
     }
     return super.onOptionsItemSelected(item);
+  }
+
+  private void openSearchActivity() {
+    startActivity(new Intent(this, HttpCallSearchActivity.class));
   }
 
 

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  tools:context="com.prateekj.snooper.networksnooper.activity.HttpCallSearchActivity">
+
+  <android.support.v7.widget.Toolbar
+    android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/colorPrimary"
+    android:paddingEnd="10dp"
+    android:paddingRight="10dp"
+    android:paddingStart="0dp"
+    android:paddingLeft="0dp"
+    android:elevation="6dp"
+    android:minHeight="?attr/actionBarSize"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+    app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+    <SearchView
+      android:id="@+id/searchView"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:iconifiedByDefault="false"
+      app:searchIcon="@drawable/white_back_arrow"
+      app:searchHintIcon="@null"
+      android:queryHint="@string/search_hint"/>
+
+  </android.support.v7.widget.Toolbar>
+</LinearLayout>

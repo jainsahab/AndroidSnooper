@@ -18,6 +18,8 @@
   <string name="chooser_title_share_logs">Choose an application to open the log file with:</string>
   <string name="permission_not_granted">This feature requires WRITE_EXTERNAL_STORAGE permission.</string>
   <string name="delete_all_records">Delete all logs</string>
+  <string name="search_title">Search</string>
+  <string name="search_hint">Search…</string>
   <string name="delete_records_dialog_confirmation">Delete</string>
   <string name="delete_records_dialog_cancellation">No</string>
   <string name="delete_records_dialog_text">Are you sure you want to delete all the records ?</string>

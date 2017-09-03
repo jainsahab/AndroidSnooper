@@ -4,18 +4,25 @@
 
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
   <application>
+
     <activity
-      android:theme="@style/SnooperTheme.NoActionBar"
       android:name=".networksnooper.activity.HttpCallListActivity"
+      android:label="@string/title_activity_http_call_list"
       android:taskAffinity="@string/snooper_affinity"
-      android:label="@string/title_activity_http_call_list">
-    </activity>
+      android:theme="@style/SnooperTheme.NoActionBar"/>
+
     <activity
-      android:theme="@style/SnooperTheme.NoActionBar"
       android:name=".networksnooper.activity.HttpCallActivity"
+      android:label="@string/title_http_call_activity"
       android:taskAffinity="@string/snooper_affinity"
-      android:label="@string/title_http_call_activity">
-    </activity>
+      android:theme="@style/SnooperTheme.NoActionBar"/>
+
+    <activity
+      android:name=".networksnooper.activity.HttpCallSearchActivity"
+      android:label="@string/search_title"
+      android:taskAffinity="@string/snooper_affinity"
+      android:theme="@style/SnooperTheme.NoActionBar"/>
+
   </application>
 
 </manifest>
