@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.prateekj.snooper.R;
-import com.prateekj.snooper.networksnooper.database.SnooperRepo;
 import com.prateekj.snooper.networksnooper.model.HttpCallRecord;
 import com.prateekj.snooper.networksnooper.viewmodel.HttpCallViewModel;
 
