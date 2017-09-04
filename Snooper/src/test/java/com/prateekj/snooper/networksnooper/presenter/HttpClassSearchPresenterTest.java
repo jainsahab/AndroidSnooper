@@ -14,6 +14,7 @@ import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -52,10 +53,26 @@ public class HttpClassSearchPresenterTest {
 
     verify(repo).searchHttpRecord("url");
 
-    verify(httpCallSearchView).hideResultList();
+    verify(httpCallSearchView).hideSearchResultsView();
     verify(httpCallSearchView).showLoader();
     verify(httpCallSearchView).hideLoader();
     verify(httpCallSearchView).showResults(argThat(sameInstance(httpCallRecordList)));
+  }
+
+  @Test
+  public void shouldShowNoResultsFoundMessage() throws Exception {
+    List<HttpCallRecord> httpCallRecordList = new ArrayList<>();
+    resolveBackgroundTask();
+    when(repo.searchHttpRecord("url")).thenReturn(httpCallRecordList);
+
+    searchPresenter.searchCalls("url");
+
+    verify(repo).searchHttpRecord("url");
+
+    verify(httpCallSearchView).hideSearchResultsView();
+    verify(httpCallSearchView).showLoader();
+    verify(httpCallSearchView).hideLoader();
+    verify(httpCallSearchView).showNoResultsFoundMessage("url");
   }
 
   @Test

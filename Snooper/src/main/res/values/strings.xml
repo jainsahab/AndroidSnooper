@@ -26,4 +26,5 @@
   <string name="accordion_header">accordion_header</string>
   <string name="accordion_body">accordion_body</string>
   <string name="failed">FAILED</string>
+  <string name="no_results_found">No results found for \'%s\'</string>
 </resources>

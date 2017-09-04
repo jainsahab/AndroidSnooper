@@ -6,7 +6,8 @@ import java.util.List;
 
 public interface HttpCallSearchView {
   void showResults(List<HttpCallRecord> httpCallRecords);
-  void hideResultList();
+  void showNoResultsFoundMessage(String keyword);
+  void hideSearchResultsView();
   void showLoader();
   void hideLoader();
 }

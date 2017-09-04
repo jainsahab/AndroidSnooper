@@ -29,7 +29,7 @@ public class HttpClassSearchPresenter {
       showResults(new ArrayList<HttpCallRecord>());
       return;
     }
-    httpCallSearchView.hideResultList();
+    httpCallSearchView.hideSearchResultsView();
     httpCallSearchView.showLoader();
     taskExecutor.execute(searchHttpCallTask(text));
   }
@@ -44,9 +44,18 @@ public class HttpClassSearchPresenter {
 
       @Override
       public void onResult(List<HttpCallRecord> result) {
+        if (result.isEmpty()){
+          showNoResultsFoundMessage(text);
+          return;
+        }
         showResults(result);
       }
     };
+  }
+
+  private void showNoResultsFoundMessage(String text) {
+    httpCallSearchView.hideLoader();
+    httpCallSearchView.showNoResultsFoundMessage(text);
   }
 
   private void showResults(List<HttpCallRecord> result) {

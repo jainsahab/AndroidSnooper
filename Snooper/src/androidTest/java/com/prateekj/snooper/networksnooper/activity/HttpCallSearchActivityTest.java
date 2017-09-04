@@ -31,6 +31,7 @@ import static android.support.test.espresso.intent.matcher.IntentMatchers.anyInt
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasExtra;
 import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.prateekj.snooper.networksnooper.activity.HttpCallActivity.HTTP_CALL_ID;
@@ -63,7 +64,10 @@ public class HttpCallSearchActivityTest {
 
     activityRule.launchActivity(null);
 
-    onView(withId(R.id.search_src_text)).perform(typeText(".com"));
+    onView(withId(R.id.search_src_text)).perform(typeText("eeeeeee"));
+    onView(withText("No results found for 'eeeeeee'")).check(matches(isDisplayed()));
+
+    onView(withId(R.id.search_src_text)).perform(clearText(), typeText(".com"));
     onView(withRecyclerView(R.id.list, 0)).check(matches(allOf(
       hasDescendant(withText("https://www.facebook.com")),
       hasDescendant(withText("GET")),
@@ -104,5 +108,4 @@ public class HttpCallSearchActivityTest {
     httpCall.setDate(date);
     return snooperRepo.save(HttpCallRecord.from(httpCall));
   }
-
 }

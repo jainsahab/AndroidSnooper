@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.TextView;
 
 import com.prateekj.snooper.R;
 import com.prateekj.snooper.customviews.DividerItemDecoration;
@@ -61,8 +62,15 @@ public class HttpCallSearchActivity extends SnooperBaseActivity implements HttpC
   }
 
   @Override
-  public void hideResultList() {
+  public void showNoResultsFoundMessage(String keyword) {
+    ((TextView)findViewById(R.id.no_results_found)).setText(getString(R.string.no_results_found, keyword));
+    findViewById(R.id.no_results_found_container).setVisibility(VISIBLE);
+  }
+
+  @Override
+  public void hideSearchResultsView() {
     recyclerView.setVisibility(GONE);
+    findViewById(R.id.no_results_found_container).setVisibility(GONE);
   }
 
   @Override
