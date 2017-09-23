@@ -8,11 +8,16 @@ import com.prateekj.snooper.formatter.ResponseFormatterFactory;
 import com.prateekj.snooper.infra.BackgroundTask;
 import com.prateekj.snooper.infra.BackgroundTaskExecutor;
 import com.prateekj.snooper.networksnooper.database.SnooperRepo;
+import com.prateekj.snooper.networksnooper.model.Bound;
 import com.prateekj.snooper.networksnooper.model.HttpCallRecord;
 import com.prateekj.snooper.networksnooper.model.HttpHeader;
 import com.prateekj.snooper.networksnooper.model.HttpHeaderValue;
 import com.prateekj.snooper.networksnooper.viewmodel.HttpBodyViewModel;
 import com.prateekj.snooper.networksnooper.views.HttpCallBodyView;
+
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
 
 import static com.prateekj.snooper.networksnooper.activity.HttpCallActivity.ERROR_MODE;
 import static com.prateekj.snooper.networksnooper.activity.HttpCallActivity.REQUEST_MODE;
@@ -25,6 +30,7 @@ public class HttpCallFragmentPresenter {
   private ResponseFormatterFactory formatterFactory;
   private BackgroundTaskExecutor executor;
   private int mode;
+  private String formattedBodyLowerCase;
 
   public HttpCallFragmentPresenter(SnooperRepo repo,
                                    long httpCallId,
@@ -46,7 +52,9 @@ public class HttpCallFragmentPresenter {
     executor.execute(new BackgroundTask<String>() {
       @Override
       public String onExecute() {
-        return formatter.format(bodyToFormat);
+        String formattedBody = formatter.format(bodyToFormat);
+        formattedBodyLowerCase = formattedBody.toLowerCase();
+        return formattedBody;
       }
 
       @Override
@@ -55,6 +63,21 @@ public class HttpCallFragmentPresenter {
         httpCallBodyView.onFormattingDone();
       }
     });
+  }
+
+  public void searchInBody(String pattern) {
+    httpCallBodyView.removeOldHighlightedSpans();
+    if (StringUtils.isEmpty(pattern)) {
+      return;
+    }
+    ArrayList<Bound> bounds = new ArrayList<>();
+    int indexOfKeyword = formattedBodyLowerCase.indexOf(pattern);
+    while (indexOfKeyword > -1) {
+      int rightBound = indexOfKeyword + pattern.length();
+      bounds.add(new Bound(indexOfKeyword, rightBound));
+      indexOfKeyword = formattedBodyLowerCase.indexOf(pattern, rightBound);
+    }
+    httpCallBodyView.highlightBounds(bounds);
   }
 
   private String getBodyToFormat(HttpCallRecord httpCallRecord) {

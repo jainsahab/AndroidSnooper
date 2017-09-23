@@ -12,9 +12,12 @@ import com.prateekj.snooper.R;
 import com.prateekj.snooper.formatter.ResponseFormatterFactory;
 import com.prateekj.snooper.infra.BackgroundTaskExecutor;
 import com.prateekj.snooper.networksnooper.database.SnooperRepo;
+import com.prateekj.snooper.networksnooper.model.Bound;
 import com.prateekj.snooper.networksnooper.presenter.HttpCallFragmentPresenter;
 import com.prateekj.snooper.networksnooper.viewmodel.HttpBodyViewModel;
 import com.prateekj.snooper.networksnooper.views.HttpCallBodyView;
+
+import java.util.List;
 
 import static android.view.View.GONE;
 import static com.prateekj.snooper.networksnooper.activity.HttpCallActivity.HTTP_CALL_ID;
@@ -55,5 +58,15 @@ public class HttpCallFragment extends Fragment implements HttpCallBodyView{
 
   private void changeLoaderVisibility(int visible) {
     getView().findViewById(R.id.embedded_loader).setVisibility(visible);
+  }
+
+  @Override
+  public void highlightBounds(List<Bound> bounds) {
+
+  }
+
+  @Override
+  public void removeOldHighlightedSpans() {
+
   }
 }
