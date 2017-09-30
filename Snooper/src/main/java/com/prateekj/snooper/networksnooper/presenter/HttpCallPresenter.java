@@ -15,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
+import static com.prateekj.snooper.networksnooper.activity.HttpCallTab.HEADERS;
 import static com.prateekj.snooper.networksnooper.activity.HttpCallTab.REQUEST;
 import static com.prateekj.snooper.networksnooper.activity.HttpCallTab.RESPONSE;
 import static java.lang.String.format;
@@ -74,9 +75,9 @@ public class HttpCallPresenter {
       return dataCopyHelper.getResponseDataForCopy();
     } else if (httpCallTab == REQUEST) {
       return dataCopyHelper.getRequestDataForCopy();
+    } else if (httpCallTab == HEADERS) {
+      return dataCopyHelper.getHeadersForCopy();
     }
     return dataCopyHelper.getErrorsForCopy();
   }
-
-
 }

@@ -13,6 +13,7 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 import static com.prateekj.snooper.networksnooper.activity.HttpCallTab.ERROR;
+import static com.prateekj.snooper.networksnooper.activity.HttpCallTab.HEADERS;
 import static com.prateekj.snooper.networksnooper.activity.HttpCallTab.REQUEST;
 import static com.prateekj.snooper.networksnooper.activity.HttpCallTab.RESPONSE;
 import static com.prateekj.snooper.utils.TestUtilities.getDate;
@@ -61,6 +62,15 @@ public class HttpCallPresenterTest {
     httpCallPresenter.copyHttpCallBody(REQUEST);
 
     verify(view).copyToClipboard(formatRequestBody);
+  }
+  @Test
+  public void shouldAskViewToCopyTheHeaders() throws Exception {
+    String headers = "headers";
+    when(dataCopyHelper.getHeadersForCopy()).thenReturn(headers);
+
+    httpCallPresenter.copyHttpCallBody(HEADERS);
+
+    verify(view).copyToClipboard(headers);
   }
 
   @Test

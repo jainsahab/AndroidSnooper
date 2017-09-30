@@ -58,7 +58,7 @@ public class HttpCallActivity extends SnooperBaseActivity implements HttpCallVie
     FileUtil fileUtil = new FileUtil();
     SnooperRepo repo = new SnooperRepo(this);
     BackgroundTaskExecutor backgroundTaskExecutor = new BackgroundTaskExecutor(this);
-    DataCopyHelper dataCopyHelper = new DataCopyHelper(repo.findById(httpCallId), new ResponseFormatterFactory());
+    DataCopyHelper dataCopyHelper = new DataCopyHelper(repo.findById(httpCallId), new ResponseFormatterFactory(), getResources());
     httpCallPresenter = new HttpCallPresenter(dataCopyHelper, repo.findById(httpCallId), this, fileUtil, backgroundTaskExecutor);
     boolean hasError = repo.findById(httpCallId).getError() != null;
     httpCallRenderer = new HttpCallRenderer(this, hasError);

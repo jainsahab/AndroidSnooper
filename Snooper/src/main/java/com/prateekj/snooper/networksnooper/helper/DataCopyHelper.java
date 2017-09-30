@@ -1,6 +1,9 @@
 package com.prateekj.snooper.networksnooper.helper;
 
+import android.content.res.Resources;
+
 import com.google.common.base.Function;
+import com.prateekj.snooper.R;
 import com.prateekj.snooper.formatter.ResponseFormatter;
 import com.prateekj.snooper.formatter.ResponseFormatterFactory;
 import com.prateekj.snooper.networksnooper.model.HttpCallRecord;
@@ -18,10 +21,14 @@ import static com.prateekj.snooper.networksnooper.model.HttpHeader.CONTENT_TYPE;
 public class DataCopyHelper {
   private ResponseFormatterFactory responseFormatterFactory;
   private final HttpCallRecord httpCallRecord;
+  private Resources resources;
 
-  public DataCopyHelper(HttpCallRecord httpCallRecord, ResponseFormatterFactory responseFormatterFactory) {
+  public DataCopyHelper(HttpCallRecord httpCallRecord,
+                        ResponseFormatterFactory responseFormatterFactory,
+                        Resources resources) {
     this.responseFormatterFactory = responseFormatterFactory;
     this.httpCallRecord = httpCallRecord;
+    this.resources = resources;
   }
 
   public String getResponseDataForCopy() {
@@ -36,6 +43,13 @@ public class DataCopyHelper {
     return httpCallRecord.getError();
   }
 
+  public String getHeadersForCopy() {
+    StringBuilder dataToCopy = new StringBuilder();
+    appendHeaders(httpCallRecord.getRequestHeaders(), dataToCopy, resources.getString(R.string.request_headers));
+    appendHeaders(httpCallRecord.getResponseHeaders(), dataToCopy, resources.getString(R.string.response_headers));
+    return dataToCopy.toString();
+  }
+
   public StringBuilder getHttpCallData() {
     StringBuilder dataToCopy = new StringBuilder();
 
@@ -47,11 +61,11 @@ public class DataCopyHelper {
   private void appendRequestData(StringBuilder dataToCopy) {
     String formattedRequestData = getRequestDataForCopy();
     if (!StringUtils.isEmpty(formattedRequestData)) {
-      dataToCopy.append("Request Body");
+      dataToCopy.append(resources.getString(R.string.request_body_heading));
       dataToCopy.append("\n");
       dataToCopy.append(formattedRequestData);
     }
-    appendHeaders(httpCallRecord.getRequestHeaders(), dataToCopy, "Request Headers");
+    appendHeaders(httpCallRecord.getRequestHeaders(), dataToCopy, resources.getString(R.string.request_headers));
   }
 
   private void appendHeaders(List<HttpHeader> headers, StringBuilder dataToCopy, String heading) {
@@ -80,12 +94,13 @@ public class DataCopyHelper {
     String formattedResponseData = getResponseDataForCopy();
 
     if (!StringUtils.isEmpty(formattedResponseData)) {
-      dataToCopy.append("Response Body");
+      dataToCopy.append(resources.getString(R.string.response_body_heading));
       dataToCopy.append("\n");
       dataToCopy.append(formattedResponseData);
     }
-    appendHeaders(httpCallRecord.getResponseHeaders(), dataToCopy, "Response Headers");
+    appendHeaders(httpCallRecord.getResponseHeaders(), dataToCopy, resources.getString(R.string.response_headers));
   }
+
 
   private String getFormattedData(HttpHeader contentTypeHeader, String dataToCopy) {
     if (dataToCopy == null) {
@@ -97,7 +112,6 @@ public class DataCopyHelper {
     }
     return dataToCopy;
   }
-
 
   private boolean contentHeadersPresent(HttpHeader contentTypeHeader) {
     return contentTypeHeader != null && contentTypeHeader.getValues().size() > 0;
