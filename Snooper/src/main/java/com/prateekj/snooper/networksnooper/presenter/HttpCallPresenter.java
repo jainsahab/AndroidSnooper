@@ -2,14 +2,11 @@ package com.prateekj.snooper.networksnooper.presenter;
 
 import android.support.annotation.NonNull;
 
-import com.prateekj.snooper.formatter.ResponseFormatter;
-import com.prateekj.snooper.formatter.ResponseFormatterFactory;
 import com.prateekj.snooper.infra.BackgroundTask;
 import com.prateekj.snooper.infra.BackgroundTaskExecutor;
 import com.prateekj.snooper.networksnooper.activity.HttpCallTab;
-import com.prateekj.snooper.networksnooper.database.SnooperRepo;
+import com.prateekj.snooper.networksnooper.helper.DataCopyHelper;
 import com.prateekj.snooper.networksnooper.model.HttpCallRecord;
-import com.prateekj.snooper.networksnooper.model.HttpHeader;
 import com.prateekj.snooper.networksnooper.views.HttpCallView;
 import com.prateekj.snooper.utils.FileUtil;
 
@@ -20,7 +17,6 @@ import java.text.SimpleDateFormat;
 
 import static com.prateekj.snooper.networksnooper.activity.HttpCallTab.REQUEST;
 import static com.prateekj.snooper.networksnooper.activity.HttpCallTab.RESPONSE;
-import static com.prateekj.snooper.networksnooper.model.HttpHeader.CONTENT_TYPE;
 import static java.lang.String.format;
 import static java.util.Locale.US;
 
@@ -30,12 +26,12 @@ public class HttpCallPresenter {
   private final BackgroundTaskExecutor executor;
   private HttpCallRecord httpCallRecord;
   private HttpCallView view;
-  private ResponseFormatterFactory formatterFactory;
+  private DataCopyHelper dataCopyHelper;
 
-  public HttpCallPresenter(long callId, SnooperRepo snooperRepo, HttpCallView view, ResponseFormatterFactory formatterFactory, FileUtil fileUtil, BackgroundTaskExecutor executor) {
-    this.httpCallRecord = snooperRepo.findById(callId);
+  public HttpCallPresenter(DataCopyHelper dataCopyHelper, HttpCallRecord httpCallRecord, HttpCallView view, FileUtil fileUtil, BackgroundTaskExecutor executor) {
+    this.dataCopyHelper = dataCopyHelper;
+    this.httpCallRecord = httpCallRecord;
     this.view = view;
-    this.formatterFactory = formatterFactory;
     this.fileUtil = fileUtil;
     this.executor = executor;
   }
@@ -46,7 +42,7 @@ public class HttpCallPresenter {
   }
 
   public void shareHttpCallBody() {
-    final StringBuilder completeHttpCallData = getHttpCallData();
+    final StringBuilder completeHttpCallData = dataCopyHelper.getHttpCallData();
     final String logFileName = getLogFileName();
     executor.execute(new BackgroundTask<String>() {
       @Override
@@ -75,50 +71,12 @@ public class HttpCallPresenter {
 
   private String getTextToCopy(HttpCallTab httpCallTab) {
     if (httpCallTab == RESPONSE) {
-      return getFormattedData(httpCallRecord.getResponseHeader(CONTENT_TYPE), httpCallRecord.getResponseBody());
+      return dataCopyHelper.getResponseDataForCopy();
     } else if (httpCallTab == REQUEST) {
-      return getFormattedData(httpCallRecord.getRequestHeader(CONTENT_TYPE), httpCallRecord.getPayload());
+      return dataCopyHelper.getRequestDataForCopy();
     }
-    return httpCallRecord.getError();
+    return dataCopyHelper.getErrorsForCopy();
   }
 
-  private boolean contentHeadersPresent(HttpHeader contentTypeHeader) {
-    return contentTypeHeader != null && contentTypeHeader.getValues().size() > 0;
-  }
 
-  private StringBuilder getHttpCallData() {
-
-    StringBuilder dataToCopy = new StringBuilder();
-    HttpHeader contentTypeHeader;
-
-    contentTypeHeader = httpCallRecord.getRequestHeader(CONTENT_TYPE);
-    String formattedRequestData = getFormattedData(contentTypeHeader, httpCallRecord.getPayload());
-    if (!StringUtils.isEmpty(formattedRequestData)) {
-      dataToCopy.append("Request Body");
-      dataToCopy.append("\n");
-      dataToCopy.append(formattedRequestData);
-      dataToCopy.append("\n");
-    }
-
-    contentTypeHeader = httpCallRecord.getResponseHeader(CONTENT_TYPE);
-    String formattedResponseData = getFormattedData(contentTypeHeader, httpCallRecord.getResponseBody());
-
-    if (!StringUtils.isEmpty(formattedResponseData)) {
-      dataToCopy.append("Response Body");
-      dataToCopy.append("\n");
-      dataToCopy.append(formattedResponseData);
-    }
-    return dataToCopy;
-  }
-
-  private String getFormattedData(HttpHeader contentTypeHeader, String dataToCopy) {
-    if (dataToCopy == null) {
-      return "";
-    }
-    if (contentHeadersPresent(contentTypeHeader)) {
-      ResponseFormatter formatter = this.formatterFactory.getFor(contentTypeHeader.getValues().get(0).getValue());
-      return formatter.format(dataToCopy);
-    }
-    return dataToCopy;
-  }
 }

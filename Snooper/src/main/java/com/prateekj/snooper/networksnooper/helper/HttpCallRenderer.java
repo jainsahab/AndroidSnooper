@@ -1,4 +1,4 @@
-package com.prateekj.snooper.networksnooper.renderer;
+package com.prateekj.snooper.networksnooper.helper;
 
 
 import android.support.v4.app.Fragment;
