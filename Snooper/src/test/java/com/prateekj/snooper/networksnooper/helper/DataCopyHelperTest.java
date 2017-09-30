@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import static com.prateekj.snooper.utils.TestUtilities.getDate;
+import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
@@ -144,8 +145,12 @@ public class DataCopyHelperTest {
     String responseBody = "response body";
     String formatResponseBody = "format Response body";
 
+    HttpHeader httpHeader = getAcceptLanguageHttpHeader();
+
+    when(httpCall.getRequestHeaders()).thenReturn(asList(httpHeader, getJsonContentTypeHeader()));
     when(httpCall.getRequestHeader("Content-Type")).thenReturn(getJsonContentTypeHeader());
     when(httpCall.getPayload()).thenReturn(requestBody);
+    when(httpCall.getResponseHeaders()).thenReturn(asList(httpHeader, getHeader()));
     when(httpCall.getResponseHeader("Content-Type")).thenReturn(getJsonContentTypeHeader());
     when(httpCall.getResponseBody()).thenReturn(responseBody);
     when(httpCall.getDate()).thenReturn(getDate(2017, 4, 12, 1, 2, 3));
@@ -153,9 +158,11 @@ public class DataCopyHelperTest {
     when(responseFormatter.format(requestBody)).thenReturn(formatRequestBody);
     when(responseFormatter.format(responseBody)).thenReturn(formatResponseBody);
 
-
     StringBuilder httpCallData = dataCopyHelper.getHttpCallData();
-    assertThat(httpCallData.toString(), is("Request Body\nformat Request body\nResponse Body\nformat Response body"));
+
+    assertThat(httpCallData.toString(), is("Request Body\nformat Request body\nRequest Headers\naccept-language: en-US," +
+      "en;q=0.8,hi;q=0.6\nContent-Type: application/json\nResponse Body\nformat Response body\nResponse Headers\n" +
+      "accept-language: en-US,en;q=0.8,hi;q=0.6\nHeader: headerValue\n"));
     verify(responseFormatter, times(1)).format(requestBody);
     verify(responseFormatter, times(1)).format(responseBody);
   }
@@ -167,6 +174,7 @@ public class DataCopyHelperTest {
 
     when(httpCall.getResponseHeader("Content-Type")).thenReturn(getJsonContentTypeHeader());
     when(httpCall.getResponseBody()).thenReturn(responseBody);
+    when(httpCall.getRequestHeaders()).thenReturn(null);
     when(httpCall.getDate()).thenReturn(getDate(2017, 4, 12, 1, 2, 3));
     when(formatterFactory.getFor("application/json")).thenReturn(responseFormatter);
     when(responseFormatter.format(responseBody)).thenReturn(formatResponseBody);
@@ -191,7 +199,7 @@ public class DataCopyHelperTest {
 
     StringBuilder httpCallData = dataCopyHelper.getHttpCallData();
 
-    assertThat(httpCallData.toString(), is("Request Body\nformat Request body\n"));
+    assertThat(httpCallData.toString(), is("Request Body\nformat Request body"));
     verify(responseFormatter, times(1)).format(requestBody);
   }
 
@@ -200,6 +208,24 @@ public class DataCopyHelperTest {
     HttpHeaderValue headerValue = new HttpHeaderValue("application/json");
     HttpHeader httpHeader = new HttpHeader("Content-Type");
     httpHeader.setValues(Collections.singletonList(headerValue));
+    return httpHeader;
+  }
+
+  @NonNull
+  private HttpHeader getHeader() {
+    HttpHeaderValue headerValue = new HttpHeaderValue("headerValue");
+    HttpHeader httpHeader = new HttpHeader("Header");
+    httpHeader.setValues(Collections.singletonList(headerValue));
+    return httpHeader;
+  }
+
+  @NonNull
+  private HttpHeader getAcceptLanguageHttpHeader() {
+    HttpHeader httpHeader = new HttpHeader("accept-language");
+    HttpHeaderValue value1 = new HttpHeaderValue("en-US,en");
+    HttpHeaderValue value2 = new HttpHeaderValue("q=0.8,hi");
+    HttpHeaderValue value3 = new HttpHeaderValue("q=0.6");
+    httpHeader.setValues(asList(value1, value2, value3));
     return httpHeader;
   }
 }
