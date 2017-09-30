@@ -150,7 +150,7 @@ public class DataCopyHelperTest {
     when(httpCall.getRequestHeaders()).thenReturn(asList(httpHeader, getJsonContentTypeHeader()));
     when(httpCall.getRequestHeader("Content-Type")).thenReturn(getJsonContentTypeHeader());
     when(httpCall.getPayload()).thenReturn(requestBody);
-    when(httpCall.getResponseHeaders()).thenReturn(asList(httpHeader, getJsonContentTypeHeader()));
+    when(httpCall.getResponseHeaders()).thenReturn(asList(httpHeader, getHeader()));
     when(httpCall.getResponseHeader("Content-Type")).thenReturn(getJsonContentTypeHeader());
     when(httpCall.getResponseBody()).thenReturn(responseBody);
     when(httpCall.getDate()).thenReturn(getDate(2017, 4, 12, 1, 2, 3));
@@ -162,7 +162,7 @@ public class DataCopyHelperTest {
 
     assertThat(httpCallData.toString(), is("Request Body\nformat Request body\nRequest Headers\naccept-language: en-US," +
       "en;q=0.8,hi;q=0.6\nContent-Type: application/json\nResponse Body\nformat Response body\nResponse Headers\n" +
-      "accept-language: en-US,en;q=0.8,hi;q=0.6\nContent-Type: application/json\n"));
+      "accept-language: en-US,en;q=0.8,hi;q=0.6\nHeader: headerValue\n"));
     verify(responseFormatter, times(1)).format(requestBody);
     verify(responseFormatter, times(1)).format(responseBody);
   }
@@ -207,6 +207,14 @@ public class DataCopyHelperTest {
   private HttpHeader getJsonContentTypeHeader() {
     HttpHeaderValue headerValue = new HttpHeaderValue("application/json");
     HttpHeader httpHeader = new HttpHeader("Content-Type");
+    httpHeader.setValues(Collections.singletonList(headerValue));
+    return httpHeader;
+  }
+
+  @NonNull
+  private HttpHeader getHeader() {
+    HttpHeaderValue headerValue = new HttpHeaderValue("headerValue");
+    HttpHeader httpHeader = new HttpHeader("Header");
     httpHeader.setValues(Collections.singletonList(headerValue));
     return httpHeader;
   }

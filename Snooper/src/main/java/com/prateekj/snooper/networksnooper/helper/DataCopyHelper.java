@@ -84,7 +84,7 @@ public class DataCopyHelper {
       dataToCopy.append("\n");
       dataToCopy.append(formattedResponseData);
     }
-    appendHeaders(httpCallRecord.getRequestHeaders(), dataToCopy, "Response Headers");
+    appendHeaders(httpCallRecord.getResponseHeaders(), dataToCopy, "Response Headers");
   }
 
   private String getFormattedData(HttpHeader contentTypeHeader, String dataToCopy) {
