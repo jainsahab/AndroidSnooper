@@ -1,7 +1,9 @@
 package com.prateekj.snooper.networksnooper.helper;
 
+import android.content.res.Resources;
 import android.support.annotation.NonNull;
 
+import com.prateekj.snooper.R;
 import com.prateekj.snooper.formatter.ResponseFormatter;
 import com.prateekj.snooper.formatter.ResponseFormatterFactory;
 import com.prateekj.snooper.networksnooper.model.HttpCallRecord;
@@ -30,13 +32,16 @@ public class DataCopyHelperTest {
   private HttpCallRecord httpCall;
   private ResponseFormatter responseFormatter;
   private DataCopyHelper dataCopyHelper;
+  private Resources resources;
 
   @Before
   public void setUp() throws Exception {
     formatterFactory = mock(ResponseFormatterFactory.class);
     httpCall = mock(HttpCallRecord.class);
     responseFormatter = mock(ResponseFormatter.class);
-    dataCopyHelper = new DataCopyHelper(httpCall, formatterFactory);
+    resources = mock(Resources.class);
+    dataCopyHelper = new DataCopyHelper(httpCall, formatterFactory, resources);
+    mockStringResources();
   }
 
   @Test
@@ -117,6 +122,48 @@ public class DataCopyHelperTest {
 
     assertThat(requestDataForCopy, is(requestBody));
     verify(responseFormatter, never()).format(requestBody);
+  }
+
+  @Test
+  public void shouldCopyRequestResponseHeadersPresent() throws Exception {
+    HttpHeader httpHeader = getAcceptLanguageHttpHeader();
+
+    when(httpCall.getRequestHeaders()).thenReturn(asList(httpHeader, getJsonContentTypeHeader()));
+    when(httpCall.getRequestHeader("Content-Type")).thenReturn(getJsonContentTypeHeader());
+    when(httpCall.getResponseHeaders()).thenReturn(asList(httpHeader, getHeader()));
+    when(httpCall.getResponseHeader("Content-Type")).thenReturn(getJsonContentTypeHeader());
+
+    String copiedHeaders = dataCopyHelper.getHeadersForCopy();
+
+    assertThat(copiedHeaders, is("\nRequest Headers\naccept-language: en-US,en;q=0.8,hi;q=0.6\n" +
+      "Content-Type: application/json\n\nResponse Headers\naccept-language: en-US,en;q=0.8,hi;q=0.6\n" +
+      "Header: headerValue\n"));
+  }
+
+  @Test
+  public void shouldCopyOnlyRequestHeadersPresentIfResponseHeadersMissing() throws Exception {
+    HttpHeader httpHeader = getAcceptLanguageHttpHeader();
+
+    when(httpCall.getRequestHeaders()).thenReturn(asList(httpHeader, getJsonContentTypeHeader()));
+    when(httpCall.getRequestHeader("Content-Type")).thenReturn(getJsonContentTypeHeader());
+
+    String copiedHeaders = dataCopyHelper.getHeadersForCopy();
+
+    assertThat(copiedHeaders, is("\nRequest Headers\naccept-language: en-US,en;q=0.8,hi;q=0.6\n" +
+      "Content-Type: application/json\n"));
+  }
+
+  @Test
+  public void shouldCopyOnlyResponseHeadersPresentIfRequestHeadersMissing() throws Exception {
+    HttpHeader httpHeader = getAcceptLanguageHttpHeader();
+
+    when(httpCall.getResponseHeaders()).thenReturn(asList(httpHeader, getHeader()));
+    when(httpCall.getResponseHeader("Content-Type")).thenReturn(getJsonContentTypeHeader());
+
+    String copiedHeaders = dataCopyHelper.getHeadersForCopy();
+
+    assertThat(copiedHeaders, is("\nResponse Headers\naccept-language: en-US,en;q=0.8,hi;q=0.6\n" +
+      "Header: headerValue\n"));
   }
 
   @Test
@@ -227,5 +274,12 @@ public class DataCopyHelperTest {
     HttpHeaderValue value3 = new HttpHeaderValue("q=0.6");
     httpHeader.setValues(asList(value1, value2, value3));
     return httpHeader;
+  }
+
+  private void mockStringResources() {
+    when(resources.getString(R.string.request_body_heading)).thenReturn("Request Body");
+    when(resources.getString(R.string.request_headers)).thenReturn("Request Headers");
+    when(resources.getString(R.string.response_body_heading)).thenReturn("Response Body");
+    when(resources.getString(R.string.response_headers)).thenReturn("Response Headers");
   }
 }
