@@ -102,4 +102,11 @@ public class DataCopyHelper {
   private boolean contentHeadersPresent(HttpHeader contentTypeHeader) {
     return contentTypeHeader != null && contentTypeHeader.getValues().size() > 0;
   }
+
+  public String getHeadersForCopy() {
+    StringBuilder dataToCopy = new StringBuilder();
+    appendHeaders(httpCallRecord.getRequestHeaders(), dataToCopy, "Request Headers");
+    appendHeaders(httpCallRecord.getResponseHeaders(), dataToCopy, "Response Headers");
+    return dataToCopy.toString();
+  }
 }
