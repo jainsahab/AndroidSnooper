@@ -7,7 +7,7 @@ import com.prateekj.snooper.formatter.ResponseFormatterFactory;
 import com.prateekj.snooper.infra.BackgroundTask;
 import com.prateekj.snooper.infra.BackgroundTaskExecutor;
 import com.prateekj.snooper.networksnooper.database.SnooperRepo;
-import com.prateekj.snooper.networksnooper.fragment.HttpCallFragment.Bound;
+import com.prateekj.snooper.networksnooper.model.Bound;
 import com.prateekj.snooper.networksnooper.model.HttpCallRecord;
 import com.prateekj.snooper.networksnooper.model.HttpHeader;
 import com.prateekj.snooper.networksnooper.model.HttpHeaderValue;
@@ -188,6 +188,20 @@ public class HttpCallFragmentPresenterTest {
     presenter.init(viewModel, REQUEST_MODE);
 
     presenter.searchInBody("");
+
+    verify(httpCallBodyView).removeOldHighlightedSpans();
+    verify(httpCallBodyView, never()).highlightBounds(any(List.class));
+  }
+
+  @Test
+  public void shouldNotHighlightSpansWhenPatternNotFound() throws Exception {
+    when(responseFormatter.format(anyString())).thenReturn("ABC0124abc");
+    HttpHeader httpHeader = getJsonContentTypeHeader();
+    when(httpCallRecord.getRequestHeader("Content-Type")).thenReturn(httpHeader);
+    resolveBackgroundTask();
+    presenter.init(viewModel, REQUEST_MODE);
+
+    presenter.searchInBody("789");
 
     verify(httpCallBodyView).removeOldHighlightedSpans();
     verify(httpCallBodyView, never()).highlightBounds(any(List.class));

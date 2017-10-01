@@ -77,7 +77,9 @@ public class HttpCallFragmentPresenter {
       bounds.add(new Bound(indexOfKeyword, rightBound));
       indexOfKeyword = formattedBodyLowerCase.indexOf(pattern, rightBound);
     }
-    httpCallBodyView.highlightBounds(bounds);
+    if (!bounds.isEmpty()) {
+      httpCallBodyView.highlightBounds(bounds);
+    }
   }
 
   private String getBodyToFormat(HttpCallRecord httpCallRecord) {
