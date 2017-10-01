@@ -7,7 +7,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v4.widget.NestedScrollView.OnScrollChangeListener;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.SearchView.OnQueryTextListener;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -36,14 +38,21 @@ import static android.view.View.GONE;
 import static android.widget.TextView.BufferType.SPANNABLE;
 import static com.prateekj.snooper.networksnooper.activity.HttpCallActivity.HTTP_CALL_ID;
 import static com.prateekj.snooper.networksnooper.activity.HttpCallActivity.HTTP_CALL_MODE;
+import static com.prateekj.snooper.utils.CollectionUtilities.isLast;
+import static java.lang.Math.min;
 
-public class HttpCallFragment extends Fragment implements HttpCallBodyView, SearchView.OnQueryTextListener {
+public class HttpCallFragment extends Fragment implements HttpCallBodyView, OnQueryTextListener, OnScrollChangeListener {
 
+  public static final int NEXT_SET_HIGHLIGHT_SCROLL_LINE_BUFFER = 20;
+  public static final int BOUNDS_HIGHLIGHT_SET_SIZE = 50;
   private int mode;
   private HttpBodyViewModel viewModel;
   private HttpCallFragmentPresenter presenter;
   private TextView payloadTextView;
   private NestedScrollView scrollView;
+  private int lastBoundHighlightedIndex = 0;
+  private List<Bound> bounds;
+  private int ythPositionOfLastHighlightedBound;
 
   @Nullable
   @Override
@@ -67,6 +76,7 @@ public class HttpCallFragment extends Fragment implements HttpCallBodyView, Sear
     super.onViewCreated(view, savedInstanceState);
     changeLoaderVisibility(View.VISIBLE);
     presenter.init(viewModel, mode);
+    scrollView.setOnScrollChangeListener(this);
   }
 
   @Override
@@ -90,9 +100,10 @@ public class HttpCallFragment extends Fragment implements HttpCallBodyView, Sear
 
   @Override
   public void highlightBounds(List<Bound> bounds) {
+    this.bounds = bounds;
     Log.d("myTag", "Total size: " + bounds.size());
-    highlightStringEfficiently(bounds.subList(0, Math.min(50, bounds.size())));
-    scrollTillLine(getLineNumber(bounds.get(0).getLeft()));
+    highlightStringFromBounds(bounds.subList(lastBoundHighlightedIndex, min(BOUNDS_HIGHLIGHT_SET_SIZE, bounds.size())));
+    scrollTillYOffset(getYthPositionOfBoundInBody(bounds.get(0)));
   }
 
   @Override
@@ -104,39 +115,13 @@ public class HttpCallFragment extends Fragment implements HttpCallBodyView, Sear
     }
   }
 
-  private void scrollTillLine(final int lineNumber) {
+  private void scrollTillYOffset(final int yOffset) {
     scrollView.post(new Runnable() {
       @Override
       public void run() {
-        int y = payloadTextView.getLayout().getLineTop(lineNumber);
-        scrollView.scrollTo(0, y);
+        scrollView.scrollTo(0, yOffset);
       }
     });
-  }
-
-
-  public int getLineNumber(int indexOfFirstOccurrenceWord) {
-    return payloadTextView.getLayout().getLineForOffset(indexOfFirstOccurrenceWord);
-  }
-
-  private void highlightStringEfficiently(List<Bound> bounds) {
-    Log.d("myTag", "Highlighting bounds " + bounds.size());
-    final Spannable text = (Spannable) payloadTextView.getText();
-    payloadTextView.postDelayed(getHighlightAction(text, bounds, 0), 5);
-  }
-
-  @NonNull
-  private Runnable getHighlightAction(final Spannable text, final List<Bound> bounds, final int index) {
-    return new Runnable() {
-      @Override
-      public void run() {
-        Bound bound = bounds.get(index);
-        text.setSpan(new BackgroundColorSpan(Color.YELLOW), bound.getLeft(), bound.getRight(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        if (index + 1 < bounds.size()) {
-          payloadTextView.postDelayed(getHighlightAction(text, bounds, index + 1), 2);
-        }
-      }
-    };
   }
 
   @Override
@@ -146,7 +131,55 @@ public class HttpCallFragment extends Fragment implements HttpCallBodyView, Sear
 
   @Override
   public boolean onQueryTextChange(String newText) {
+    lastBoundHighlightedIndex = 0;
     presenter.searchInBody(newText.toLowerCase());
     return true;
+  }
+
+  @Override
+  public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+    if (hasBoundsToHighlight() && needToHighlightNextSetOfBounds(scrollY)) {
+      final int calculatedToIndex = lastBoundHighlightedIndex + BOUNDS_HIGHLIGHT_SET_SIZE;
+      highlightStringFromBounds(bounds.subList(lastBoundHighlightedIndex + 1, min(calculatedToIndex, bounds.size())));
+    }
+  }
+
+  private int getYthPositionOfBoundInBody(Bound bound) {
+    int lineNumber = getLineNumber(bound.getLeft());
+    return payloadTextView.getLayout().getLineTop(lineNumber);
+  }
+
+  public int getLineNumber(int indexOfFirstOccurrenceWord) {
+    return payloadTextView.getLayout().getLineForOffset(indexOfFirstOccurrenceWord);
+  }
+
+  private void highlightStringFromBounds(List<Bound> bounds) {
+    final Spannable text = (Spannable) payloadTextView.getText();
+    payloadTextView.postDelayed(getHighlightAction(text, bounds), 5);
+  }
+
+  @NonNull
+  private Runnable getHighlightAction(final Spannable text, final List<Bound> boundsCurrentSet) {
+    return new Runnable() {
+      @Override
+      public void run() {
+        for (Bound bound : boundsCurrentSet) {
+          text.setSpan(new BackgroundColorSpan(Color.YELLOW), bound.getLeft(), bound.getRight(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+          if (isLast(boundsCurrentSet, bound)) {
+            ythPositionOfLastHighlightedBound = getYthPositionOfBoundInBody(bound);
+            lastBoundHighlightedIndex = bounds.indexOf(bound);
+          }
+        }
+      }
+    };
+  }
+
+
+  private boolean needToHighlightNextSetOfBounds(int scrollY) {
+    return ythPositionOfLastHighlightedBound - scrollY < NEXT_SET_HIGHLIGHT_SCROLL_LINE_BUFFER;
+  }
+
+  private boolean hasBoundsToHighlight() {
+    return bounds != null && lastBoundHighlightedIndex < (bounds.size() - 1);
   }
 }
