@@ -51,7 +51,7 @@ public class PaginatedRecyclerView extends RecyclerView implements PageAddedList
     int visibleItemCount = layoutManager.getChildCount();
     int totalItemCount = getAdapter().getItemCount();
     int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
-    return firstVisibleItemPosition != 0 && firstVisibleItemPosition + visibleItemCount > totalItemCount - 5;
+    return firstVisibleItemPosition > 0 && firstVisibleItemPosition + visibleItemCount > totalItemCount - 5;
   }
 
   @Override

@@ -91,6 +91,10 @@ public class HttpCallListActivityTest {
 
   @Test
   public void shouldVerifyDeleteBehaviorWhenDeleteTapped() throws Exception {
+    long currentDateMillis = getDate(2017, 4, 1, 11, 22, 33).getTime();
+    for (int index = 0; index < 50; index++) {
+      saveHttpCall("https://www.facebook.com/" + index, "GET", 200, "OK", new Date(currentDateMillis + (index * 1000)));
+    }
     saveErrorHttpCall("https://www.abc.com", "GET", getDate(2017, 5, 1, 11, 22, 33));
     saveHttpCall("https://www.google.com", "GET", 200, "OK", getDate(2017, 5, 2, 11, 22, 33));
     saveHttpCall("https://www.facebook.com", "GET", 200, "OK", getDate(2017, 5, 3, 11, 22, 33));

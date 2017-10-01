@@ -24,8 +24,9 @@ import com.prateekj.snooper.infra.BackgroundTaskExecutor;
 import com.prateekj.snooper.networksnooper.database.SnooperRepo;
 import com.prateekj.snooper.networksnooper.fragment.HttpCallFragment;
 import com.prateekj.snooper.networksnooper.fragment.HttpHeadersFragment;
+import com.prateekj.snooper.networksnooper.helper.DataCopyHelper;
+import com.prateekj.snooper.networksnooper.helper.HttpCallRenderer;
 import com.prateekj.snooper.networksnooper.presenter.HttpCallPresenter;
-import com.prateekj.snooper.networksnooper.renderer.HttpCallRenderer;
 import com.prateekj.snooper.networksnooper.views.HttpCallView;
 import com.prateekj.snooper.utils.FileUtil;
 
@@ -57,7 +58,8 @@ public class HttpCallActivity extends SnooperBaseActivity implements HttpCallVie
     FileUtil fileUtil = new FileUtil();
     SnooperRepo repo = new SnooperRepo(this);
     BackgroundTaskExecutor backgroundTaskExecutor = new BackgroundTaskExecutor(this);
-    httpCallPresenter = new HttpCallPresenter(httpCallId, repo, this, new ResponseFormatterFactory(), fileUtil, backgroundTaskExecutor);
+    DataCopyHelper dataCopyHelper = new DataCopyHelper(repo.findById(httpCallId), new ResponseFormatterFactory(), getResources());
+    httpCallPresenter = new HttpCallPresenter(dataCopyHelper, repo.findById(httpCallId), this, fileUtil, backgroundTaskExecutor);
     boolean hasError = repo.findById(httpCallId).getError() != null;
     httpCallRenderer = new HttpCallRenderer(this, hasError);
     setupUi();
