@@ -11,33 +11,22 @@ android:
   - platform-tools
   - build-tools-25.0.2
   - android-24
-  - sys-img-armeabi-v7a-android-21
   - extra-android-m2repository
 
 jdk:
 - oraclejdk8
 
 before_script:
-- echo no | android create avd --force -n test -t android-21 --abi armeabi-v7a
-- mksdcard -l e 756M sdcard.img
-- emulator -avd test -no-skin -no-audio -no-window -sdcard sdcard.img &
-- android-wait-for-emulator
-- adb shell settings put global window_animation_scale 0
-- adb shell settings put global transition_animation_scale 0
-- adb shell settings put global animator_duration_scale 0
 - chmod +x ./deploy_snapshot.sh
 - chmod +x ./travis/push-artifact.sh
 
 script:
-- "./gradlew Snooper:clean Snooper:testDebugUnitTest Snooper:spoonDebugAndroidTest
-  Snooper:lintDebug"
-- "./gradlew Snooper-Spring:clean Snooper-Spring:testDebugUnitTest Snooper-Spring:connectedDebugAndroidTest
-  Snooper-Spring:lintDebug"
-- "./gradlew Snooper-Okhttp:clean Snooper-Okhttp:testDebugUnitTest Snooper-Okhttp:connectedDebugAndroidTest
-  Snooper-Okhttp:lintDebug"
+- "./gradlew Snooper:clean Snooper:testDebugUnitTest Snooper:lintDebug"
+- "./gradlew Snooper-Spring:clean Snooper-Spring:testDebugUnitTest Snooper-Spring:lintDebug"
+- "./gradlew Snooper-Okhttp:clean Snooper-Okhttp:testDebugUnitTest Snooper-Okhttp:lintDebug"
 
-after_script:
-- "./travis/push-artifact.sh"
+#after_script:
+#- "./travis/push-artifact.sh"
 
 after_success:
 - "./deploy_snapshot.sh"
