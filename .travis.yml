@@ -29,15 +29,12 @@ before_script:
 - chmod +x ./travis/push-artifact.sh
 
 script:
-- "./gradlew Snooper:clean Snooper:testDebugUnitTest Snooper:spoonDebugAndroidTest
-  Snooper:lintDebug"
-- "./gradlew Snooper-Spring:clean Snooper-Spring:testDebugUnitTest Snooper-Spring:connectedDebugAndroidTest
-  Snooper-Spring:lintDebug"
-- "./gradlew Snooper-Okhttp:clean Snooper-Okhttp:testDebugUnitTest Snooper-Okhttp:connectedDebugAndroidTest
-  Snooper-Okhttp:lintDebug"
+- "./gradlew Snooper:clean Snooper:testDebugUnitTest Snooper:lintDebug"
+- "./gradlew Snooper-Spring:clean Snooper-Spring:testDebugUnitTest Snooper-Spring:lintDebug"
+- "./gradlew Snooper-Okhttp:clean Snooper-Okhttp:testDebugUnitTest Snooper-Okhttp:lintDebug"
 
-after_script:
-- "./travis/push-artifact.sh"
+#after_script:
+#- "./travis/push-artifact.sh"
 
 after_success:
 - "./deploy_snapshot.sh"
