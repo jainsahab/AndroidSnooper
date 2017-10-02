@@ -2,6 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
   <item
+    android:id="@+id/search_menu"
+    android:icon="@android:drawable/ic_menu_search"
+    android:visible="false"
+    app:showAsAction="ifRoom|collapseActionView"
+    app:actionViewClass="android.support.v7.widget.SearchView"
+    android:title="@string/search_title"/>
+  <item
     android:id="@+id/copy_menu"
     android:icon="@drawable/copy"
     app:showAsAction="ifRoom"

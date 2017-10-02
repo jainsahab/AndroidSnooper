@@ -7,12 +7,14 @@ import com.prateekj.snooper.formatter.ResponseFormatterFactory;
 import com.prateekj.snooper.infra.BackgroundTask;
 import com.prateekj.snooper.infra.BackgroundTaskExecutor;
 import com.prateekj.snooper.networksnooper.database.SnooperRepo;
+import com.prateekj.snooper.networksnooper.model.Bound;
 import com.prateekj.snooper.networksnooper.model.HttpCallRecord;
 import com.prateekj.snooper.networksnooper.model.HttpHeader;
 import com.prateekj.snooper.networksnooper.model.HttpHeaderValue;
 import com.prateekj.snooper.networksnooper.viewmodel.HttpBodyViewModel;
 import com.prateekj.snooper.networksnooper.views.HttpCallBodyView;
 
+import org.hamcrest.CustomTypeSafeMatcher;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -20,14 +22,19 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 import java.util.Collections;
+import java.util.List;
 
 import static com.prateekj.snooper.networksnooper.activity.HttpCallActivity.ERROR_MODE;
 import static com.prateekj.snooper.networksnooper.activity.HttpCallActivity.REQUEST_MODE;
 import static com.prateekj.snooper.networksnooper.activity.HttpCallActivity.RESPONSE_MODE;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
@@ -145,6 +152,59 @@ public class HttpCallFragmentPresenterTest {
     presenter.init(viewModel, REQUEST_MODE);
 
     verify(httpCallBodyView).onFormattingDone();
+  }
+
+  @Test
+  public void shouldReturnBoundsToHighlight() throws Exception {
+    when(responseFormatter.format(anyString())).thenReturn("ABC0124abc");
+    HttpHeader httpHeader = getJsonContentTypeHeader();
+    when(httpCallRecord.getRequestHeader("Content-Type")).thenReturn(httpHeader);
+    resolveBackgroundTask();
+    presenter.init(viewModel, REQUEST_MODE);
+
+    presenter.searchInBody("abc");
+
+    verify(httpCallBodyView).removeOldHighlightedSpans();
+    verify(httpCallBodyView).highlightBounds(argThat(new CustomTypeSafeMatcher<List<Bound>>("") {
+      @Override
+      protected boolean matchesSafely(List<Bound> item) {
+        Bound firstBound = item.get(0);
+        assertThat(firstBound.getLeft(), is(0));
+        assertThat(firstBound.getRight(), is(3));
+        Bound secondBound = item.get(1);
+        assertThat(secondBound.getLeft(), is(7));
+        assertThat(secondBound.getRight(), is(10));
+        return true;
+      }
+    }));
+  }
+
+  @Test
+  public void shouldNotHighlightSpansWhenPatternIsEmpty() throws Exception {
+    when(responseFormatter.format(anyString())).thenReturn("ABC0124abc");
+    HttpHeader httpHeader = getJsonContentTypeHeader();
+    when(httpCallRecord.getRequestHeader("Content-Type")).thenReturn(httpHeader);
+    resolveBackgroundTask();
+    presenter.init(viewModel, REQUEST_MODE);
+
+    presenter.searchInBody("");
+
+    verify(httpCallBodyView).removeOldHighlightedSpans();
+    verify(httpCallBodyView, never()).highlightBounds(any(List.class));
+  }
+
+  @Test
+  public void shouldNotHighlightSpansWhenPatternNotFound() throws Exception {
+    when(responseFormatter.format(anyString())).thenReturn("ABC0124abc");
+    HttpHeader httpHeader = getJsonContentTypeHeader();
+    when(httpCallRecord.getRequestHeader("Content-Type")).thenReturn(httpHeader);
+    resolveBackgroundTask();
+    presenter.init(viewModel, REQUEST_MODE);
+
+    presenter.searchInBody("789");
+
+    verify(httpCallBodyView).removeOldHighlightedSpans();
+    verify(httpCallBodyView, never()).highlightBounds(any(List.class));
   }
 
   private void resolveBackgroundTask() {
