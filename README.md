@@ -3,12 +3,13 @@
 [![Build Status](https://travis-ci.org/jainsahab/AndroidSnooper.svg?branch=master)](https://travis-ci.org/jainsahab/AndroidSnooper) [![codecov](https://codecov.io/gh/jainsahab/AndroidSnooper/branch/master/graph/badge.svg)](https://codecov.io/gh/jainsahab/AndroidSnooper) [![Maven Central](https://img.shields.io/maven-central/v/com.github.jainsahab/Snooper.svg)](https://mvnrepository.com/artifact/com.github.jainsahab/Snooper)
 
 ## Introduction
-Android Snooper is a HTTP inspector which observes all the HTTP calls made by the app and opens up an Activity to see the detailed history of HTTP calls on `onShake` event. This library is inspired by the `Network Request History` feature of [FLEX](https://github.com/Flipboard/FLEX) app for iOS.
+Android Snooper is a library which helps in debugging issues while running the applications on android devices. One of the basic features provided includes HTTP inspection, which observes all the HTTP calls made by the app. When the device is shaked, history of all the HTTP requests is presented with their responses and allows search, copy and sharing of the request/response. This library is inspired by the `Network Request History` feature of [FLEX](https://github.com/Flipboard/FLEX) app for iOS.
 
 ![Snooper](assets/snooper_demo.gif)
 
-Android Snooper works on the interceptor mechanism provided by almost every HTTP client. All you need to do is initialize Android Snooper using `AndroidSnooper.init(this);` statement in your Application class and set an instance of `SnooperInterceptor` to the list of your network interceptors.
-As of now we are providing the interceptors for the below libraries.
+## How to use?
+Android Snooper works on the [interceptor pattern](https://en.wikipedia.org/wiki/Interceptor_pattern) which is supported by almost every HTTP client. All you need to do is initialize Android Snooper using `AndroidSnooper.init(this);` statement in your Application class and set an instance of `SnooperInterceptor` to the list of your network interceptors.
+As of now Snooper supports the interceptors for the following libraries:
 
 * [Spring Android Rest Template](http://projects.spring.io/spring-android/)
 * [Square's OkHttp Client](https://github.com/square/okhttp)
@@ -30,9 +31,9 @@ Didn't get your HTTP client's name in the list? No worries, You can still write 
 ```
 The above implementation ought to be part of your custom interceptor where you will have access to the required `Request` and `Response` object to jot down the required data for Android Snooper to work properly.
 
-**Warning:** As Android Snooper records each and every HTTP call goes through it. Please be cautious as it will record the sensitive information such as **Auth Tokens**, **Headers** etc. The only purpose of this library is *Debugging*. Hence, Debug or QA builds are the **only** perfect candidate for this library.
+**Warning:** Android Snooper records each and every HTTP call intercepted by it. The sole purpose of Android snooper is to help in *debugging*, hence **only Debug or QA builds** are the perfect candidates for integrating the library. Sensitive information such as **Auth Tokens**, **Headers**, etc are not supposed to be exposed and hence production apps should not integrate the library.
 
-## Installation
+## Integration
 ```groovy
     repositories {
         mavenCentral()
