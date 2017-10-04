@@ -1,8 +1,9 @@
 package com.prateekj.snooper.espresso;
 
 import android.support.test.espresso.IdlingResource;
-import android.util.Log;
 import android.view.View;
+
+import com.prateekj.snooper.utils.Logger;
 
 import org.hamcrest.Matcher;
 
@@ -57,7 +58,7 @@ public class ViewMatcherIdlingResource implements IdlingResource {
       public void run() {
         while (!viewMatcher.matches(view) && now() - startTime < waitTimeInMillis) {
           try {
-            Log.d(TAG, "polling view to match " + viewMatcher.toString());
+            Logger.d(TAG, "polling view to match " + viewMatcher.toString());
             sleep(MATCHER_POLLING_INTERVAL_IN_MILLIS);
           } catch (InterruptedException ignored) {
           }

@@ -1,6 +1,6 @@
 package com.prateekj.snooper.formatter;
 
-import android.util.Log;
+import com.prateekj.snooper.utils.Logger;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,7 +22,7 @@ public class JsonResponseFormatter implements ResponseFormatter {
       return new JSONArray(response).toString(INDENT_SPACES);
     } catch (JSONException e) {
       e.printStackTrace();
-      Log.d(TAG, e.getMessage(), e);
+      Logger.e(TAG, e.getMessage(), e);
     }
     return response;
   }

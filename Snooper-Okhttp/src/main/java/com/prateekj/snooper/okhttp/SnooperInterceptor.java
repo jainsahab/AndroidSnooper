@@ -1,9 +1,8 @@
 package com.prateekj.snooper.okhttp;
 
-import android.util.Log;
-
 import com.prateekj.snooper.AndroidSnooper;
 import com.prateekj.snooper.networksnooper.model.HttpCall;
+import com.prateekj.snooper.utils.Logger;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -66,7 +65,7 @@ public class SnooperInterceptor implements Interceptor {
       copy.body().writeTo(buffer);
       return buffer.readUtf8();
     } catch (final IOException e) {
-      Log.d(TAG, "couldn't retrieve request body", e);
+      Logger.e(TAG, "couldn't retrieve request body", e);
       return "";
     }
   }

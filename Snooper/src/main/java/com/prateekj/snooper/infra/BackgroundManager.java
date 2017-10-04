@@ -5,7 +5,8 @@ import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
+
+import com.prateekj.snooper.utils.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +63,7 @@ public class BackgroundManager implements Application.ActivityLifecycleCallbacks
     if (mInBackground) {
       mInBackground = false;
       notifyOnBecameForeground();
-      Log.d(TAG, "Application went to foreground");
+      Logger.d(TAG, "Application went to foreground");
     }
   }
 
@@ -71,7 +72,7 @@ public class BackgroundManager implements Application.ActivityLifecycleCallbacks
       try {
         listener.onBecameForeground();
       } catch (Exception e) {
-        Log.d(TAG, "Listener threw exception!", e);
+        Logger.e(TAG, "Listener threw exception!", e);
       }
     }
   }
@@ -85,7 +86,7 @@ public class BackgroundManager implements Application.ActivityLifecycleCallbacks
           mInBackground = true;
           mBackgroundTransition = null;
           notifyOnBecameBackground();
-          Log.d(TAG, "Application went to background");
+          Logger.d(TAG, "Application went to background");
         }
       };
       mBackgroundDelayHandler.postDelayed(mBackgroundTransition, BACKGROUND_DELAY);
@@ -97,7 +98,7 @@ public class BackgroundManager implements Application.ActivityLifecycleCallbacks
       try {
         listener.onBecameBackground();
       } catch (Exception e) {
-        Log.e(TAG, "Listener threw exception!", e);
+        Logger.e(TAG, "Listener threw exception!", e);
       }
     }
   }
