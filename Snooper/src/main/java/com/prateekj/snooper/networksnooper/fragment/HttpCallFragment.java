@@ -14,7 +14,6 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.BackgroundColorSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,6 +30,7 @@ import com.prateekj.snooper.networksnooper.model.Bound;
 import com.prateekj.snooper.networksnooper.presenter.HttpCallFragmentPresenter;
 import com.prateekj.snooper.networksnooper.viewmodel.HttpBodyViewModel;
 import com.prateekj.snooper.networksnooper.views.HttpCallBodyView;
+import com.prateekj.snooper.utils.Logger;
 
 import java.util.List;
 
@@ -43,6 +43,7 @@ import static java.lang.Math.min;
 
 public class HttpCallFragment extends Fragment implements HttpCallBodyView, OnQueryTextListener, OnScrollChangeListener {
 
+  public static final String TAG = HttpCallFragment.class.getSimpleName();
   public static final int NEXT_SET_HIGHLIGHT_SCROLL_LINE_BUFFER = 20;
   public static final int BOUNDS_HIGHLIGHT_SET_SIZE = 50;
   private int mode;
@@ -101,7 +102,7 @@ public class HttpCallFragment extends Fragment implements HttpCallBodyView, OnQu
   @Override
   public void highlightBounds(List<Bound> bounds) {
     this.bounds = bounds;
-    Log.d("myTag", "Total size: " + bounds.size());
+    Logger.d(TAG, "Total size: " + bounds.size());
     highlightStringFromBounds(bounds.subList(lastBoundHighlightedIndex, min(BOUNDS_HIGHLIGHT_SET_SIZE, bounds.size())));
     scrollTillYOffset(getYthPositionOfBoundInBody(bounds.get(0)));
   }

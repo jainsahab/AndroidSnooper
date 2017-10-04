@@ -1,6 +1,6 @@
 package com.prateekj.snooper.formatter;
 
-import android.util.Log;
+import com.prateekj.snooper.utils.Logger;
 
 import org.xml.sax.InputSource;
 
@@ -31,7 +31,7 @@ public class XmlFormatter implements ResponseFormatter{
       return new String(((ByteArrayOutputStream) res.getOutputStream()).toByteArray()).trim();
     } catch (Exception e) {
       e.printStackTrace();
-      Log.d(TAG, e.getMessage(), e);
+      Logger.e(TAG, e.getMessage(), e);
       return response;
     }
   }
