@@ -12,5 +12,5 @@
   <color name="snooper_green">#4C924C</color>
   <color name="snooper_red">#D10000</color>
   <color name="snooper_yellow">#FFBD00</color>
-
+  <color name="snooper_text_highlight_color">#FDFF06</color>
 </resources>

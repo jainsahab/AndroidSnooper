@@ -1,6 +1,5 @@
 package com.prateekj.snooper.networksnooper.fragment;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -165,7 +164,7 @@ public class HttpCallFragment extends Fragment implements HttpCallBodyView, OnQu
       @Override
       public void run() {
         for (Bound bound : boundsCurrentSet) {
-          text.setSpan(new BackgroundColorSpan(Color.YELLOW), bound.getLeft(), bound.getRight(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+          text.setSpan(new BackgroundColorSpan(getResources().getColor(R.color.snooper_text_highlight_color)), bound.getLeft(), bound.getRight(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
           if (isLast(boundsCurrentSet, bound)) {
             ythPositionOfLastHighlightedBound = getYthPositionOfBoundInBody(bound);
             lastBoundHighlightedIndex = bounds.indexOf(bound);
