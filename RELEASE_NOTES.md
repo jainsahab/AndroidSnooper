@@ -1,5 +1,10 @@
 # Release Notes
 
+## Version 1.5.0 (October 5, 2017)
+* Search functionality on http calls list and on particular response/request
+* Fixing crash on deleting http records
+* Allowing copy and share functionality of headers
+
 ## Version 1.4.0 (August 25, 2017)
 * Eliminating Realm dependency and using traditional database support from Android
 * Using new guava library instead of old google-collection
