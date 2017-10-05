@@ -2,6 +2,7 @@
   <string name="snooper_affinity">.snooper_affinity</string>
   <string name="title_activity_http_call_list">Http Calls</string>
   <string name="title_http_call_activity">HTTP Call Detail</string>
+  <string name="title_db_reader_activity">Application Databases</string>
   <string name="request">REQUEST</string>
   <string name="response">RESPONSE</string>
   <string name="headers">HEADERS</string>

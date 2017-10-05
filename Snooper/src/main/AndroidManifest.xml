@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.prateekj.snooper">
+          package="com.prateekj.snooper">
 
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
   <application>
@@ -20,6 +20,11 @@
     <activity
       android:name=".networksnooper.activity.HttpCallSearchActivity"
       android:label="@string/search_title"
+      android:taskAffinity="@string/snooper_affinity"
+      android:theme="@style/SnooperTheme.NoActionBar"/>
+    <activity
+      android:name=".dbreader.activity.DbReaderActivity"
+      android:label="@string/title_db_reader_activity"
       android:taskAffinity="@string/snooper_affinity"
       android:theme="@style/SnooperTheme.NoActionBar"/>
 
