@@ -30,7 +30,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class DbFilesLocatorTest {
+public class DatabaseReaderTest {
   @Mock
   private Context context;
   @Mock
@@ -41,12 +41,12 @@ public class DbFilesLocatorTest {
   private DbReaderCallback dbReaderCallback;
   @Captor
   private ArgumentCaptor<List<Database>> dbCaptor;
-  private DbFilesLocator dbFilesLocator;
+  private DatabaseReader databaseReader;
 
   @Before
   public void setUp() throws Exception {
     when(context.getApplicationContext()).thenReturn(applicationContext);
-    dbFilesLocator = new DbFilesLocator(context, backgroundTaskExecutor, dbReaderCallback);
+    databaseReader = new DatabaseReader(context, backgroundTaskExecutor, dbReaderCallback);
   }
 
   @Test
@@ -55,7 +55,7 @@ public class DbFilesLocatorTest {
     when(applicationContext.databaseList()).thenReturn(databases);
     resolveBackgroundTask();
 
-    dbFilesLocator.fetchApplicationDatabases();
+    databaseReader.fetchApplicationDatabases();
 
     verify(dbReaderCallback).onDbFetchCompleted(dbCaptor.capture());
     List<Database> databasesList = dbCaptor.getValue();
@@ -67,7 +67,7 @@ public class DbFilesLocatorTest {
     when(applicationContext.databaseList()).thenReturn(null);
     resolveBackgroundTask();
 
-    dbFilesLocator.fetchApplicationDatabases();
+    databaseReader.fetchApplicationDatabases();
 
     verify(dbReaderCallback).onDbFetchCompleted(dbCaptor.capture());
     List<Database> databasesList = dbCaptor.getValue();
@@ -90,7 +90,7 @@ public class DbFilesLocatorTest {
     when(context.getDatabasePath("user.db")).thenReturn(file2);
     resolveBackgroundTask();
 
-    dbFilesLocator.fetchApplicationDatabases();
+    databaseReader.fetchApplicationDatabases();
     verify(dbReaderCallback).onDbFetchCompleted(dbCaptor.capture());
     List<Database> applicationDatabases = dbCaptor.getValue();
 

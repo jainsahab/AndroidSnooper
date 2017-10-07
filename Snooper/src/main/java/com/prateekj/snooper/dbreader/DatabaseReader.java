@@ -1,23 +1,26 @@
 package com.prateekj.snooper.dbreader;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 
 import com.prateekj.snooper.dbreader.model.Database;
 import com.prateekj.snooper.dbreader.view.DbReaderCallback;
 import com.prateekj.snooper.infra.BackgroundTask;
 import com.prateekj.snooper.infra.BackgroundTaskExecutor;
+import com.prateekj.snooper.utils.Logger;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DbFilesLocator {
-  private static final String TAG = DbFilesLocator.class.getName();
+public class DatabaseReader {
+  private static final String TAG = DatabaseReader.class.getName();
   private Context context;
   private BackgroundTaskExecutor executor;
   private DbReaderCallback dbReaderCallback;
 
-  public DbFilesLocator(Context context, BackgroundTaskExecutor executor, DbReaderCallback dbReaderCallback) {
+  public DatabaseReader(Context context, BackgroundTaskExecutor executor, DbReaderCallback dbReaderCallback) {
     this.context = context;
     this.executor = executor;
     this.dbReaderCallback = dbReaderCallback;
@@ -49,5 +52,15 @@ public class DbFilesLocator {
         dbReaderCallback.onDbFetchCompleted(databases);
       }
     });
+  }
+
+  public SQLiteDatabase getDatabase(String name) {
+    SQLiteDatabase sqLiteDatabase = null;
+    try {
+      sqLiteDatabase = SQLiteDatabase.openDatabase(name, null, SQLiteDatabase.OPEN_READONLY);
+    } catch (SQLiteException exception) {
+      Logger.e(TAG, "Exception while opening the database", exception);
+    }
+    return sqLiteDatabase;
   }
 }
