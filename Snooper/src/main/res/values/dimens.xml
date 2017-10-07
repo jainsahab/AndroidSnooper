@@ -4,6 +4,7 @@
   <dimen name="activity_vertical_margin">16dp</dimen>
   <dimen name="http_call_line_item_vertical_margin">8dp</dimen>
   <dimen name="header_line_item_vertical_margin">4dp</dimen>
-
+  <dimen name="card_margin">5dp</dimen>
   <dimen name="accordion_view_body_margin">5dp</dimen>
+  <dimen name="db_name_size">18dp</dimen>
 </resources>
