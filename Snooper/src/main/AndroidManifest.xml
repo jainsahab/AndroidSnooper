@@ -27,6 +27,16 @@
       android:label="@string/title_db_reader_activity"
       android:taskAffinity="@string/snooper_affinity"
       android:theme="@style/SnooperTheme.NoActionBar"/>
+    <activity
+      android:name=".dbreader.activity.DbViewActivity"
+      android:label="@string/title_db_view_activity"
+      android:taskAffinity="@string/snooper_affinity"
+      android:theme="@style/SnooperTheme.NoActionBar"/>
+    <activity
+      android:name=".dbreader.activity.TableViewActivity"
+      android:label="@string/title_table_view_activity"
+      android:taskAffinity="@string/snooper_affinity"
+      android:theme="@style/SnooperTheme.NoActionBar"/>
 
   </application>
 

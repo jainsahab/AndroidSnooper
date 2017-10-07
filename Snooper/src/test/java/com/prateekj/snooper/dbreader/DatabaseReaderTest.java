@@ -39,6 +39,8 @@ public class DatabaseReaderTest {
   private BackgroundTaskExecutor backgroundTaskExecutor;
   @Mock
   private DbReaderCallback dbReaderCallback;
+  @Mock
+  private DbDataReader dbDataReader;
   @Captor
   private ArgumentCaptor<List<Database>> dbCaptor;
   private DatabaseReader databaseReader;
@@ -46,7 +48,7 @@ public class DatabaseReaderTest {
   @Before
   public void setUp() throws Exception {
     when(context.getApplicationContext()).thenReturn(applicationContext);
-    databaseReader = new DatabaseReader(context, backgroundTaskExecutor, dbReaderCallback);
+    databaseReader = new DatabaseReader(context, backgroundTaskExecutor, dbDataReader);
   }
 
   @Test
@@ -55,9 +57,9 @@ public class DatabaseReaderTest {
     when(applicationContext.databaseList()).thenReturn(databases);
     resolveBackgroundTask();
 
-    databaseReader.fetchApplicationDatabases();
+    databaseReader.fetchApplicationDatabases(dbReaderCallback);
 
-    verify(dbReaderCallback).onDbFetchCompleted(dbCaptor.capture());
+    verify(dbReaderCallback).onApplicationDbFetchCompleted(dbCaptor.capture());
     List<Database> databasesList = dbCaptor.getValue();
     assertEquals(databasesList.size(), 0);
   }
@@ -67,9 +69,9 @@ public class DatabaseReaderTest {
     when(applicationContext.databaseList()).thenReturn(null);
     resolveBackgroundTask();
 
-    databaseReader.fetchApplicationDatabases();
+    databaseReader.fetchApplicationDatabases(dbReaderCallback);
 
-    verify(dbReaderCallback).onDbFetchCompleted(dbCaptor.capture());
+    verify(dbReaderCallback).onApplicationDbFetchCompleted(dbCaptor.capture());
     List<Database> databasesList = dbCaptor.getValue();
     assertEquals(databasesList.size(), 0);
   }
@@ -90,8 +92,8 @@ public class DatabaseReaderTest {
     when(context.getDatabasePath("user.db")).thenReturn(file2);
     resolveBackgroundTask();
 
-    databaseReader.fetchApplicationDatabases();
-    verify(dbReaderCallback).onDbFetchCompleted(dbCaptor.capture());
+    databaseReader.fetchApplicationDatabases(dbReaderCallback);
+    verify(dbReaderCallback).onApplicationDbFetchCompleted(dbCaptor.capture());
     List<Database> applicationDatabases = dbCaptor.getValue();
 
     assertEquals(applicationDatabases.size(), 2);

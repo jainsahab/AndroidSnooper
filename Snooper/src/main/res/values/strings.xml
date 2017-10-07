@@ -3,6 +3,7 @@
   <string name="title_activity_http_call_list">Http Calls</string>
   <string name="title_http_call_activity">HTTP Call Detail</string>
   <string name="title_db_reader_activity">Application Databases</string>
+  <string name="title_db_view_activity">Database</string>
   <string name="request">REQUEST</string>
   <string name="response">RESPONSE</string>
   <string name="headers">HEADERS</string>
@@ -30,4 +31,9 @@
   <string name="no_results_found">No results found for \'%s\'</string>
   <string name="request_body_heading">Request Body</string>
   <string name="response_body_heading">Response Body</string>
+  <string name="name_name_heading">Name : </string>
+  <string name="db_version_heading">Version : </string>
+  <string name="db_tables">Tables : </string>
+  <string name="title_table_view_activity">Table</string>
+  <string name="serial_number_column_heading">S.No.</string>
 </resources>
