@@ -52,6 +52,7 @@ public class DbReaderActivity extends SnooperBaseActivity implements DbReaderCal
   public void onApplicationDbFetchCompleted(List<Database> databases) {
     embeddedLoader.setVisibility(GONE);
     adapter = new DatabaseAdapter(databases, this);
+    RecyclerView recyclerView = (RecyclerView) findViewById(R.id.db_list);
 
     RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
     recyclerView.setLayoutManager(mLayoutManager);
