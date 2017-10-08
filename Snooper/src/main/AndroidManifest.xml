@@ -33,7 +33,7 @@
       android:taskAffinity="@string/snooper_affinity"
       android:theme="@style/SnooperTheme.NoActionBar"/>
     <activity
-      android:name=".dbreader.activity.TableViewActivity"
+      android:name=".dbreader.activity.TableDetailActivity"
       android:label="@string/title_table_view_activity"
       android:taskAffinity="@string/snooper_affinity"
       android:theme="@style/SnooperTheme.NoActionBar"/>

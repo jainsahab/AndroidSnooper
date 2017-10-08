@@ -81,7 +81,7 @@ public class DatabaseDetailActivity extends SnooperBaseActivity implements DbVie
 
   @Override
   public void onTableClick(String table) {
-    Intent dbViewActivity = new Intent(DatabaseDetailActivity.this, TableViewActivity.class);
+    Intent dbViewActivity = new Intent(DatabaseDetailActivity.this, TableDetailActivity.class);
     dbViewActivity.putExtra(TABLE_NAME, table);
     dbViewActivity.putExtra(DB_PATH, dbPath);
     startActivity(dbViewActivity);

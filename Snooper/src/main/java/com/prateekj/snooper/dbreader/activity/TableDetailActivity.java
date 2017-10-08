@@ -25,7 +25,7 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.prateekj.snooper.dbreader.activity.DatabaseDetailActivity.TABLE_NAME;
 
-public class TableViewActivity extends SnooperBaseActivity implements TableViewCallback {
+public class TableDetailActivity extends SnooperBaseActivity implements TableViewCallback {
   private View embeddedLoader;
   private DatabaseReader databaseReader;
   private TableLayout tableLayout;
