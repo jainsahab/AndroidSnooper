@@ -7,6 +7,9 @@ import com.prateekj.snooper.dbreader.view.DbReaderCallback;
 import com.prateekj.snooper.infra.BackgroundTask;
 import com.prateekj.snooper.infra.BackgroundTaskExecutor;
 
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
+import org.hamcrest.TypeSafeMatcher;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,7 +23,6 @@ import org.mockito.stubbing.Answer;
 import java.io.File;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
@@ -93,10 +95,20 @@ public class DatabaseReaderTest {
     List<Database> applicationDatabases = dbCaptor.getValue();
 
     assertEquals(applicationDatabases.size(), 2);
-    assertThat(applicationDatabases.get(0).getPath(), is("/location1/app.db"));
-    assertThat(applicationDatabases.get(0).getName(), is("app.db"));
-    assertThat(applicationDatabases.get(1).getPath(), is("/location2/user.db"));
-    assertThat(applicationDatabases.get(1).getName(), is("user.db"));
+    assertThat(applicationDatabases.get(0), isSameAsDatabaseWithParameters("/location1/app.db", "app.db"));
+    assertThat(applicationDatabases.get(1), isSameAsDatabaseWithParameters("/location2/user.db", "user.db"));
+  }
+
+  Matcher<Database> isSameAsDatabaseWithParameters(final String path, final String name) {
+    return new TypeSafeMatcher<Database>() {
+      public boolean matchesSafely(Database item) {
+        return name.equals(item.getName()) && path.equals(item.getPath());
+      }
+
+      public void describeTo(Description description) {
+        description.appendText("a Database with name " + name);
+      }
+    };
   }
 
   private File getMockFile(String path, String dbName) {
