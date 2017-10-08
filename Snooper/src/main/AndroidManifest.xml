@@ -28,7 +28,7 @@
       android:taskAffinity="@string/snooper_affinity"
       android:theme="@style/SnooperTheme.NoActionBar"/>
     <activity
-      android:name=".dbreader.activity.DbViewActivity"
+      android:name=".dbreader.activity.DatabaseDetailActivity"
       android:label="@string/title_db_view_activity"
       android:taskAffinity="@string/snooper_affinity"
       android:theme="@style/SnooperTheme.NoActionBar"/>

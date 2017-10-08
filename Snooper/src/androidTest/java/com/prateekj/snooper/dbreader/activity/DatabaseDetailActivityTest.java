@@ -17,18 +17,18 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.prateekj.snooper.utils.EspressoViewMatchers.withRecyclerView;
 import static org.hamcrest.core.AllOf.allOf;
 
-public class DbViewActivityTest {
+public class DatabaseDetailActivityTest {
   @Rule
   public TestDbRule testDbRule = new TestDbRule(R.raw.test, "test.db");
 
   @Rule
-  public IntentsTestRule<DbViewActivity> activityRule = new IntentsTestRule<>(DbViewActivity.class, true, false);
+  public IntentsTestRule<DatabaseDetailActivity> activityRule = new IntentsTestRule<>(DatabaseDetailActivity.class, true, false);
 
 
   @Test
   public void shouldRenderDatabaseInformation() throws Exception {
     Intent intent = new Intent();
-    intent.putExtra(DbViewActivity.DB_PATH, testDbRule.getDBDirectory() + "/test.db");
+    intent.putExtra(DatabaseDetailActivity.DB_PATH, testDbRule.getDBDirectory() + "/test.db");
     intent.putExtra(DatabaseListActivity.DB_NAME, "test.db");
     activityRule.launchActivity(intent);
     onView(withId(R.id.db_name)).check(matches(withText("test.db")));

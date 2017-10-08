@@ -25,8 +25,8 @@ public class TableViewActivityTest {
   @Test
   public void shouldRenderDataOfTable() throws Exception {
     Intent intent = new Intent();
-    intent.putExtra(DbViewActivity.TABLE_NAME, "person");
-    intent.putExtra(DbViewActivity.DB_PATH, testDbRule.getDBDirectory() + "/test.db");
+    intent.putExtra(DatabaseDetailActivity.TABLE_NAME, "person");
+    intent.putExtra(DatabaseDetailActivity.DB_PATH, testDbRule.getDBDirectory() + "/test.db");
     activityRule.launchActivity(intent);
     onView(withTableLayout(R.id.table, 0, 0)).check(matches(withText("S.No.")));
     onView(withTableLayout(R.id.table, 0, 1)).check(matches(withText("_ID")));

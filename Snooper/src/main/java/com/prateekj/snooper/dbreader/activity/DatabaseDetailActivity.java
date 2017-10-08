@@ -25,7 +25,7 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.prateekj.snooper.dbreader.activity.DatabaseListActivity.DB_NAME;
 
-public class DbViewActivity extends SnooperBaseActivity implements DbViewCallback, TableEventListener {
+public class DatabaseDetailActivity extends SnooperBaseActivity implements DbViewCallback, TableEventListener {
   public static final String TABLE_NAME = "TABLE_NAME";
   public static final String DB_PATH = "DB_PATH";
   private View embeddedLoader;
@@ -81,7 +81,7 @@ public class DbViewActivity extends SnooperBaseActivity implements DbViewCallbac
 
   @Override
   public void onTableClick(String table) {
-    Intent dbViewActivity = new Intent(DbViewActivity.this, TableViewActivity.class);
+    Intent dbViewActivity = new Intent(DatabaseDetailActivity.this, TableViewActivity.class);
     dbViewActivity.putExtra(TABLE_NAME, table);
     dbViewActivity.putExtra(DB_PATH, dbPath);
     startActivity(dbViewActivity);

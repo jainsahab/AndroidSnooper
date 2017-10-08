@@ -23,7 +23,7 @@ import java.util.List;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static com.prateekj.snooper.dbreader.activity.DbViewActivity.TABLE_NAME;
+import static com.prateekj.snooper.dbreader.activity.DatabaseDetailActivity.TABLE_NAME;
 
 public class TableViewActivity extends SnooperBaseActivity implements TableViewCallback {
   private View embeddedLoader;
@@ -37,7 +37,7 @@ public class TableViewActivity extends SnooperBaseActivity implements TableViewC
     setContentView(R.layout.activity_table_view);
     initViews();
     tableName = getIntent().getStringExtra(TABLE_NAME);
-    String dbPath = getIntent().getStringExtra(DbViewActivity.DB_PATH);
+    String dbPath = getIntent().getStringExtra(DatabaseDetailActivity.DB_PATH);
     BackgroundTaskExecutor backgroundTaskExecutor = new BackgroundTaskExecutor(this);
     embeddedLoader = findViewById(R.id.embedded_loader);
     databaseReader = new DatabaseReader(this, backgroundTaskExecutor, new DatabaseDataReader());

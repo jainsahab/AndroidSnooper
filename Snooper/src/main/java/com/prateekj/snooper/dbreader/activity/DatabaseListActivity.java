@@ -62,7 +62,7 @@ public class DatabaseListActivity extends SnooperBaseActivity implements DbReade
 
   @Override
   public void onDatabaseClick(Database db) {
-    Intent dbViewActivity = new Intent(DatabaseListActivity.this, DbViewActivity.class);
+    Intent dbViewActivity = new Intent(DatabaseListActivity.this, DatabaseDetailActivity.class);
     dbViewActivity.putExtra(DB_PATH, db.getPath());
     dbViewActivity.putExtra(DB_NAME, db.getName());
     startActivity(dbViewActivity);
