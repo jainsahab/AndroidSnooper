@@ -3,7 +3,7 @@ package com.prateekj.snooper.dbreader.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -37,7 +37,7 @@ public class DbViewActivity extends SnooperBaseActivity implements DbViewCallbac
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_db_view);
     initViews();
-    dbPath = getIntent().getStringExtra(DB_PATH);
+    dbPath = getIntent().getStringExtra(DbReaderActivity.DB_PATH);
     String dbName = getIntent().getStringExtra(DB_NAME);
     BackgroundTaskExecutor backgroundTaskExecutor = new BackgroundTaskExecutor(this);
     embeddedLoader = findViewById(R.id.embedded_loader);
@@ -67,7 +67,7 @@ public class DbViewActivity extends SnooperBaseActivity implements DbViewCallbac
   private void updateTableList(List<String> tables) {
     TableAdapter tableAdapter = new TableAdapter(tables, this);
     RecyclerView recyclerView = (RecyclerView) findViewById(R.id.table_list);
-    RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
+    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
     recyclerView.setLayoutManager(mLayoutManager);
     recyclerView.setItemAnimator(new DefaultItemAnimator());
     recyclerView.setAdapter(tableAdapter);

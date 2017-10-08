@@ -70,7 +70,7 @@ public class TableViewActivity extends SnooperBaseActivity implements TableViewC
 
   private void addTableRowsToUi(Table table) {
     List<Row> rows = table.getRows();
-    for (int i = 0; i < rows.size() - 1; i++) {
+    for (int i = 0; i < rows.size(); i++) {
       tableLayout.addView(addRowData(rows.get(i).getData(), i + 1));
     }
   }
