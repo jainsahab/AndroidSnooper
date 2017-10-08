@@ -6,5 +6,6 @@
   <dimen name="header_line_item_vertical_margin">4dp</dimen>
   <dimen name="card_margin">5dp</dimen>
   <dimen name="accordion_view_body_margin">5dp</dimen>
-  <dimen name="db_name_size">18dp</dimen>
+  <dimen name="big_heading">18dp</dimen>
+  <dimen name="small_heading">16dp</dimen>
 </resources>

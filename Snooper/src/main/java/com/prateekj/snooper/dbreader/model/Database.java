@@ -1,10 +1,12 @@
 package com.prateekj.snooper.dbreader.model;
 
-import static android.R.attr.version;
+import java.util.List;
 
 public class Database {
   private String name;
   private String path;
+  private int version;
+  private List<String> tables;
 
   public String getName() {
     return name;
@@ -24,5 +26,17 @@ public class Database {
 
   public void setPath(String path) {
     this.path = path;
+  }
+
+  public void setVersion(int version) {
+    this.version = version;
+  }
+
+  public void setTables(List<String> tables) {
+    this.tables = tables;
+  }
+
+  public List<String> getTables() {
+    return tables;
   }
 }

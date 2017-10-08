@@ -5,35 +5,33 @@
               android:layout_height="wrap_content">
 
   <android.support.v7.widget.CardView
-    android:id="@+id/db_card_view"
+    android:id="@+id/table_card_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/card_margin"
+    android:layout_margin="2dp"
     android:elevation="3dp"
-    android:padding="4dp"
     card_view:cardCornerRadius="2dp">
 
-    <RelativeLayout
+    <LinearLayout
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:padding="4dp">
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      android:padding="3dp">
 
       <TextView
-        android:id="@+id/name"
-        android:layout_width="match_parent"
+        android:id="@+id/row_num"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/big_heading"
+        android:textSize="14dp"
         android:textStyle="bold"
-        tools:text="DB NAME"/>
+        tools:text="1. "/>
 
       <TextView
-        android:id="@+id/path"
-        android:layout_width="match_parent"
+        android:id="@+id/table_name"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/name"
-        tools:text="DB PATH"/>
-    </RelativeLayout>
-
+        android:textSize="14dp"
+        tools:text="TABLE NAME"/>
+    </LinearLayout>
   </android.support.v7.widget.CardView>
-
 </LinearLayout>

@@ -14,35 +14,45 @@ import java.util.List;
 public class DatabaseAdapter extends RecyclerView.Adapter<DatabaseAdapter.DbViewHolder> {
 
   private List<Database> databaseList;
+  private DbEventListener dbEventListener;
 
-  public class DbViewHolder extends RecyclerView.ViewHolder {
-    public TextView name;
-    public TextView path;
+  class DbViewHolder extends RecyclerView.ViewHolder {
+    TextView name;
+    TextView path;
 
-    public DbViewHolder(View view) {
+    DbViewHolder(View view) {
       super(view);
       name = (TextView) view.findViewById(R.id.name);
       path = (TextView) view.findViewById(R.id.path);
     }
+
+    void bind(final Database db) {
+      this.name.setText(db.getName());
+      this.path.setText(db.getPath());
+      this.itemView.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          dbEventListener.onDatabaseClick(db);
+        }
+      });
+    }
   }
 
-  public DatabaseAdapter(List<Database> databaseList) {
+  public DatabaseAdapter(List<Database> databaseList, DbEventListener dbEventListener) {
     this.databaseList = databaseList;
+    this.dbEventListener = dbEventListener;
   }
 
   @Override
   public DbViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     View itemView = LayoutInflater.from(parent.getContext())
       .inflate(R.layout.db_card_item, parent, false);
-
     return new DbViewHolder(itemView);
   }
 
   @Override
   public void onBindViewHolder(final DbViewHolder holder, int position) {
-    Database db = databaseList.get(position);
-    holder.name.setText(db.getName());
-    holder.path.setText(db.getPath());
+    holder.bind(databaseList.get(position));
   }
 
   @Override
