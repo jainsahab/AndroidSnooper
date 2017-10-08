@@ -15,9 +15,6 @@ import com.prateekj.snooper.networksnooper.activity.SnooperBaseActivity;
 import java.util.List;
 
 public class DbReaderActivity extends SnooperBaseActivity {
-  private RecyclerView recyclerView;
-  private DatabaseAdapter adapter;
-  private List<Database> databaseList;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -27,10 +24,10 @@ public class DbReaderActivity extends SnooperBaseActivity {
     setSupportActionBar(toolbar);
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-    recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+    RecyclerView recyclerView = (RecyclerView) findViewById(R.id.db_list);
 
-    databaseList = new DbFilesLocator(this).fetchApplicationDatabases();
-    adapter = new DatabaseAdapter(databaseList);
+    List<Database> databaseList = new DbFilesLocator(this).fetchApplicationDatabases();
+    DatabaseAdapter adapter = new DatabaseAdapter(databaseList);
 
     RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
     recyclerView.setLayoutManager(mLayoutManager);
