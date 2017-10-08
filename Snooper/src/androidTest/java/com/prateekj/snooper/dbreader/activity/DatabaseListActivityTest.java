@@ -15,13 +15,13 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.prateekj.snooper.utils.EspressoViewMatchers.withRecyclerView;
 import static org.hamcrest.core.AllOf.allOf;
 
-public class DbReaderActivityTest {
+public class DatabaseListActivityTest {
 
   @Rule
   public TestDbRule testDbRule = new TestDbRule(R.raw.test, "test.db");
 
   @Rule
-  public IntentsTestRule<DbReaderActivity> activityRule = new IntentsTestRule<>(DbReaderActivity.class, true, false);
+  public IntentsTestRule<DatabaseListActivity> activityRule = new IntentsTestRule<>(DatabaseListActivity.class, true, false);
 
 
   @Test

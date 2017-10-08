@@ -23,7 +23,7 @@ import java.util.List;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
-public class DbReaderActivity extends SnooperBaseActivity implements DbReaderCallback, DbEventListener {
+public class DatabaseListActivity extends SnooperBaseActivity implements DbReaderCallback, DbEventListener {
   public static final String DB_PATH = "DB_PATH";
   public static final String DB_NAME = "DB_NAME";
   private RecyclerView recyclerView;
@@ -62,7 +62,7 @@ public class DbReaderActivity extends SnooperBaseActivity implements DbReaderCal
 
   @Override
   public void onDatabaseClick(Database db) {
-    Intent dbViewActivity = new Intent(DbReaderActivity.this, DbViewActivity.class);
+    Intent dbViewActivity = new Intent(DatabaseListActivity.this, DbViewActivity.class);
     dbViewActivity.putExtra(DB_PATH, db.getPath());
     dbViewActivity.putExtra(DB_NAME, db.getName());
     startActivity(dbViewActivity);

@@ -29,7 +29,7 @@ public class DbViewActivityTest {
   public void shouldRenderDatabaseInformation() throws Exception {
     Intent intent = new Intent();
     intent.putExtra(DbViewActivity.DB_PATH, testDbRule.getDBDirectory() + "/test.db");
-    intent.putExtra(DbReaderActivity.DB_NAME, "test.db");
+    intent.putExtra(DatabaseListActivity.DB_NAME, "test.db");
     activityRule.launchActivity(intent);
     onView(withId(R.id.db_name)).check(matches(withText("test.db")));
     onView(withId(R.id.db_version)).check(matches(withText("0")));
