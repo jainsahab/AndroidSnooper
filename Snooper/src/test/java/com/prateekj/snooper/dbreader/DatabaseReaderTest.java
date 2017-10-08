@@ -40,7 +40,7 @@ public class DatabaseReaderTest {
   @Mock
   private DbReaderCallback dbReaderCallback;
   @Mock
-  private DbDataReader dbDataReader;
+  private DatabaseDataReader databaseDataReader;
   @Captor
   private ArgumentCaptor<List<Database>> dbCaptor;
   private DatabaseReader databaseReader;
@@ -48,7 +48,7 @@ public class DatabaseReaderTest {
   @Before
   public void setUp() throws Exception {
     when(context.getApplicationContext()).thenReturn(applicationContext);
-    databaseReader = new DatabaseReader(context, backgroundTaskExecutor, dbDataReader);
+    databaseReader = new DatabaseReader(context, backgroundTaskExecutor, databaseDataReader);
   }
 
   @Test

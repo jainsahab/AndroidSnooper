@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.prateekj.snooper.R;
 import com.prateekj.snooper.dbreader.DatabaseReader;
-import com.prateekj.snooper.dbreader.DbDataReader;
+import com.prateekj.snooper.dbreader.DatabaseDataReader;
 import com.prateekj.snooper.dbreader.model.Row;
 import com.prateekj.snooper.dbreader.model.Table;
 import com.prateekj.snooper.dbreader.view.TableViewCallback;
@@ -40,7 +40,7 @@ public class TableViewActivity extends SnooperBaseActivity implements TableViewC
     String dbPath = getIntent().getStringExtra(DbViewActivity.DB_PATH);
     BackgroundTaskExecutor backgroundTaskExecutor = new BackgroundTaskExecutor(this);
     embeddedLoader = findViewById(R.id.embedded_loader);
-    databaseReader = new DatabaseReader(this, backgroundTaskExecutor, new DbDataReader());
+    databaseReader = new DatabaseReader(this, backgroundTaskExecutor, new DatabaseDataReader());
     databaseReader.fetchTableContent(this, dbPath, tableName);
   }
 

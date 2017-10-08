@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.prateekj.snooper.R;
 import com.prateekj.snooper.dbreader.DatabaseReader;
-import com.prateekj.snooper.dbreader.DbDataReader;
+import com.prateekj.snooper.dbreader.DatabaseDataReader;
 import com.prateekj.snooper.dbreader.adapter.TableAdapter;
 import com.prateekj.snooper.dbreader.adapter.TableEventListener;
 import com.prateekj.snooper.dbreader.model.Database;
@@ -41,7 +41,7 @@ public class DbViewActivity extends SnooperBaseActivity implements DbViewCallbac
     String dbName = getIntent().getStringExtra(DB_NAME);
     BackgroundTaskExecutor backgroundTaskExecutor = new BackgroundTaskExecutor(this);
     embeddedLoader = findViewById(R.id.embedded_loader);
-    databaseReader = new DatabaseReader(this, backgroundTaskExecutor, new DbDataReader());
+    databaseReader = new DatabaseReader(this, backgroundTaskExecutor, new DatabaseDataReader());
     databaseReader.fetchDbContent(this, dbPath, dbName);
   }
 

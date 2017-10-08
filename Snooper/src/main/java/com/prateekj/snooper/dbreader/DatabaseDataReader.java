@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class DbDataReader {
+public class DatabaseDataReader {
 
   public Database getData(SQLiteDatabase database) {
     Database databaseData = new Database();

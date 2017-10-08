@@ -21,12 +21,12 @@ public class DatabaseReader {
   private static final String TAG = DatabaseReader.class.getName();
   private final Context context;
   private final BackgroundTaskExecutor executor;
-  private final DbDataReader dbDataReader;
+  private final DatabaseDataReader databaseDataReader;
 
-  public DatabaseReader(Context context, BackgroundTaskExecutor executor, DbDataReader dbDataReader) {
+  public DatabaseReader(Context context, BackgroundTaskExecutor executor, DatabaseDataReader databaseDataReader) {
     this.context = context;
     this.executor = executor;
-    this.dbDataReader = dbDataReader;
+    this.databaseDataReader = databaseDataReader;
   }
 
   public void fetchApplicationDatabases(final DbReaderCallback dbReaderCallback) {
@@ -64,7 +64,7 @@ public class DatabaseReader {
       public Database onExecute() {
         SQLiteDatabase database = getDatabase(dbPath);
         if (database != null) {
-          Database dbWithData = dbDataReader.getData(database);
+          Database dbWithData = databaseDataReader.getData(database);
           dbWithData.setName(dbName);
           return dbWithData;
         }
@@ -85,7 +85,7 @@ public class DatabaseReader {
       public Table onExecute() {
         SQLiteDatabase database = getDatabase(dbPath);
         if (database != null) {
-          Table table = dbDataReader.getTableData(database, tableName);
+          Table table = databaseDataReader.getTableData(database, tableName);
           return table;
         }
         return null;

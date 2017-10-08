@@ -10,7 +10,7 @@ import android.view.View;
 
 import com.prateekj.snooper.R;
 import com.prateekj.snooper.dbreader.DatabaseReader;
-import com.prateekj.snooper.dbreader.DbDataReader;
+import com.prateekj.snooper.dbreader.DatabaseDataReader;
 import com.prateekj.snooper.dbreader.adapter.DatabaseAdapter;
 import com.prateekj.snooper.dbreader.adapter.DbEventListener;
 import com.prateekj.snooper.dbreader.model.Database;
@@ -39,7 +39,7 @@ public class DatabaseListActivity extends SnooperBaseActivity implements DbReade
 
     BackgroundTaskExecutor backgroundTaskExecutor = new BackgroundTaskExecutor(this);
     embeddedLoader = findViewById(R.id.embedded_loader);
-    databaseReader = new DatabaseReader(this, backgroundTaskExecutor, new DbDataReader());
+    databaseReader = new DatabaseReader(this, backgroundTaskExecutor, new DatabaseDataReader());
     databaseReader.fetchApplicationDatabases(this);
   }
 
