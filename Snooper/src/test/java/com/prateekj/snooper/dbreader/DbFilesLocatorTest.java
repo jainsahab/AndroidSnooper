@@ -38,18 +38,20 @@ public class DbFilesLocatorTest {
     assertEquals(applicationDatabases.size(), 0);
   }
 
+  @Test
+  public void shouldReturnEmptyListIfNoDbListIsNull() throws Exception {
+    when(applicationContext.databaseList()).thenReturn(null);
+    List<Database> applicationDatabases = dbFilesLocator.fetchApplicationDatabases();
+    assertEquals(applicationDatabases.size(), 0);
+  }
 
   @Test
   public void shouldFilterOutListOfDbFilesPresent() throws Exception {
     String[] databases = new String[] {"app.db", "user.db", "app.journal", "/app.tmp", "snooper.db"};
     when(applicationContext.databaseList()).thenReturn(databases);
-    File file1 = mock(File.class);
-    File file2 = mock(File.class);
+    File file1 = getMockFile("/location1/app.db", "app.db");
+    File file2 = getMockFile("/location2/user.db", "user.db");
 
-    when(file1.getAbsolutePath()).thenReturn("/location1/app.db");
-    when(file1.getName()).thenReturn("app.db");
-    when(file2.getAbsolutePath()).thenReturn("/location2/user.db");
-    when(file2.getName()).thenReturn("user.db");
     when(context.getDatabasePath("app.db")).thenReturn(file1);
     when(context.getDatabasePath("user.db")).thenReturn(file2);
 
@@ -59,5 +61,12 @@ public class DbFilesLocatorTest {
     assertThat(applicationDatabases.get(0).getName(), is("app.db"));
     assertThat(applicationDatabases.get(1).getPath(), is("/location2/user.db"));
     assertThat(applicationDatabases.get(1).getName(), is("user.db"));
+  }
+
+  private File getMockFile(String path, String dbName) {
+    File file = mock(File.class);
+    when(file.getAbsolutePath()).thenReturn(path);
+    when(file.getName()).thenReturn(dbName);
+    return file;
   }
 }
