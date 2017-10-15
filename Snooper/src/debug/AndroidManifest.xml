@@ -4,4 +4,11 @@
   package="com.prateekj.snooper">
 
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+  <application>
+    <activity
+      android:name=".TestActivity"
+      android:label="Test Activity"
+      android:theme="@style/SnooperTheme.NoActionBar"/>
+  </application>
 </manifest>

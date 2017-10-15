@@ -36,4 +36,6 @@
   <string name="db_tables">Tables : </string>
   <string name="title_table_view_activity">Table</string>
   <string name="serial_number_column_heading">S.No.</string>
+  <string name="network_history">Network History</string>
+  <string name="database_reader">Database Reader</string>
 </resources>
