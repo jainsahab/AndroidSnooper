@@ -33,6 +33,7 @@ import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.Intents.intending;
@@ -44,6 +45,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.prateekj.snooper.networksnooper.activity.HttpCallActivity.HTTP_CALL_ID;
+import static com.prateekj.snooper.utils.EspressoViewMatchers.hasBackgroundSpanOn;
 import static com.prateekj.snooper.utils.TestUtilities.getDate;
 import static com.prateekj.snooper.utils.TestUtilities.readFrom;
 import static java.util.Arrays.asList;
@@ -87,12 +89,20 @@ public class HttpCallActivityTest {
       .check(matches(withText(readFrom("person_details_formatted_response.json"))));
     onView(withId(R.id.copy_menu)).perform(click());
     assertThat(clipBoardText(), is(readFrom("person_details_formatted_response.json")));
+    onView(withId(R.id.search_menu)).perform(click());
+    onView(withId(R.id.search_src_text)).perform(typeText("streetaddress"));
+    onView(allOf(withId(R.id.payload_text), isDisplayed()))
+      .check(matches(hasBackgroundSpanOn("streetAddress", R.color.snooper_text_highlight_color)));
 
     onView(withText("REQUEST")).check(matches(isDisplayed())).perform(click());
     onView(allOf(withId(R.id.payload_text), isDisplayed()))
       .check(matches(withText(readFrom("person_details_formatted_request.json"))));
     onView(withId(R.id.copy_menu)).perform(click());
     assertThat(clipBoardText(), is(readFrom("person_details_formatted_request.json")));
+    onView(withId(R.id.search_menu)).perform(click());
+    onView(withId(R.id.search_src_text)).perform(typeText("delhi"));
+    onView(allOf(withId(R.id.payload_text), isDisplayed()))
+      .check(matches(hasBackgroundSpanOn("Delhi", R.color.snooper_text_highlight_color)));
 
     onView(withText("HEADERS")).check(matches(isDisplayed())).perform(click());
 

@@ -1,9 +1,13 @@
 package com.prateekj.snooper.utils;
 
+import android.support.annotation.ColorRes;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.style.BackgroundColorSpan;
 import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 
 import org.hamcrest.CustomTypeSafeMatcher;
 import org.hamcrest.Matcher;
@@ -55,6 +59,27 @@ public class EspressoViewMatchers {
           return false;
         RecyclerView recyclerView = (RecyclerView) view;
         return recyclerView.getAdapter().getItemCount() == size;
+      }
+    };
+  }
+
+  public static Matcher<View> hasBackgroundSpanOn(final String text, @ColorRes final int colorResource) {
+    return new CustomTypeSafeMatcher<View>("") {
+      @Override
+      protected boolean matchesSafely(View view) {
+        if (view == null || !(view instanceof TextView))
+          return false;
+        SpannableString spannableString = (SpannableString) ((TextView) view).getText();
+        BackgroundColorSpan[] spans = spannableString.getSpans(0, spannableString.length(), BackgroundColorSpan.class);
+        for (BackgroundColorSpan span : spans) {
+          int start = spannableString.getSpanStart(span);
+          int end = spannableString.getSpanEnd(span);
+          CharSequence highlightedString = spannableString.subSequence(start, end);
+          if (text.equals(highlightedString.toString())) {
+            return span.getBackgroundColor() == view.getContext().getResources().getColor(colorResource);
+          }
+        }
+        return false;
       }
     };
   }
