@@ -9,18 +9,21 @@
       android:name=".networksnooper.activity.HttpCallListActivity"
       android:label="@string/title_activity_http_call_list"
       android:taskAffinity="@string/snooper_affinity"
+      android:windowSoftInputMode="adjustResize"
       android:theme="@style/SnooperTheme.NoActionBar"/>
 
     <activity
       android:name=".networksnooper.activity.HttpCallActivity"
       android:label="@string/title_http_call_activity"
       android:taskAffinity="@string/snooper_affinity"
+      android:windowSoftInputMode="adjustResize"
       android:theme="@style/SnooperTheme.NoActionBar"/>
 
     <activity
       android:name=".networksnooper.activity.HttpCallSearchActivity"
       android:label="@string/search_title"
       android:taskAffinity="@string/snooper_affinity"
+      android:windowSoftInputMode="adjustResize"
       android:theme="@style/SnooperTheme.NoActionBar"/>
     <activity
       android:name=".dbreader.activity.DatabaseListActivity"
