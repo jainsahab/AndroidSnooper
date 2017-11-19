@@ -90,6 +90,18 @@ public class HttpCallListActivityTest {
   }
 
   @Test
+  public void shouldRenderWithoutHttpCalls() throws Exception {
+    activityRule.launchActivity(null);
+
+    onView(withText(R.string.title_activity_http_call_list)).check(matches(isDisplayed()));
+    onView(withText(R.string.done)).check(matches(isDisplayed()));
+    onView(withText(R.string.no_calls_found)).check(matches(isDisplayed()));
+
+    onView(withText(R.string.done)).perform(click());
+    assertTrue(activityRule.getActivity().isFinishing());
+  }
+
+  @Test
   public void shouldVerifyDeleteBehaviorWhenDeleteTapped() throws Exception {
     long currentDateMillis = getDate(2017, 4, 1, 11, 22, 33).getTime();
     for (int index = 0; index < 50; index++) {

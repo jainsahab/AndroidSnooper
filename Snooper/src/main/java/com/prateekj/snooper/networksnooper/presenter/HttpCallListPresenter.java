@@ -22,6 +22,10 @@ public class HttpCallListPresenter implements HttpCallListClickListener {
 
   public void init() {
     List<HttpCallRecord> httpCallRecords = snooperRepo.findAllSortByDateAfter(-1, PAGE_SIZE);
+    if (httpCallRecords.isEmpty()) {
+      httpListView.showNoCallsFoundMessage();
+      return;
+    }
     lastCallId = last(httpCallRecords).getId();
     httpListView.initHttpCallRecordList(httpCallRecords);
   }

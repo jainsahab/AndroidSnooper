@@ -29,6 +29,7 @@
   <string name="accordion_body">accordion_body</string>
   <string name="failed">FAILED</string>
   <string name="no_results_found">No results found for \'%s\'</string>
+  <string name="no_calls_found">No calls found.</string>
   <string name="request_body_heading">Request Body</string>
   <string name="response_body_heading">Response Body</string>
   <string name="name_name_heading">Name : </string>

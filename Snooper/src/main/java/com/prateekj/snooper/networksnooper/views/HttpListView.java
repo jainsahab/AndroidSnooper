@@ -16,4 +16,6 @@ public interface HttpListView {
   void initHttpCallRecordList(List<HttpCallRecord> httpCallRecords);
 
   void appendRecordList(List<HttpCallRecord> httpCallRecords);
+
+  void showNoCallsFoundMessage();
 }

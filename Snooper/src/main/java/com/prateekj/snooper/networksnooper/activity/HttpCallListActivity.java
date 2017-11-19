@@ -22,6 +22,8 @@ import com.prateekj.snooper.networksnooper.views.HttpListView;
 
 import java.util.List;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import static com.prateekj.snooper.networksnooper.activity.HttpCallActivity.HTTP_CALL_ID;
 import static com.prateekj.snooper.networksnooper.presenter.HttpCallListPresenter.PAGE_SIZE;
 
@@ -131,6 +133,12 @@ public class HttpCallListActivity extends SnooperBaseActivity implements HttpLis
         httpCallListAdapter.notifyDataSetChanged();
       }
     });
+  }
+
+  @Override
+  public void showNoCallsFoundMessage() {
+    findViewById(R.id.http_call_list_container).setVisibility(GONE);
+    findViewById(R.id.no_calls_found_container).setVisibility(VISIBLE);
   }
 
   @Override

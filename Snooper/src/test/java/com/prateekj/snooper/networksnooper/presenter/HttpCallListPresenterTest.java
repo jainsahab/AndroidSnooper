@@ -13,11 +13,14 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -42,6 +45,15 @@ public class HttpCallListPresenterTest {
     httpCallListPresenter.init();
 
     verify(view).initHttpCallRecordList(httpCallRecords);
+  }
+
+  @Test
+  public void shouldShowNoCallsFoundMessage() throws Exception {
+    when(repo.findAllSortByDateAfter(-1, 20)).thenReturn(new ArrayList<HttpCallRecord>());
+    httpCallListPresenter.init();
+
+    verify(view).showNoCallsFoundMessage();
+    verify(view, never()).initHttpCallRecordList(any(List.class));
   }
 
   @Test

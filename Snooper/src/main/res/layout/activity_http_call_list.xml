@@ -18,7 +18,27 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
+
   <LinearLayout
+    android:id="@+id/no_calls_found_container"
+    android:visibility="gone"
+    android:layout_marginTop="35dp"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+      android:id="@+id/no_results_found"
+      android:text="@string/no_calls_found"
+      tools:text="@string/no_calls_found"
+      android:textColor="@color/snooper_black"
+      android:textSize="18sp"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content" />
+  </LinearLayout>
+
+
+  <LinearLayout
+    android:id="@+id/http_call_list_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
