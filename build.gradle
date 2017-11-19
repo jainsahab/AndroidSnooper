@@ -9,7 +9,7 @@ ext {
 
 buildscript {
     ext {
-        snooperVersion = '1.6.0-SNAPSHOT'
+        snooperVersion = '1.5.1'
 
 //      deployment properties
         NEXUS_USERNAME = System.getenv("NEXUS_USERNAME")
