@@ -1,4 +1,4 @@
-package org.springframework.http.client;
+package com.prateekj.snooper.okhttp;
 
 import java.io.IOException;
 
