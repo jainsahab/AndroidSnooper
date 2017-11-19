@@ -52,7 +52,7 @@ public class HttpCallListPresenterTest {
     when(repo.findAllSortByDateAfter(-1, 20)).thenReturn(new ArrayList<HttpCallRecord>());
     httpCallListPresenter.init();
 
-    verify(view).showNoCallsFoundMessage();
+    verify(view).renderNoCallsFoundView();
     verify(view, never()).initHttpCallRecordList(any(List.class));
   }
 

@@ -34,6 +34,7 @@ public class HttpCallListActivity extends SnooperBaseActivity implements HttpLis
   private SnooperRepo repo;
   private PaginatedRecyclerView httpCallList;
   private boolean areAllPagesLoaded;
+  private boolean noCallsFound;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +56,9 @@ public class HttpCallListActivity extends SnooperBaseActivity implements HttpLis
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
     getMenuInflater().inflate(R.menu.http_call_list_menu, menu);
+    if (noCallsFound) {
+      menu.findItem(R.id.delete_records_menu).setVisible(false);
+    }
     return true;
   }
 
@@ -136,7 +140,8 @@ public class HttpCallListActivity extends SnooperBaseActivity implements HttpLis
   }
 
   @Override
-  public void showNoCallsFoundMessage() {
+  public void renderNoCallsFoundView() {
+    noCallsFound = true;
     findViewById(R.id.http_call_list_container).setVisibility(GONE);
     findViewById(R.id.no_calls_found_container).setVisibility(VISIBLE);
   }

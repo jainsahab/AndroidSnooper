@@ -96,6 +96,7 @@ public class HttpCallListActivityTest {
     onView(withText(R.string.title_activity_http_call_list)).check(matches(isDisplayed()));
     onView(withText(R.string.done)).check(matches(isDisplayed()));
     onView(withText(R.string.no_calls_found)).check(matches(isDisplayed()));
+    onView(withId(R.id.delete_records_menu)).check(doesNotExist());
 
     onView(withText(R.string.done)).perform(click());
     assertTrue(activityRule.getActivity().isFinishing());
