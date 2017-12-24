@@ -99,7 +99,7 @@ public class DatabaseReaderTest {
     assertThat(applicationDatabases.get(1), isSameAsDatabaseWithParameters("/location2/user.db", "user.db"));
   }
 
-  Matcher<Database> isSameAsDatabaseWithParameters(final String path, final String name) {
+  private Matcher<Database> isSameAsDatabaseWithParameters(final String path, final String name) {
     return new TypeSafeMatcher<Database>() {
       public boolean matchesSafely(Database item) {
         return name.equals(item.getName()) && path.equals(item.getPath());

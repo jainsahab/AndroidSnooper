@@ -6,16 +6,13 @@ import android.database.sqlite.SQLiteException;
 
 import com.prateekj.snooper.dbreader.model.Database;
 import com.prateekj.snooper.dbreader.model.Table;
+import com.prateekj.snooper.dbreader.tasks.DatabaseListBackgroundTask;
 import com.prateekj.snooper.dbreader.view.DbReaderCallback;
 import com.prateekj.snooper.dbreader.view.DbViewCallback;
 import com.prateekj.snooper.dbreader.view.TableViewCallback;
 import com.prateekj.snooper.infra.BackgroundTask;
 import com.prateekj.snooper.infra.BackgroundTaskExecutor;
 import com.prateekj.snooper.utils.Logger;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 public class DatabaseReader {
   private static final String TAG = DatabaseReader.class.getName();
@@ -31,30 +28,7 @@ public class DatabaseReader {
 
   public void fetchApplicationDatabases(final DbReaderCallback dbReaderCallback) {
     dbReaderCallback.onDbFetchStarted();
-    executor.execute(new BackgroundTask<List<Database>>() {
-      @Override
-      public List<Database> onExecute() {
-        String[] applicationDatabases = context.getApplicationContext().databaseList();
-        List<Database> dbFiles = new ArrayList<>();
-        if (applicationDatabases != null && applicationDatabases.length > 0) {
-          for (String dbFile : applicationDatabases) {
-            if (dbFile.endsWith(".db") && !dbFile.equals("snooper.db")) {
-              Database database = new Database();
-              File databasePath = context.getDatabasePath(dbFile);
-              database.setPath(databasePath.getAbsolutePath());
-              database.setName(databasePath.getName());
-              dbFiles.add(database);
-            }
-          }
-        }
-        return dbFiles;
-      }
-
-      @Override
-      public void onResult(List<Database> databases) {
-        dbReaderCallback.onApplicationDbFetchCompleted(databases);
-      }
-    });
+    executor.execute(new DatabaseListBackgroundTask(context, dbReaderCallback));
   }
 
   public void fetchDbContent(final DbViewCallback dbViewCallback, final String dbPath, final String dbName) {

@@ -38,7 +38,6 @@ public class DatabaseListActivity extends SnooperBaseActivity implements DbReade
     initViews();
 
     BackgroundTaskExecutor backgroundTaskExecutor = new BackgroundTaskExecutor(this);
-    embeddedLoader = findViewById(R.id.embedded_loader);
     databaseReader = new DatabaseReader(this, backgroundTaskExecutor, new DatabaseDataReader());
     databaseReader.fetchApplicationDatabases(this);
   }
@@ -71,8 +70,8 @@ public class DatabaseListActivity extends SnooperBaseActivity implements DbReade
   private void initViews() {
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
-    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+    getSupportActionBar().setDisplayHomeAsUpEnabled(false);
     recyclerView = (RecyclerView) findViewById(R.id.db_list);
+    embeddedLoader = findViewById(R.id.embedded_loader);
   }
 }

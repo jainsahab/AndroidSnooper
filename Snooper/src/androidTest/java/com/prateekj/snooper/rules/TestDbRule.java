@@ -33,14 +33,14 @@ public class TestDbRule implements TestRule {
     return new Statement() {
       @Override
       public void evaluate() throws Throwable {
-        copyDataBase();
+        copyDataBase(TestDbRule.this.dbName);
         base.evaluate();
         InstrumentationRegistry.getTargetContext().deleteDatabase(dbName);
       }
     };
   }
 
-  private void copyDataBase() {
+  private void copyDataBase(String finalDbName) {
     Context applicationContext = InstrumentationRegistry.getTargetContext();
     ContextWrapper cw = new ContextWrapper(applicationContext);
     File dbDir = new File(getDBDirectory());
@@ -52,7 +52,7 @@ public class TestDbRule implements TestRule {
     int length;
     try {
       InputStream myInput = applicationContext.getResources().openRawResource(this.dbRawResourceId);
-      File file = new File(dbDir , dbName);
+      File file = new File(dbDir , finalDbName);
       OutputStream myOutput = new FileOutputStream(file);
       while ((length = myInput.read(buffer)) > 0) {
         myOutput.write(buffer, 0, length);

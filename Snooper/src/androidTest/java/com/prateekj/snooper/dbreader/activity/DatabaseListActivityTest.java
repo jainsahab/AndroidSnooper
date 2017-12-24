@@ -5,7 +5,6 @@ import android.support.test.espresso.intent.rule.IntentsTestRule;
 import com.prateekj.snooper.R;
 import com.prateekj.snooper.rules.TestDbRule;
 
-import org.hamcrest.CoreMatchers;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -30,7 +29,6 @@ public class DatabaseListActivityTest {
   @Rule
   public IntentsTestRule<DatabaseListActivity> activityRule = new IntentsTestRule<>(DatabaseListActivity.class, true, false);
 
-
   @Test
   public void shouldRenderListOfDatabases() throws Exception {
     activityRule.launchActivity(null);
@@ -43,7 +41,7 @@ public class DatabaseListActivityTest {
     )));
 
     onView(withText(dbName)).perform(click());
-    intended(CoreMatchers.allOf(
+    intended(allOf(
       hasComponent(DatabaseDetailActivity.class.getName()),
       hasExtra(DB_NAME, dbName),
       hasExtra(DB_PATH, dbLocation)
