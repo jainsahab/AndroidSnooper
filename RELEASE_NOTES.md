@@ -1,5 +1,11 @@
 # Release Notes
 
+## Version 1.5.2 (April 14, 2018)
+* Moving DB writes to background thread.
+
+## Version 1.5.1 (November 19, 2017)
+* Correcting card-view dependency version
+
 ## Version 1.5.0 (October 5, 2017)
 * Search functionality on http calls list and on particular response/request
 * Fixing crash on deleting http records
