@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.support.v4.content.LocalBroadcastManager;
 
 import com.prateekj.snooper.infra.BackgroundManager;
@@ -26,12 +27,13 @@ public class AndroidSnooper implements BackgroundManager.Listener, SnooperShakeA
   private ShakeDetector shakeDetector;
   private Activity currentActivity;
   private SnooperRepo snooperRepo;
+  private HandlerThread writeThread;
+  private Handler writeHandler;
 
   private AndroidSnooper() {}
 
   public void record(final HttpCall httpCall) throws IOException {
-    Handler handler = new Handler(context.getMainLooper());
-    handler.post(new Runnable() {
+    writeHandler.post(new Runnable() {
       @Override
       public void run() {
         AndroidSnooper.this.snooperRepo.save(HttpCallRecord.from(httpCall));
@@ -74,6 +76,10 @@ public class AndroidSnooper implements BackgroundManager.Listener, SnooperShakeA
     androidSnooper.context = application;
     androidSnooper.snooperRepo = new SnooperRepo(androidSnooper.context);
     androidSnooper.shakeDetector = new ShakeDetector(new SnooperShakeListener(androidSnooper));
+    androidSnooper.writeThread = new HandlerThread("AndroidSnooper:Writer");
+    androidSnooper.writeThread.start();
+    androidSnooper.writeHandler = new Handler(androidSnooper.writeThread.getLooper());
+
     BackgroundManager.getInstance(application).registerListener(androidSnooper);
     CurrentActivityManager.getInstance(application).registerListener(androidSnooper);
     return androidSnooper;

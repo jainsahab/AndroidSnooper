@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
+import android.support.annotation.WorkerThread;
 
 import com.prateekj.snooper.database.SnooperDbHelper;
 import com.prateekj.snooper.networksnooper.model.HttpCallRecord;
@@ -42,14 +43,16 @@ import static java.lang.String.valueOf;
 
 public class SnooperRepo {
 
-  private final SnooperDbHelper snooperDbHelper;
+  private final SnooperDbHelper dbWriteHelper;
+  private final SnooperDbHelper dbReadHelper;
 
   public SnooperRepo(Context context) {
-    snooperDbHelper = SnooperDbHelper.getInstance(context);
+    dbWriteHelper = SnooperDbHelper.create(context);
+    dbReadHelper = SnooperDbHelper.create(context);
   }
 
   public long save(HttpCallRecord httpCallRecord) {
-    SQLiteDatabase database = snooperDbHelper.getWritableDatabase();
+    SQLiteDatabase database = dbWriteHelper.getWritableDatabase();
     ContentValues values = new ContentValues();
     values.put(COLUMN_URL, httpCallRecord.getUrl());
     values.put(COLUMN_PAYLOAD, httpCallRecord.getPayload());
@@ -60,16 +63,23 @@ public class SnooperRepo {
     values.put(COLUMN_DATE, httpCallRecord.getDate().getTime());
     values.put(COLUMN_ERROR, httpCallRecord.getError());
     long httpCallRecordId = database.insert(HTTP_CALL_RECORD_TABLE_NAME, null, values);
-    saveHeaders(database, httpCallRecordId, httpCallRecord.getRequestHeaders(), "req");
-    saveHeaders(database, httpCallRecordId, httpCallRecord.getResponseHeaders(), "res");
-    database.close();
+    try {
+      database.beginTransaction();
+      saveHeaders(database, httpCallRecordId, httpCallRecord.getRequestHeaders(), "req");
+      saveHeaders(database, httpCallRecordId, httpCallRecord.getResponseHeaders(), "res");
+      database.setTransactionSuccessful();
+    }
+    finally {
+      database.endTransaction();
+      database.close();
+    }
     return httpCallRecordId;
   }
 
   public List<HttpCallRecord> findAllSortByDate() {
     ArrayList<HttpCallRecord> httpCallRecords = new ArrayList<>();
     HttpCallRecordCursorParser cursorParser = new HttpCallRecordCursorParser();
-    SQLiteDatabase database = snooperDbHelper.getReadableDatabase();
+    SQLiteDatabase database = dbReadHelper.getReadableDatabase();
     Cursor cursor = database.rawQuery(HTTP_CALL_RECORD_GET_SORT_BY_DATE, null);
     while (cursor.moveToNext()) {
       httpCallRecords.add(cursorParser.parse(cursor));
@@ -82,7 +92,7 @@ public class SnooperRepo {
   public List<HttpCallRecord> searchHttpRecord(String text) {
     ArrayList<HttpCallRecord> httpCallRecords = new ArrayList<>();
     HttpCallRecordCursorParser cursorParser = new HttpCallRecordCursorParser();
-    SQLiteDatabase database = snooperDbHelper.getReadableDatabase();
+    SQLiteDatabase database = dbReadHelper.getReadableDatabase();
     Cursor cursor = database.rawQuery(HTTP_CALL_RECORD_SEARCH, new String[]{likeParam(text), likeParam(text), likeParam(text), likeParam(text)});
     while (cursor.moveToNext()) {
       httpCallRecords.add(cursorParser.parse(cursor));
@@ -101,7 +111,7 @@ public class SnooperRepo {
   public List<HttpCallRecord> findAllSortByDateAfter(long id, int pageSize) {
     ArrayList<HttpCallRecord> httpCallRecords = new ArrayList<>();
     HttpCallRecordCursorParser cursorParser = new HttpCallRecordCursorParser();
-    SQLiteDatabase database = snooperDbHelper.getReadableDatabase();
+    SQLiteDatabase database = dbReadHelper.getReadableDatabase();
     Cursor cursor;
     if (id == -1) {
       cursor = database.rawQuery(HTTP_CALL_RECORD_GET_SORT_BY_DATE_WITH_SIZE, new String[]{valueOf(pageSize)});
@@ -118,7 +128,7 @@ public class SnooperRepo {
 
 
   public HttpCallRecord findById(long id) {
-    SQLiteDatabase database = snooperDbHelper.getReadableDatabase();
+    SQLiteDatabase database = dbReadHelper.getReadableDatabase();
     HttpCallRecordCursorParser cursorParser = new HttpCallRecordCursorParser();
     Cursor cursor = database.rawQuery(HTTP_CALL_RECORD_GET_BY_ID, new String[]{Long.toString(id)});
     cursor.moveToNext();
@@ -130,9 +140,16 @@ public class SnooperRepo {
   }
 
   public void deleteAll() {
-    SQLiteDatabase database = snooperDbHelper.getWritableDatabase();
-    database.delete(HTTP_CALL_RECORD_TABLE_NAME, null, null);
-    database.close();
+    SQLiteDatabase database = dbWriteHelper.getWritableDatabase();
+    try {
+      database.beginTransaction();
+      database.delete(HTTP_CALL_RECORD_TABLE_NAME, null, null);
+      database.setTransactionSuccessful();
+    }
+    finally {
+      database.endTransaction();
+      database.close();
+    }
   }
 
   private List<HttpHeader> findHeader(SQLiteDatabase database, long callId, String headerType) {
