@@ -1,8 +1,8 @@
 package com.prateekj.snooper.networksnooper.database;
 
 import android.support.annotation.NonNull;
-import android.support.test.espresso.core.deps.guava.base.Predicate;
 
+import com.google.common.base.Predicate;
 import com.prateekj.snooper.networksnooper.model.HttpCall;
 import com.prateekj.snooper.networksnooper.model.HttpCallRecord;
 import com.prateekj.snooper.networksnooper.model.HttpHeader;
@@ -25,7 +25,7 @@ import java.util.Map;
 import javax.annotation.Nullable;
 
 import static android.support.test.InstrumentationRegistry.getTargetContext;
-import static android.support.test.espresso.core.deps.guava.collect.Iterables.any;
+import static com.google.common.collect.Iterables.any;
 import static com.prateekj.snooper.utils.CollectionUtilities.last;
 import static com.prateekj.snooper.utils.TestUtilities.getCalendar;
 import static com.prateekj.snooper.utils.TestUtilities.getDate;
@@ -204,11 +204,11 @@ public class SnooperRepoTest {
     return new CustomTypeSafeMatcher<List<HttpCallRecord>>("are sorted") {
       @Override
       protected boolean matchesSafely(List<HttpCallRecord> list) {
-        for (int index = 0 ; index < list.size() - 1 ; index++) {
+        for (int index = 0; index < list.size() - 1; index++) {
           long firstRecordTime = list.get(index).getDate().getTime();
           long secondRecordTime = list.get(index + 1).getDate().getTime();
           if (firstRecordTime < secondRecordTime) {
-            return  false;
+            return false;
           }
         }
         return true;

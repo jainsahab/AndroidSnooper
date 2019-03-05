@@ -11,6 +11,7 @@ import android.support.design.widget.TabLayout.Tab;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.content.FileProvider;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -32,7 +33,10 @@ import com.prateekj.snooper.utils.FileUtil;
 
 import java.io.File;
 
+import static android.content.Intent.ACTION_SEND;
+import static android.content.Intent.EXTRA_STREAM;
 import static android.content.Intent.EXTRA_SUBJECT;
+import static android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION;
 
 public class HttpCallActivity extends SnooperBaseActivity implements HttpCallView {
 
@@ -120,14 +124,13 @@ public class HttpCallActivity extends SnooperBaseActivity implements HttpCallVie
 
   @Override
   public void shareData(String logFilePath) {
-    Intent intent = new Intent(Intent.ACTION_SEND);
     File file = new File(logFilePath);
-    Uri fileUri = Uri.fromFile(file);
-    intent.setData(fileUri);
-    intent.setType(LOGFILE_MIME_TYPE);
-    intent.putExtra(EXTRA_SUBJECT,
-      getString(R.string.mail_subject_share_logs));
-    intent.putExtra(Intent.EXTRA_STREAM, fileUri);
+    Uri fileUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", file);
+    Intent intent = new Intent(ACTION_SEND);
+    intent.setDataAndType(fileUri, LOGFILE_MIME_TYPE);
+    intent.putExtra(EXTRA_SUBJECT, getString(R.string.mail_subject_share_logs));
+    intent.putExtra(EXTRA_STREAM, fileUri);
+    intent.addFlags(FLAG_GRANT_READ_URI_PERMISSION);
     Intent j = Intent.createChooser(intent, getString(R.string.chooser_title_share_logs));
     startActivity(j);
   }

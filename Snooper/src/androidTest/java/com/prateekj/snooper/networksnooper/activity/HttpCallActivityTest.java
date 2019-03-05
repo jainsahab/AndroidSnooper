@@ -5,6 +5,7 @@ import android.content.ClipboardManager;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
+import android.support.test.rule.GrantPermissionRule;
 
 import com.google.common.collect.ImmutableMap;
 import com.prateekj.snooper.R;
@@ -25,6 +26,7 @@ import org.junit.Test;
 import java.util.List;
 import java.util.Map;
 
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.CLIPBOARD_SERVICE;
 import static android.content.Intent.ACTION_CHOOSER;
@@ -55,6 +57,9 @@ import static org.hamcrest.Matchers.allOf;
 import static org.junit.Assert.assertThat;
 
 public class HttpCallActivityTest {
+
+  @Rule
+  public GrantPermissionRule grantPermissionRule = GrantPermissionRule.grant(WRITE_EXTERNAL_STORAGE);
 
   @Rule
   public DataResetRule rule = new DataResetRule();
@@ -227,21 +232,21 @@ public class HttpCallActivityTest {
   @NonNull
   private Map<String, List<String>> getResponseHeaders() {
     return ImmutableMap.of(
-        "content-type", singletonList("application/json"),
-        "cache-control", singletonList("no-cache"),
-        "content-disposition", singletonList("attachment"),
-        "date", singletonList("Sun, 02 Apr 2017 08:54:39 GMT")
-      );
+      "content-type", singletonList("application/json"),
+      "cache-control", singletonList("no-cache"),
+      "content-disposition", singletonList("attachment"),
+      "date", singletonList("Sun, 02 Apr 2017 08:54:39 GMT")
+    );
   }
 
   @NonNull
   private Map<String, List<String>> getRequestHeaders() {
     return ImmutableMap.of(
-        "content-type", singletonList("application/json"),
-        "content-length", singletonList("403"),
-        "accept-language", asList("en-US,en", "q=0.8,hi", "q=0.6"),
-        ":scheme", singletonList("https")
-      );
+      "content-type", singletonList("application/json"),
+      "content-length", singletonList("403"),
+      "accept-language", asList("en-US,en", "q=0.8,hi", "q=0.6"),
+      ":scheme", singletonList("https")
+    );
   }
 
   private void verifyClickActionOnShareMenu() {
