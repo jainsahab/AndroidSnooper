@@ -4,12 +4,12 @@ ext {
     minSdkVersion = 16
     targetSdkVersion = 24
     compileSdkVersion = 24
-    buildToolsVersion = "25.0.2"
+    buildToolsVersion = "28.0.3"
 }
 
 buildscript {
     ext {
-        snooperVersion = '1.5.2'
+        snooperVersion = '1.5.3-SNAPSHOT'
 
 //      deployment properties
         NEXUS_USERNAME = System.getenv("NEXUS_USERNAME")
@@ -21,11 +21,12 @@ buildscript {
     }
 
     repositories {
+        google()
         jcenter()
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.1'
+        classpath 'com.android.tools.build:gradle:3.3.2'
         classpath 'com.stanfy.spoon:spoon-gradle-plugin:1.2.2'
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -36,6 +37,7 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        google()
     }
 }
 

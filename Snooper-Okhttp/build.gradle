@@ -33,8 +33,8 @@ android {
 }
 
 dependencies {
-    compile project(path: ':Snooper')
-    compile 'com.squareup.okhttp3:okhttp:3.6.0'
-    testCompile 'junit:junit:4.12'
+    implementation project(path: ':Snooper')
+    implementation 'com.squareup.okhttp3:okhttp:3.6.0'
+    testImplementation 'junit:junit:4.12'
 }
 apply from: '../maven-push.gradle'
