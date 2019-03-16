@@ -1,5 +1,9 @@
 # Release Notes
 
+## Version 1.5.3 (March 16, 2019)
+* Fixing #21
+* Update gradle and Android dependencies
+
 ## Version 1.5.2 (April 14, 2018)
 * Moving DB writes to background thread.
 
