@@ -5,8 +5,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.annotation.NonNull;
-import android.support.annotation.WorkerThread;
+import androidx.annotation.NonNull;
+import androidx.annotation.WorkerThread;
 
 import com.prateekj.snooper.database.SnooperDbHelper;
 import com.prateekj.snooper.networksnooper.model.HttpCallRecord;

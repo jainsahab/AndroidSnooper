@@ -1,6 +1,6 @@
 package com.prateekj.snooper.espresso;
 
-import android.support.test.espresso.IdlingResource;
+import androidx.test.espresso.IdlingResource;
 import android.view.View;
 
 import com.prateekj.snooper.utils.Logger;

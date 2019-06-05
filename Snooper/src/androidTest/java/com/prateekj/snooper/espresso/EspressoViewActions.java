@@ -1,6 +1,6 @@
 package com.prateekj.snooper.espresso;
 
-import android.support.test.espresso.ViewAction;
+import androidx.test.espresso.ViewAction;
 import android.view.View;
 
 import org.hamcrest.Matcher;

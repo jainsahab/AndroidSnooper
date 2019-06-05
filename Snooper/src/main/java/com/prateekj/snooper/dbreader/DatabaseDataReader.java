@@ -2,7 +2,7 @@ package com.prateekj.snooper.dbreader;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.prateekj.snooper.dbreader.model.Database;
 import com.prateekj.snooper.dbreader.model.Row;

@@ -12,7 +12,7 @@ import org.junit.runners.model.Statement;
 import java.util.Arrays;
 import java.util.List;
 
-import static android.support.test.InstrumentationRegistry.getTargetContext;
+import static androidx.test.InstrumentationRegistry.getTargetContext;
 import static com.prateekj.snooper.networksnooper.database.HttpCallRecordContract.HEADER_TABLE_NAME;
 import static com.prateekj.snooper.networksnooper.database.HttpCallRecordContract.HEADER_VALUE_TABLE_NAME;
 import static com.prateekj.snooper.networksnooper.database.HttpCallRecordContract.HTTP_CALL_RECORD_TABLE_NAME;

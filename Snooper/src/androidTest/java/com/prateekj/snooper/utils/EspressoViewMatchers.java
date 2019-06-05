@@ -1,7 +1,7 @@
 package com.prateekj.snooper.utils;
 
-import android.support.annotation.ColorRes;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.ColorRes;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.style.BackgroundColorSpan;
 import android.view.View;

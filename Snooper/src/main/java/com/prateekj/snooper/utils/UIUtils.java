@@ -1,6 +1,6 @@
 package com.prateekj.snooper.utils;
 
-import android.support.annotation.ColorRes;
+import androidx.annotation.ColorRes;
 import android.widget.TextView;
 
 public class UIUtils {

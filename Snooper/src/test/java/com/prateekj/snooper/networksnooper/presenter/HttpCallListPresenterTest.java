@@ -1,6 +1,6 @@
 package com.prateekj.snooper.networksnooper.presenter;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.prateekj.snooper.networksnooper.database.SnooperRepo;
 import com.prateekj.snooper.networksnooper.model.HttpCall;

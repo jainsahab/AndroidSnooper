@@ -8,7 +8,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.support.v4.content.LocalBroadcastManager;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.prateekj.snooper.infra.BackgroundManager;
 import com.prateekj.snooper.infra.CurrentActivityManager;

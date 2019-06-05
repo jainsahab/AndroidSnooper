@@ -1,6 +1,6 @@
 package com.prateekj.snooper.networksnooper.viewmodel;
 
-import android.support.annotation.ColorRes;
+import androidx.annotation.ColorRes;
 
 import com.prateekj.snooper.R;
 import com.prateekj.snooper.networksnooper.model.HttpCallRecord;

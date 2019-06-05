@@ -1,17 +1,17 @@
 package com.prateekj.snooper.espresso;
 
-import android.support.annotation.NonNull;
-import android.support.test.espresso.PerformException;
-import android.support.test.espresso.UiController;
-import android.support.test.espresso.ViewAction;
-import android.support.test.espresso.util.HumanReadables;
+import androidx.annotation.NonNull;
+import androidx.test.espresso.PerformException;
+import androidx.test.espresso.UiController;
+import androidx.test.espresso.ViewAction;
+import androidx.test.espresso.util.HumanReadables;
 import android.view.View;
 
 import org.hamcrest.CustomTypeSafeMatcher;
 import org.hamcrest.Matcher;
 
-import static android.support.test.espresso.Espresso.registerIdlingResources;
-import static android.support.test.espresso.Espresso.unregisterIdlingResources;
+import static androidx.test.espresso.Espresso.registerIdlingResources;
+import static androidx.test.espresso.Espresso.unregisterIdlingResources;
 import static java.lang.String.format;
 
 public class WaitForViewAction implements ViewAction {

@@ -1,7 +1,7 @@
 package com.prateekj.snooper.networksnooper.helper;
 
 
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 
 import com.prateekj.snooper.networksnooper.activity.HttpCallTab;
 import com.prateekj.snooper.networksnooper.views.HttpCallView;

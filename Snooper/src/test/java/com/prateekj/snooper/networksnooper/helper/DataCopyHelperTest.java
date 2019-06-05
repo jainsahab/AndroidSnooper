@@ -1,7 +1,7 @@
 package com.prateekj.snooper.networksnooper.helper;
 
 import android.content.res.Resources;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.prateekj.snooper.R;
 import com.prateekj.snooper.formatter.ResponseFormatter;

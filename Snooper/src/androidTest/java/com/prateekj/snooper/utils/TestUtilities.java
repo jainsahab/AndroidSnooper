@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import java.util.Calendar;
 import java.util.Date;
 
-import static android.support.test.InstrumentationRegistry.getContext;
+import static androidx.test.InstrumentationRegistry.getContext;
 
 public class TestUtilities {
 

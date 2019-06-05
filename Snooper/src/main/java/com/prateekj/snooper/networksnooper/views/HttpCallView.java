@@ -1,7 +1,7 @@
 package com.prateekj.snooper.networksnooper.views;
 
 
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 
 public interface HttpCallView {
   void copyToClipboard(String data);

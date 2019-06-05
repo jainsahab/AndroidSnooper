@@ -7,7 +7,7 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   tools:context="com.prateekj.snooper.networksnooper.activity.HttpCallSearchActivity">
 
-  <android.support.v7.widget.Toolbar
+  <androidx.appcompat.widget.Toolbar
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -20,7 +20,7 @@
     android:minHeight="?attr/actionBarSize"
     android:theme="@style/SnooperToolbarTheme"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-    <android.support.v7.widget.SearchView
+    <androidx.appcompat.widget.SearchView
       android:id="@+id/searchView"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
       android:paddingStart="-16dp"
       android:queryHint="@string/search_hint"/>
 
-  </android.support.v7.widget.Toolbar>
+  </androidx.appcompat.widget.Toolbar>
 
   <include
     android:id="@+id/embedded_loader"
@@ -66,7 +66,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin">
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
       android:id="@+id/list"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"/>

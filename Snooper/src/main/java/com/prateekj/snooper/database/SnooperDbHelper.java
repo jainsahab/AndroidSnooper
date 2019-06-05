@@ -3,8 +3,8 @@ package com.prateekj.snooper.database;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.support.annotation.AnyThread;
-import android.support.annotation.MainThread;
+import androidx.annotation.AnyThread;
+import androidx.annotation.MainThread;
 
 import static com.prateekj.snooper.networksnooper.database.HttpCallRecordContract.HEADER_CREATE_TABLE;
 import static com.prateekj.snooper.networksnooper.database.HttpCallRecordContract.HEADER_VALUE_CREATE_TABLE;

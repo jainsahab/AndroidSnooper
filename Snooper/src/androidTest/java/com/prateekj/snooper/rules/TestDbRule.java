@@ -3,9 +3,9 @@ package com.prateekj.snooper.rules;
 
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.support.annotation.NonNull;
-import android.support.annotation.RawRes;
-import android.support.test.InstrumentationRegistry;
+import androidx.annotation.NonNull;
+import androidx.annotation.RawRes;
+import androidx.test.InstrumentationRegistry;
 
 import com.prateekj.snooper.utils.Logger;
 

@@ -1,6 +1,6 @@
 package com.prateekj.snooper.networksnooper.database;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.common.base.Predicate;
 import com.prateekj.snooper.networksnooper.model.HttpCall;
@@ -24,7 +24,7 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
-import static android.support.test.InstrumentationRegistry.getTargetContext;
+import static androidx.test.InstrumentationRegistry.getTargetContext;
 import static com.google.common.collect.Iterables.any;
 import static com.prateekj.snooper.utils.CollectionUtilities.last;
 import static com.prateekj.snooper.utils.TestUtilities.getCalendar;
