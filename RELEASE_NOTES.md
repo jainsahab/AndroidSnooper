@@ -1,5 +1,9 @@
 # Release Notes
 
+## Version 1.5.4 (June 6, 2019)
+* Fixing #22
+* Migrate support library to AndroidX
+
 ## Version 1.5.3 (March 16, 2019)
 * Fixing #21
 * Update gradle and Android dependencies
