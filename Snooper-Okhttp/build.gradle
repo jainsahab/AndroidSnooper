@@ -1,4 +1,6 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 apply from: '../Publish.gradle'
 
 
@@ -35,6 +37,8 @@ android {
 dependencies {
     implementation project(path: ':Snooper')
     implementation 'com.squareup.okhttp3:okhttp:3.6.0'
+    implementation "androidx.core:core-ktx:1.2.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     testImplementation 'junit:junit:4.12'
 }
 apply from: '../maven-push.gradle'

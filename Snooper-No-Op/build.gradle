@@ -1,4 +1,6 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 apply from: '../Publish.gradle'
 
 android {
@@ -23,4 +25,10 @@ android {
         exclude 'LICENSE.txt'
     }
 }
+
+dependencies {
+    implementation "androidx.core:core-ktx:1.2.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+
 apply from: '../maven-push.gradle'

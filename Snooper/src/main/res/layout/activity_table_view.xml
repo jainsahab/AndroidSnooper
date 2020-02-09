@@ -32,7 +32,7 @@
       android:layout_below="@id/toolbar">
 
       <TableLayout
-        android:id="@+id/table"
+        android:id="@+id/table_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/horizontal__table_scroll"
