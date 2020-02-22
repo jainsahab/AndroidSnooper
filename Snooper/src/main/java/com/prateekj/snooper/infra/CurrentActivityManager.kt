@@ -3,17 +3,18 @@ package com.prateekj.snooper.infra
 
 import android.app.Activity
 import android.app.Application
+import android.app.Application.ActivityLifecycleCallbacks
 import android.os.Bundle
 
 import java.util.ArrayList
 
 class CurrentActivityManager private constructor(application: Application) :
-  Application.ActivityLifecycleCallbacks {
+  ActivityLifecycleCallbacks {
 
   private val listeners = ArrayList<Listener>()
 
   interface Listener {
-    fun currentActivity(activity: Activity)
+    fun currentActivity(activity: Activity?)
   }
 
   init {
@@ -29,37 +30,37 @@ class CurrentActivityManager private constructor(application: Application) :
   }
 
 
-  override fun onActivityResumed(activity: Activity) {
+  override fun onActivityResumed(activity: Activity?) {
     notifyListeners(activity)
   }
 
 
-  override fun onActivityPaused(activity: Activity) {
+  override fun onActivityPaused(activity: Activity?) {
     notifyListeners(activity)
   }
 
-  private fun notifyListeners(activity: Activity) {
+  private fun notifyListeners(activity: Activity?) {
     for (listener in listeners) {
       listener.currentActivity(activity)
     }
   }
 
-  override fun onActivityStopped(activity: Activity) {}
+  override fun onActivityStopped(activity: Activity?) {}
 
-  override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle) {}
+  override fun onActivityCreated(activity: Activity?, savedInstanceState: Bundle?) {}
 
-  override fun onActivityStarted(activity: Activity) {}
+  override fun onActivityStarted(activity: Activity?) {}
 
-  override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {}
+  override fun onActivitySaveInstanceState(activity: Activity?, outState: Bundle?) {}
 
-  override fun onActivityDestroyed(activity: Activity) {}
+  override fun onActivityDestroyed(activity: Activity?) {}
 
   companion object {
 
-    private var sInstance: CurrentActivityManager? = null
+    private var INSTANCE: CurrentActivityManager? = null
 
     fun getInstance(application: Application): CurrentActivityManager {
-      return sInstance ?: CurrentActivityManager(application)
+      return INSTANCE ?: CurrentActivityManager(application).also { INSTANCE = it }
     }
   }
 }

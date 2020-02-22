@@ -23,7 +23,7 @@ class AndroidSnooper private constructor() : BackgroundManager.Listener, Snooper
   CurrentActivityManager.Listener {
   private lateinit var context: Context
   private lateinit var shakeDetector: ShakeDetector
-  private lateinit var currentActivity: Activity
+  private var currentActivity: Activity? = null
   private lateinit var snooperRepo: SnooperRepo
   private lateinit var writeThread: HandlerThread
   private lateinit var writeHandler: Handler
@@ -41,13 +41,13 @@ class AndroidSnooper private constructor() : BackgroundManager.Listener, Snooper
     unRegisterSensorListener()
   }
 
-  override fun currentActivity(activity: Activity) {
+  override fun currentActivity(activity: Activity?) {
     this.currentActivity = activity
   }
 
   override fun startSnooperFlow() {
     val intent = Intent(this@AndroidSnooper.context, HttpCallListActivity::class.java)
-    this.currentActivity.startActivity(intent)
+    this.currentActivity?.startActivity(intent)
   }
 
   override fun endSnooperFlow() {
@@ -87,6 +87,10 @@ class AndroidSnooper private constructor() : BackgroundManager.Listener, Snooper
       androidSnooper.writeThread = HandlerThread("AndroidSnooper:Writer")
       androidSnooper.writeThread.start()
       androidSnooper.writeHandler = Handler(androidSnooper.writeThread.looper)
+
+      BackgroundManager.getInstance(application).registerListener(androidSnooper)
+      CurrentActivityManager.getInstance(application).registerListener(androidSnooper)
+
       return androidSnooper
     }
 
