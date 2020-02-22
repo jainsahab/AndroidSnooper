@@ -109,7 +109,7 @@ class HttpCallActivity : SnooperBaseActivity(), HttpCallView {
   override fun shareData(logFilePath: String) {
     val file = File(logFilePath)
     val fileUri =
-      FileProvider.getUriForFile(this, applicationContext.packageName + ".provider", file)
+      FileProvider.getUriForFile(this, applicationContext.packageName + ".snooper.provider", file)
     val intent = Intent(ACTION_SEND)
     intent.setDataAndType(fileUri, LOGFILE_MIME_TYPE)
     intent.putExtra(EXTRA_SUBJECT, getString(R.string.mail_subject_share_logs))
