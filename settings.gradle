@@ -1,1 +1,1 @@
-include ':Snooper', ':Snooper-Spring', ':Snooper-Okhttp', ':Snooper-No-Op', ':Snooper-Spring-No-Op', ':Snooper-Okhttp-No-Op'
+include ':Snooper', ':Snooper-Spring', ':Snooper-Okhttp', ':Snooper-No-Op', ':Snooper-Spring-No-Op', ':Snooper-Okhttp-No-Op', ':TestApp'

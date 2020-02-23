@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical"
+  app:layout_behavior="@string/appbar_scrolling_view_behavior"
+  tools:context=".MainActivity"
+  tools:showIn="@layout/activity_main">
+
+  <TextView
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
+    android:textSize="30sp"
+    android:textAlignment="center"
+    android:id="@+id/header"
+    android:text="Snooper Test App"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
+
+  <Button
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/fetch_posts"
+    android:onClick="fetchPosts"
+    android:text="GET" />
+
+  <Button
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/fetch_posts_fail"
+    android:onClick="fetchPostsFail"
+    android:text="GET FAIL" />
+
+  <Button
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:onClick="createPost"
+    android:text="POST" />
+
+  <TextView
+    android:id="@+id/result"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" />
+
+</LinearLayout>
