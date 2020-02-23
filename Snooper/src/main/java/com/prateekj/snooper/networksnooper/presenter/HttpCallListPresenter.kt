@@ -23,7 +23,7 @@ class HttpCallListPresenter(
 
   fun onNextPageCall() {
     val httpCallRecords = snooperRepo.findAllSortByDateAfter(lastCallId, PAGE_SIZE)
-    lastCallId = httpCallRecords.last().id
+    lastCallId = if(httpCallRecords.isNotEmpty()) httpCallRecords.last().id else lastCallId
     httpListView.appendRecordList(httpCallRecords)
   }
 

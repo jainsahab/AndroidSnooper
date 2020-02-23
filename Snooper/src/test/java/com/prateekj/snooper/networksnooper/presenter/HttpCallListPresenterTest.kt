@@ -15,7 +15,7 @@ class HttpCallListPresenterTest {
 
   private lateinit var view: HttpListView
   private lateinit var repo: SnooperRepo
-  private var httpCallListPresenter: HttpCallListPresenter? = null
+  private lateinit var httpCallListPresenter: HttpCallListPresenter
 
   @Before
   @Throws(Exception::class)
@@ -30,7 +30,7 @@ class HttpCallListPresenterTest {
   fun shouldInitializeHttpCallRecordsList() {
     val httpCallRecords = mutableListOf(mockk<HttpCallRecord>(relaxed = true))
     every { repo.findAllSortByDateAfter(-1, 20) } returns httpCallRecords
-    httpCallListPresenter!!.init()
+    httpCallListPresenter.init()
 
     verify { view.initHttpCallRecordList(httpCallRecords) }
   }
@@ -39,7 +39,7 @@ class HttpCallListPresenterTest {
   @Throws(Exception::class)
   fun shouldShowNoCallsFoundMessage() {
     every { repo.findAllSortByDateAfter(-1, 20) } returns mutableListOf()
-    httpCallListPresenter!!.init()
+    httpCallListPresenter.init()
 
     verify { view.renderNoCallsFoundView() }
     verify(exactly = 0) { view.initHttpCallRecordList(any()) }
@@ -55,17 +55,22 @@ class HttpCallListPresenterTest {
       createCallWithId(4)
     )
 
-    httpCallListPresenter!!.init()
+    httpCallListPresenter.init()
 
     every { repo.findAllSortByDateAfter(4, 20) } returns nextSetHttpCalls
-    httpCallListPresenter!!.onNextPageCall()
+    httpCallListPresenter.onNextPageCall()
     verify { repo.findAllSortByDateAfter(4, 20) }
     verify { view.appendRecordList(nextSetHttpCalls) }
 
     every { repo.findAllSortByDateAfter(2, 20) } returns lastSetHttpCalls
-    httpCallListPresenter!!.onNextPageCall()
+    httpCallListPresenter.onNextPageCall()
     verify { repo.findAllSortByDateAfter(2, 20) }
     verify { view.appendRecordList(lastSetHttpCalls) }
+
+    every { repo.findAllSortByDateAfter(1, 20) } returns mutableListOf()
+    httpCallListPresenter.onNextPageCall()
+    verify { repo.findAllSortByDateAfter(1, 20) }
+    verify { view.appendRecordList(match { it.isEmpty() }) }
   }
 
   @Test
@@ -74,7 +79,7 @@ class HttpCallListPresenterTest {
     val httpCall = mockk<HttpCallRecord>(relaxed = true)
     every { httpCall.id } returns 2L
 
-    httpCallListPresenter!!.onClick(httpCall)
+    httpCallListPresenter.onClick(httpCall)
 
     verify { view.navigateToResponseBody(2) }
   }
@@ -82,7 +87,7 @@ class HttpCallListPresenterTest {
   @Test
   @Throws(Exception::class)
   fun shouldNotifyViewToFinishIt() {
-    httpCallListPresenter!!.onDoneClick()
+    httpCallListPresenter.onDoneClick()
 
     verify { view.finishView() }
   }
@@ -90,7 +95,7 @@ class HttpCallListPresenterTest {
   @Test
   @Throws(Exception::class)
   fun shouldDeleteTheRecordsAndUpdateUi() {
-    httpCallListPresenter!!.confirmDeleteRecords()
+    httpCallListPresenter.confirmDeleteRecords()
 
     verify { repo.deleteAll() }
     verify { view.updateListViewAfterDelete() }
@@ -99,7 +104,7 @@ class HttpCallListPresenterTest {
   @Test
   @Throws(Exception::class)
   fun shouldShowConfirmationDialogOnClickOfDeleteRecords() {
-    httpCallListPresenter!!.onDeleteRecordsClicked()
+    httpCallListPresenter.onDeleteRecordsClicked()
 
     verify { view.showDeleteConfirmationDialog() }
   }
