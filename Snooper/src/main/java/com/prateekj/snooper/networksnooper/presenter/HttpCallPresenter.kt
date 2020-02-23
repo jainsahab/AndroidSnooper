@@ -10,7 +10,6 @@ import com.prateekj.snooper.networksnooper.helper.DataCopyHelper
 import com.prateekj.snooper.networksnooper.model.HttpCallRecord
 import com.prateekj.snooper.networksnooper.views.HttpCallView
 import com.prateekj.snooper.utils.FileUtil
-import org.apache.commons.lang3.StringUtils
 import java.lang.String.format
 import java.text.SimpleDateFormat
 import java.util.Locale.US
@@ -43,7 +42,7 @@ class HttpCallPresenter(
       }
 
       override fun onResult(filePath: String) {
-        if (!StringUtils.isEmpty(filePath)) {
+        if (filePath.isNotEmpty()) {
           view.shareData(filePath)
         }
       }

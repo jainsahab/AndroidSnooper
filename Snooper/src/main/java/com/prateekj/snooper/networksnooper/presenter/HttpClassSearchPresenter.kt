@@ -1,14 +1,11 @@
 package com.prateekj.snooper.networksnooper.presenter
 
+
 import com.prateekj.snooper.infra.BackgroundTask
 import com.prateekj.snooper.infra.BackgroundTaskExecutor
 import com.prateekj.snooper.networksnooper.database.SnooperRepo
 import com.prateekj.snooper.networksnooper.model.HttpCallRecord
 import com.prateekj.snooper.networksnooper.views.HttpCallSearchView
-
-import org.apache.commons.lang3.StringUtils
-
-import java.util.ArrayList
 
 class HttpClassSearchPresenter(
   private val snooperRepo: SnooperRepo,

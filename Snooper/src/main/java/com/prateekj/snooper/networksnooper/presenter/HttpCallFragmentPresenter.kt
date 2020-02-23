@@ -1,25 +1,21 @@
 package com.prateekj.snooper.networksnooper.presenter
 
+
 import com.prateekj.snooper.formatter.PlainTextFormatter
 import com.prateekj.snooper.formatter.ResponseFormatter
 import com.prateekj.snooper.formatter.ResponseFormatterFactory
 import com.prateekj.snooper.infra.BackgroundTask
 import com.prateekj.snooper.infra.BackgroundTaskExecutor
+import com.prateekj.snooper.networksnooper.activity.HttpCallActivity.Companion.ERROR_MODE
+import com.prateekj.snooper.networksnooper.activity.HttpCallActivity.Companion.REQUEST_MODE
 import com.prateekj.snooper.networksnooper.database.SnooperRepo
 import com.prateekj.snooper.networksnooper.model.Bound
 import com.prateekj.snooper.networksnooper.model.HttpCallRecord
 import com.prateekj.snooper.networksnooper.model.HttpHeader
-import com.prateekj.snooper.networksnooper.model.HttpHeaderValue
+import com.prateekj.snooper.networksnooper.model.HttpHeader.Companion.CONTENT_TYPE
 import com.prateekj.snooper.networksnooper.viewmodel.HttpBodyViewModel
 import com.prateekj.snooper.networksnooper.views.HttpCallBodyView
-
-import org.apache.commons.lang3.StringUtils
-
 import java.util.ArrayList
-
-import com.prateekj.snooper.networksnooper.activity.HttpCallActivity.Companion.ERROR_MODE
-import com.prateekj.snooper.networksnooper.activity.HttpCallActivity.Companion.REQUEST_MODE
-import com.prateekj.snooper.networksnooper.model.HttpHeader.Companion.CONTENT_TYPE
 
 class HttpCallFragmentPresenter(
   private val repo: SnooperRepo,
