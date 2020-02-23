@@ -1,5 +1,10 @@
 # Release Notes
 
+## Version 1.5.5 (February 23, 2020)
+* Java -> Kotlin migration
+* Fixed Manifest merge error because of conflicting FileProvider
+* Fixed random crash while scrolling calls list
+
 ## Version 1.5.4 (June 6, 2019)
 * Fixing #22
 * Migrate support library to AndroidX
