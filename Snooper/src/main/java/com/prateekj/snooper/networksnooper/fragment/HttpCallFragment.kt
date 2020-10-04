@@ -70,7 +70,7 @@ class HttpCallFragment : Fragment(), HttpCallBodyView, OnQueryTextListener, OnSc
     scrollView!!.setOnScrollChangeListener(this)
   }
 
-  override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater?) {
+  override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
     val searchMenu = menu.findItem(R.id.search_menu)
     searchMenu.isVisible = true
     (MenuItemCompat.getActionView(searchMenu) as SearchView).setOnQueryTextListener(this)
