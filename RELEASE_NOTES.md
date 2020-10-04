@@ -1,5 +1,8 @@
 # Release Notes
 
+## Version 1.5.6 (October 4, 2020)
+* Upgrading dependencies
+
 ## Version 1.5.5 (February 23, 2020)
 * Java -> Kotlin migration
 * Fixed Manifest merge error because of conflicting FileProvider
