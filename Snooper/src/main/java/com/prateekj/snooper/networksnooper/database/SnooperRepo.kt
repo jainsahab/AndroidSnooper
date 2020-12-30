@@ -126,7 +126,7 @@ class SnooperRepo(context: Context) {
     val database = dbReadHelper.readableDatabase
     val cursorParser = HttpCallRecordCursorParser()
     val cursor =
-      database.rawQuery(HTTP_CALL_RECORD_GET_BY_ID, arrayOf(java.lang.Long.toString(id)))
+      database.rawQuery(HTTP_CALL_RECORD_GET_BY_ID, arrayOf(id.toString()))
     cursor.moveToNext()
     val httpCallRecord = cursorParser.parse(cursor)
     httpCallRecord.requestHeaders = findHeader(database, httpCallRecord.id, "req")
@@ -172,7 +172,7 @@ class SnooperRepo(context: Context) {
     val cursorParser = HttpHeaderValueCursorParser()
     val cursor = database.rawQuery(
       HTTP_HEADER_VALUE_GET_BY_HEADER_ID,
-      arrayOf(Integer.toString(headerId))
+      arrayOf(headerId.toString())
     )
     while (cursor.moveToNext()) {
       httpHeaderValues.add(cursorParser.parse(cursor))

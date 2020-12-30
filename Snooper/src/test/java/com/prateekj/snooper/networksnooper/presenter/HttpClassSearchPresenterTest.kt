@@ -71,7 +71,7 @@ class HttpClassSearchPresenterTest {
     verify(exactly = 0) { repo.searchHttpRecord("url") }
 
     verify { httpCallSearchView.hideLoader() }
-    verify { httpCallSearchView.showResults(match { it.size == 0 }) }
+    verify { httpCallSearchView.showResults(match { it.isEmpty() }) }
     confirmVerified(httpCallSearchView)
   }
 

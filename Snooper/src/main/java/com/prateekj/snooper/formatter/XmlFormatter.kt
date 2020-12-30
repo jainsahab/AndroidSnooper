@@ -8,8 +8,6 @@ import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 
 import javax.xml.transform.OutputKeys
-import javax.xml.transform.Source
-import javax.xml.transform.Transformer
 import javax.xml.transform.sax.SAXSource
 import javax.xml.transform.sax.SAXTransformerFactory
 import javax.xml.transform.stream.StreamResult
@@ -36,6 +34,6 @@ class XmlFormatter : ResponseFormatter {
   }
 
   companion object {
-    val TAG = XmlFormatter::class.java.simpleName
+    val TAG: String = XmlFormatter::class.java.simpleName
   }
 }

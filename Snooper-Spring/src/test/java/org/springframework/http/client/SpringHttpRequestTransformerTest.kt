@@ -62,7 +62,7 @@ class SpringHttpRequestTransformerTest {
     val uri = create(url)
     val requestBody = "requestBody"
     val httpHeaders = HttpHeaders()
-    httpHeaders["Content-Type"] = Arrays.asList("application/json")
+    httpHeaders["Content-Type"] = listOf("application/json")
 
     val httpRequest = mockk<HttpRequest>()
     every { httpRequest.method } returns POST

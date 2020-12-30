@@ -4,9 +4,7 @@ import org.junit.Before
 import org.junit.Test
 
 import java.util.Arrays
-import java.util.HashMap
 
-import java.util.Collections.singletonList
 import junit.framework.Assert.assertNotNull
 import junit.framework.Assert.assertNull
 import org.hamcrest.CoreMatchers.`is`
@@ -88,7 +86,7 @@ class HttpCallRecordTest {
   }
 
   private fun getRequestHeaders(): Map<String, List<String>> {
-    val cacheControlHeader = Arrays.asList("public", "max-age=86400", "no-transform")
+    val cacheControlHeader = listOf("public", "max-age=86400", "no-transform")
     val userAgentHeader = listOf("Android Browser")
     return mapOf(
       "User-Agent" to userAgentHeader,

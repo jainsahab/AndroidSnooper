@@ -42,7 +42,7 @@ class ViewMatcherIdlingResource(
   }
 
   private fun pollViewUntilMatchesOrTimeout(resourceCallback: IdlingResource.ResourceCallback) {
-    val thread = Thread(Runnable {
+    val thread = Thread {
       while (!viewMatcher.matches(view) && now() - startTime < waitTimeInMillis) {
         try {
           Logger.d(TAG, "polling view to match $viewMatcher")
@@ -53,7 +53,7 @@ class ViewMatcherIdlingResource(
       }
       isMatched = viewMatcher.matches(view)
       resourceCallback.onTransitionToIdle()
-    })
+    }
     thread.start()
   }
 
@@ -64,6 +64,6 @@ class ViewMatcherIdlingResource(
   companion object {
 
     private const val MATCHER_POLLING_INTERVAL_IN_MILLIS = 100
-    val TAG = ViewMatcherIdlingResource::class.java.simpleName
+    val TAG: String = ViewMatcherIdlingResource::class.java.simpleName
   }
 }

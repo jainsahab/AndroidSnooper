@@ -109,6 +109,6 @@ class DataCopyHelper(
   }
 
   private fun contentHeadersPresent(contentTypeHeader: HttpHeader?): Boolean {
-    return contentTypeHeader != null && contentTypeHeader.values.size > 0
+    return contentTypeHeader != null && contentTypeHeader.values.isNotEmpty()
   }
 }

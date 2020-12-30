@@ -4,11 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.appcompat.widget.SearchView
-import androidx.appcompat.widget.Toolbar
-import android.view.View
-import android.widget.TextView
 
 import com.prateekj.snooper.R
 import com.prateekj.snooper.customviews.DividerItemDecoration

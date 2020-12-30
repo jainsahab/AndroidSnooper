@@ -44,7 +44,7 @@ class DatabaseReaderTest {
 
     databaseReader.fetchApplicationDatabases(dbReaderCallback)
 
-    io.mockk.verify { dbReaderCallback.onApplicationDbFetchCompleted(match { it.size == 0 }) }
+    io.mockk.verify { dbReaderCallback.onApplicationDbFetchCompleted(match { it.isEmpty() }) }
   }
 
   @Test
@@ -55,7 +55,7 @@ class DatabaseReaderTest {
 
     databaseReader.fetchApplicationDatabases(dbReaderCallback)
 
-    io.mockk.verify { dbReaderCallback.onApplicationDbFetchCompleted(match { it.size == 0 }) }
+    io.mockk.verify { dbReaderCallback.onApplicationDbFetchCompleted(match { it.isEmpty() }) }
   }
 
   @Test

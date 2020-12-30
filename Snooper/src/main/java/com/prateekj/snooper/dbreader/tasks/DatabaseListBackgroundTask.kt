@@ -1,7 +1,6 @@
 package com.prateekj.snooper.dbreader.tasks
 
 import android.content.Context
-import com.prateekj.snooper.database.SnooperDbHelper
 import com.prateekj.snooper.database.SnooperDbHelper.Companion.DATABASE_NAME
 
 import com.prateekj.snooper.dbreader.model.Database

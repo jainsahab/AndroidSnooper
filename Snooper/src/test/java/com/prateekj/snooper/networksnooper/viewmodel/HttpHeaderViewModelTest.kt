@@ -6,7 +6,6 @@ import com.prateekj.snooper.networksnooper.model.HttpHeaderValue
 import org.junit.Before
 import org.junit.Test
 
-import java.util.Arrays.asList
 import org.hamcrest.CoreMatchers.`is`
 import org.junit.Assert.assertThat
 

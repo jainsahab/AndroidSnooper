@@ -167,7 +167,7 @@ class HttpCallViewModelTest {
   private fun singleHeader(): HashMap<String, List<String>> {
     return object : HashMap<String, List<String>>() {
       init {
-        put("header1", Arrays.asList("headerValue"))
+        put("header1", listOf("headerValue"))
       }
     }
   }

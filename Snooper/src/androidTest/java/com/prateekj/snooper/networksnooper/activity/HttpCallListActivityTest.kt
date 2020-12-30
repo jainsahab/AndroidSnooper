@@ -209,6 +209,6 @@ class HttpCallListActivityTest {
       .withError(error)
       .build()
     httpCall.date = date
-    snooperRepo!!.save(HttpCallRecord.from(httpCall))
+    snooperRepo.save(HttpCallRecord.from(httpCall))
   }
 }

@@ -126,6 +126,6 @@ class HttpCallSearchActivityTest {
       .withStatusText(statusText)
       .build()
     httpCall.date = date
-    return snooperRepo!!.save(HttpCallRecord.from(httpCall))
+    return snooperRepo.save(HttpCallRecord.from(httpCall))
   }
 }

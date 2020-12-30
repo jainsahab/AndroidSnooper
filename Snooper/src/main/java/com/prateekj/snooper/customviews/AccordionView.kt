@@ -48,7 +48,7 @@ class AccordionView : LinearLayout {
   }
 
   fun onStateChange() {
-    bodyView!!.visibility = if (state == COLLAPSE) View.GONE else View.VISIBLE
+    bodyView?.visibility = if (state == COLLAPSE) View.GONE else View.VISIBLE
     val statusIcon = headerView!!.findViewById<View>(R.id.state_icon) as ImageView
     statusIcon.setImageResource(if (state == COLLAPSE) R.drawable.arrow_left_white else R.drawable.arrow_down_white)
   }

@@ -71,6 +71,6 @@ class SnooperInterceptor : Interceptor {
 
   companion object {
 
-    val TAG = SnooperInterceptor::class.java.simpleName
+    val TAG: String = SnooperInterceptor::class.java.simpleName
   }
 }

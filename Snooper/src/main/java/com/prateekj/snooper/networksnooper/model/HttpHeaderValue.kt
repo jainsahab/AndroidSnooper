@@ -4,7 +4,7 @@ class HttpHeaderValue {
   private var id: Int = 0
   lateinit var value: String
 
-  constructor() {}
+  constructor()
 
   constructor(value: String) {
     this.value = value

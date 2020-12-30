@@ -5,6 +5,10 @@ apply plugin: 'spoon'
 apply plugin: 'jacoco'
 apply from: '../Publish.gradle'
 
+jacoco {
+    toolVersion = "0.8.6"
+}
+
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
@@ -47,6 +51,7 @@ android {
         unitTests.all {
             jacoco {
                 includeNoLocationClasses = true
+                excludes = ['jdk.internal.*']
             }
         }
     }

@@ -37,7 +37,7 @@ class SnooperRepoTest {
   }
 
   private fun getRequestHeaders(): Map<String, List<String>> {
-    val cacheControlHeader = Arrays.asList("public", "max-age=86400", "no-transform")
+    val cacheControlHeader = listOf("public", "max-age=86400", "no-transform")
     val userAgentHeader = listOf("Android Browser")
     return mapOf(
       "User-Agent" to userAgentHeader,

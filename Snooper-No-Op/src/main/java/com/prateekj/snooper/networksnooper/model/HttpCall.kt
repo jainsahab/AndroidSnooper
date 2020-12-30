@@ -1,7 +1,6 @@
 package com.prateekj.snooper.networksnooper.model
 
 import java.util.Date
-import java.util.HashMap
 
 class HttpCall {
   val payload: String = ""

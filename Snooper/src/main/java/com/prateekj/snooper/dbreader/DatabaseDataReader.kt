@@ -5,7 +5,6 @@ import com.prateekj.snooper.dbreader.model.Database
 import com.prateekj.snooper.dbreader.model.Row
 import com.prateekj.snooper.dbreader.model.Table
 import java.util.ArrayList
-import java.util.Arrays
 
 class DatabaseDataReader {
 
