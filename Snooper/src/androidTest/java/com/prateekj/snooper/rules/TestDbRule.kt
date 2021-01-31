@@ -3,7 +3,7 @@ package com.prateekj.snooper.rules
 
 import android.content.ContextWrapper
 import androidx.annotation.RawRes
-import androidx.test.InstrumentationRegistry
+import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import com.prateekj.snooper.utils.Logger
 import org.junit.rules.TestRule
 import org.junit.runner.Description
@@ -17,7 +17,7 @@ class TestDbRule(@param:RawRes private val dbRawResourceId: Int, private val dbN
 
   val dbDirectory: String
     get() {
-      val cw = ContextWrapper(InstrumentationRegistry.getTargetContext())
+      val cw = ContextWrapper(getInstrumentation().targetContext)
       val destPath = cw.filesDir.path
       return destPath.substring(0, destPath.lastIndexOf("/")) + "/databases"
     }
@@ -28,13 +28,13 @@ class TestDbRule(@param:RawRes private val dbRawResourceId: Int, private val dbN
       override fun evaluate() {
         copyDataBase(this@TestDbRule.dbName)
         base.evaluate()
-        InstrumentationRegistry.getTargetContext().deleteDatabase(dbName)
+        getInstrumentation().targetContext.deleteDatabase(dbName)
       }
     }
   }
 
   private fun copyDataBase(finalDbName: String) {
-    val applicationContext = InstrumentationRegistry.getTargetContext()
+    val applicationContext = getInstrumentation().targetContext
     val dbDir = File(dbDirectory)
     if (!dbDir.exists()) {
       dbDir.mkdir()

@@ -1,7 +1,8 @@
 package com.prateekj.snooper.rules
 
 
-import androidx.test.InstrumentationRegistry.getTargetContext
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import com.prateekj.snooper.database.SnooperDbHelper
 import com.prateekj.snooper.networksnooper.database.HttpCallRecordContract.Companion.HEADER_TABLE_NAME
 import com.prateekj.snooper.networksnooper.database.HttpCallRecordContract.Companion.HEADER_VALUE_TABLE_NAME
@@ -12,7 +13,8 @@ import org.junit.runners.model.Statement
 
 class DataResetRule : TestRule {
 
-  private val snooperDbHelper: SnooperDbHelper = SnooperDbHelper.getInstance(getTargetContext())
+  private val snooperDbHelper: SnooperDbHelper =
+    SnooperDbHelper.getInstance(getInstrumentation().targetContext)
 
   override fun apply(base: Statement, description: Description): Statement {
     return object : Statement() {

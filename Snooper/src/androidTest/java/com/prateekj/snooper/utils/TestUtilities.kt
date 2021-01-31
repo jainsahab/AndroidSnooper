@@ -1,5 +1,6 @@
 package com.prateekj.snooper.utils
 
+import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStream
@@ -7,13 +8,11 @@ import java.io.InputStreamReader
 import java.util.Calendar
 import java.util.Date
 
-import androidx.test.InstrumentationRegistry.getContext
-
 object TestUtilities {
 
   @Throws(IOException::class)
   fun readFileAsStream(assetFileName: String): InputStream {
-    return getContext().assets.open(assetFileName)
+    return getInstrumentation().context.assets.open(assetFileName)
   }
 
   @Throws(IOException::class)
