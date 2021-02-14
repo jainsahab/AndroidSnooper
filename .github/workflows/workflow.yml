@@ -1,7 +1,7 @@
 #  Referencing From https://github.com/qbalsdon/currency_list_app/blob/master/.github/workflows/android-feature.yml
 name: AndroidSnooper CI
 on:
-  push:
+  [push, pull_request]:
     branches:
       - '*'
 
@@ -42,6 +42,7 @@ jobs:
 
   snapshot_deployment:
     name: Deploys to snapshot repository
+    if: github.event_name == 'push'
     runs-on: macos-latest
     needs: test
     steps:
@@ -64,7 +65,7 @@ jobs:
             snapshot-deploy-${{ runner.os }}-gradle-
 
       - name: Deploying snapshot version
-        run: bash deploy_snapshot.sh
+        run: bash ./gradlew uploadArchives
         env:
           NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
           NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
