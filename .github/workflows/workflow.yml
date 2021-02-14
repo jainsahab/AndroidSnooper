@@ -18,6 +18,16 @@ jobs:
         with:
           java-version: 1.8
 
+      - name: Cache gradle wrapper
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: test-${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            test-${{ runner.os }}-gradle-
+
       - name: Execute Unit Tests (gradlew test)
         run: bash ./gradlew clean testDebugUnitTest lintDebug
 
@@ -42,6 +52,16 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
+
+      - name: Cache gradle wrapper
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: snapshot-deploy-${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            snapshot-deploy-${{ runner.os }}-gradle-
 
       - name: Deploying snapshot version
         run: bash deploy_snapshot.sh
