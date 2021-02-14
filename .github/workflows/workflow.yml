@@ -33,6 +33,7 @@ jobs:
   snapshot_deployment:
     name: Deploys to snapshot repository
     runs-on: macos-latest
+    needs: test
     steps:
       - name: Checkout
         uses: actions/checkout@v2
