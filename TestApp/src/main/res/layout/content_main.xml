@@ -14,6 +14,7 @@
     android:layout_marginBottom="10dp"
     android:textSize="30sp"
     android:textAlignment="center"
+    android:layout_gravity="center_horizontal"
     android:id="@+id/header"
     android:text="Snooper Test App"
     android:layout_width="match_parent"
