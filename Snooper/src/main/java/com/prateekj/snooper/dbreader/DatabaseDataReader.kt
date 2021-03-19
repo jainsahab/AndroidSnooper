@@ -20,7 +20,7 @@ class DatabaseDataReader {
     tableNameCursor.use { cursor ->
       if (cursor != null && cursor.moveToFirst()) {
         while (!cursor.isAfterLast) {
-          tables.add(cursor.getString(cursor.getColumnIndex("name")))
+          tables.add(cursor.getString(cursor.getColumnIndexOrThrow("name")))
           cursor.moveToNext()
         }
         databaseData.tables = tables

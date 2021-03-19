@@ -11,9 +11,9 @@ import com.prateekj.snooper.networksnooper.database.HttpCallRecordContract.Compa
 class HttpHeaderCursorParser : CursorParser<HttpHeader> {
 
   override fun parse(cursor: Cursor): HttpHeader {
-    val httpHeader = HttpHeader()
-    httpHeader.id = cursor.getInt(cursor.getColumnIndex(_ID))
-    httpHeader.name = cursor.getString(cursor.getColumnIndex(COLUMN_HEADER_NAME))
-    return httpHeader
+    return HttpHeader().apply {
+      id = cursor.getInt(cursor.getColumnIndexOrThrow(_ID))
+      name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_HEADER_NAME))
+    }
   }
 }

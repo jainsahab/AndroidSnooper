@@ -87,7 +87,7 @@ jobs:
           restore-keys: |
             test-${{ runner.os }}-gradle-
 
-      - name: Execute Unit Tests
+      - name: Execute Lint
         run: bash ./gradlew clean lintDebug
 
 

@@ -20,16 +20,16 @@ import com.prateekj.snooper.networksnooper.database.HttpCallRecordContract.Compa
 class HttpCallRecordCursorParser : CursorParser<HttpCallRecord> {
 
   override fun parse(cursor: Cursor): HttpCallRecord {
-    val httpCallRecord = HttpCallRecord()
-    httpCallRecord.id = cursor.getLong(cursor.getColumnIndex(_ID))
-    httpCallRecord.url = cursor.getString(cursor.getColumnIndex(COLUMN_URL))
-    httpCallRecord.payload = cursor.getString(cursor.getColumnIndex(COLUMN_PAYLOAD))
-    httpCallRecord.responseBody = cursor.getString(cursor.getColumnIndex(COLUMN_RESPONSE_BODY))
-    httpCallRecord.method = cursor.getString(cursor.getColumnIndex(COLUMN_METHOD))
-    httpCallRecord.statusCode = cursor.getInt(cursor.getColumnIndex(COLUMN_STATUSCODE))
-    httpCallRecord.statusText = cursor.getString(cursor.getColumnIndex(COLUMN_STATUSTEXT))
-    httpCallRecord.date = Date(cursor.getLong(cursor.getColumnIndex(COLUMN_DATE)))
-    httpCallRecord.error = cursor.getString(cursor.getColumnIndex(COLUMN_ERROR))
-    return httpCallRecord
+    return HttpCallRecord().apply {
+      id = cursor.getLong(cursor.getColumnIndexOrThrow(_ID))
+      url = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_URL))
+      payload = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PAYLOAD))
+      responseBody = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_RESPONSE_BODY))
+      method = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_METHOD))
+      statusCode = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_STATUSCODE))
+      statusText = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_STATUSTEXT))
+      date = Date(cursor.getLong(cursor.getColumnIndexOrThrow(COLUMN_DATE)))
+      error = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ERROR))
+    }
   }
 }
