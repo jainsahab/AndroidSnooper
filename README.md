@@ -1,6 +1,6 @@
 # Android Snooper
 
-![Build Status](https://github.com/jainsahab/AndroidSnooper/workflows/AndroidSnooper%20CI/badge.svg?branch=master&event=push) [![codecov](https://codecov.io/gh/jainsahab/AndroidSnooper/branch/master/graph/badge.svg)](https://codecov.io/gh/jainsahab/AndroidSnooper) [![Maven Central](https://img.shields.io/maven-central/v/com.github.jainsahab/Snooper.svg)](https://mvnrepository.com/artifact/com.github.jainsahab/Snooper) [![BCH compliance](https://bettercodehub.com/edge/badge/jainsahab/AndroidSnooper?branch=master)](https://bettercodehub.com/) [![HitCount](http://hits.dwyl.io/jainsahab/AndroidSnooper.svg)](http://hits.dwyl.io/jainsahab/AndroidSnooper)
+![Build Status](https://github.com/jainsahab/AndroidSnooper/workflows/AndroidSnooper%20CI/badge.svg?branch=master&event=push)[![codecov](https://codecov.io/gh/jainsahab/AndroidSnooper/branch/master/graph/badge.svg)](https://codecov.io/gh/jainsahab/AndroidSnooper)[![Maven Central](https://img.shields.io/maven-central/v/com.github.jainsahab/Snooper.svg)](https://mvnrepository.com/artifact/com.github.jainsahab/Snooper)[![BCH compliance](https://bettercodehub.com/edge/badge/jainsahab/AndroidSnooper?branch=master)](https://bettercodehub.com/)[![HitCount](http://hits.dwyl.com/jainsahab/AndroidSnooper.svg)](http://hits.dwyl.com/jainsahab/AndroidSnooper)
 
 
 ## Introduction
