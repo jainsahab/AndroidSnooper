@@ -35,6 +35,11 @@ jobs:
         with:
           name: unit-test-coverage-report
           path: Snooper/build/jacoco/testDebugUnitTest.exec
+      - name: Archive compiled kotlin classes
+        uses: actions/upload-artifact@v2
+        with:
+          name: generated-kotlin-classes
+          path: Snooper/build/tmp/kotlin-classes/debug
 
 
   integration_test:
