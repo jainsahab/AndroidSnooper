@@ -9,7 +9,6 @@ import android.content.Intent
 import android.content.Intent.ACTION_CHOOSER
 import android.content.Intent.ACTION_SEND
 import android.view.View
-import androidx.test.InstrumentationRegistry.getTargetContext
 import androidx.test.espresso.Espresso.onData
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
@@ -25,6 +24,7 @@ import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.rule.GrantPermissionRule
 import com.prateekj.snooper.R
 import com.prateekj.snooper.networksnooper.activity.HttpCallActivity.Companion.HTTP_CALL_ID
@@ -80,7 +80,7 @@ class HttpCallActivityTest {
   @Before
   @Throws(Exception::class)
   fun setUp() {
-    snooperRepo = SnooperRepo(getTargetContext())
+    snooperRepo = SnooperRepo(getInstrumentation().getTargetContext())
   }
 
   @Test
@@ -239,7 +239,7 @@ class HttpCallActivityTest {
   }
 
   private fun clipBoardText(): String {
-    val clipboard = getTargetContext().getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+    val clipboard = getInstrumentation().targetContext.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
     val lastItemIndex = clipboard.primaryClip!!.itemCount - 1
     return clipboard.primaryClip!!.getItemAt(lastItemIndex).text.toString()
   }

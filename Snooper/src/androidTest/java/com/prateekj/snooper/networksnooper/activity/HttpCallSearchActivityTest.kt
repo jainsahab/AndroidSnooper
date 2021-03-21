@@ -1,26 +1,9 @@
 package com.prateekj.snooper.networksnooper.activity
 
+import android.app.Activity.RESULT_OK
 import android.app.Instrumentation
 import android.content.Intent
-import androidx.test.espresso.intent.rule.IntentsTestRule
-import androidx.test.runner.AndroidJUnit4
-
-import com.prateekj.snooper.R
-import com.prateekj.snooper.networksnooper.database.SnooperRepo
-import com.prateekj.snooper.networksnooper.model.HttpCall
-import com.prateekj.snooper.networksnooper.model.HttpCallRecord
-import com.prateekj.snooper.rules.DataResetRule
-
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
-import org.junit.runner.RunWith
-
-import java.util.Date
-
-import android.app.Activity.RESULT_OK
 import android.view.View
-import androidx.test.InstrumentationRegistry.getTargetContext
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.clearText
 import androidx.test.espresso.action.ViewActions.click
@@ -31,15 +14,28 @@ import androidx.test.espresso.intent.Intents.intending
 import androidx.test.espresso.intent.matcher.IntentMatchers.anyIntent
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasExtra
+import androidx.test.espresso.intent.rule.IntentsTestRule
 import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
+import com.prateekj.snooper.R
 import com.prateekj.snooper.networksnooper.activity.HttpCallActivity.Companion.HTTP_CALL_ID
+import com.prateekj.snooper.networksnooper.database.SnooperRepo
+import com.prateekj.snooper.networksnooper.model.HttpCall
+import com.prateekj.snooper.networksnooper.model.HttpCallRecord
+import com.prateekj.snooper.rules.DataResetRule
 import com.prateekj.snooper.utils.EspressoViewMatchers.withRecyclerView
 import com.prateekj.snooper.utils.TestUtilities.getDate
-import junit.framework.Assert.assertTrue
 import org.hamcrest.core.AllOf.allOf
+import org.junit.Assert.assertTrue
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
+import java.util.Date
 
 @RunWith(AndroidJUnit4::class)
 class HttpCallSearchActivityTest {
@@ -54,7 +50,7 @@ class HttpCallSearchActivityTest {
   @Before
   @Throws(Exception::class)
   fun setUp() {
-    snooperRepo = SnooperRepo(getTargetContext())
+    snooperRepo = SnooperRepo(getInstrumentation().targetContext)
   }
 
   @Test
@@ -126,6 +122,6 @@ class HttpCallSearchActivityTest {
       .withStatusText(statusText)
       .build()
     httpCall.date = date
-    return snooperRepo!!.save(HttpCallRecord.from(httpCall))
+    return snooperRepo.save(HttpCallRecord.from(httpCall))
   }
 }

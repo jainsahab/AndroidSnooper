@@ -41,9 +41,9 @@ class HttpCallPresenter(
         return fileUtil.createLogFile(completeHttpCallData, logFileName)
       }
 
-      override fun onResult(filePath: String) {
-        if (filePath.isNotEmpty()) {
-          view.shareData(filePath)
+      override fun onResult(result: String) {
+        if (result.isNotEmpty()) {
+          view.shareData(result)
         }
       }
     })
@@ -54,10 +54,10 @@ class HttpCallPresenter(
   }
 
   private fun getTextToCopy(httpCallTab: HttpCallTab): String {
-    return when {
-      httpCallTab === RESPONSE -> dataCopyHelper.getResponseDataForCopy()
-      httpCallTab === REQUEST -> dataCopyHelper.getRequestDataForCopy()
-      httpCallTab === HEADERS -> dataCopyHelper.getHeadersForCopy()
+    return when (httpCallTab) {
+      RESPONSE -> dataCopyHelper.getResponseDataForCopy()
+      REQUEST -> dataCopyHelper.getRequestDataForCopy()
+      HEADERS -> dataCopyHelper.getHeadersForCopy()
       else -> dataCopyHelper.getErrorsForCopy() ?: ""
     }
   }

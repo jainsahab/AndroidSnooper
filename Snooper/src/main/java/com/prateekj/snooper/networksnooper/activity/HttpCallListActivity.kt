@@ -54,13 +54,13 @@ class HttpCallListActivity : SnooperBaseActivity(), HttpListView, NextPageReques
   }
 
   override fun onOptionsItemSelected(item: MenuItem): Boolean {
-    when {
-      item.itemId == R.id.done_menu -> {
-        presenter.onDoneClick()
-        return true
-      }
-      item.itemId == R.id.delete_records_menu -> presenter.onDeleteRecordsClicked()
-      item.itemId == R.id.search -> openSearchActivity()
+    when (item.itemId) {
+        R.id.done_menu -> {
+          presenter.onDoneClick()
+          return true
+        }
+        R.id.delete_records_menu -> presenter.onDeleteRecordsClicked()
+        R.id.search -> openSearchActivity()
     }
     return super.onOptionsItemSelected(item)
   }

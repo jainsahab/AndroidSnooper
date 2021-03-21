@@ -1,9 +1,9 @@
 package com.prateekj.snooper.formatter
 
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
-import junit.framework.Assert.assertTrue
 
 class ResponseFormatterFactoryTest {
 

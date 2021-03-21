@@ -1,16 +1,12 @@
 package com.prateekj.snooper.networksnooper.model
 
+import org.hamcrest.CoreMatchers.`is`
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertThat
 import org.junit.Before
 import org.junit.Test
-
 import java.util.Arrays
-import java.util.HashMap
-
-import java.util.Collections.singletonList
-import junit.framework.Assert.assertNotNull
-import junit.framework.Assert.assertNull
-import org.hamcrest.CoreMatchers.`is`
-import org.junit.Assert.assertThat
 
 class HttpCallRecordTest {
   private var httpCallRecord: HttpCallRecord? = null

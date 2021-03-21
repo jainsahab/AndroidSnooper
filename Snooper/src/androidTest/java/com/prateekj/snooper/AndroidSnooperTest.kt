@@ -1,19 +1,16 @@
 package com.prateekj.snooper
 
+import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import com.prateekj.snooper.networksnooper.database.SnooperRepo
 import com.prateekj.snooper.networksnooper.model.HttpCall.Builder
 import com.prateekj.snooper.rules.DataResetRule
-
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
-
-import androidx.test.InstrumentationRegistry.getInstrumentation
-import androidx.test.InstrumentationRegistry.getTargetContext
 import com.prateekj.snooper.utils.EspressoUtil.waitFor
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.CoreMatchers.sameInstance
 import org.junit.Assert.assertThat
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
 
 class AndroidSnooperTest {
 
@@ -42,7 +39,7 @@ class AndroidSnooperTest {
     val url = "https://ajax.googleapis.com/ajax/services/search/web?v=1.0"
     val responseBody = "responseBody"
     val requestBody = "requestBody"
-    val snooperRepo = SnooperRepo(getTargetContext())
+    val snooperRepo = SnooperRepo(getInstrumentation().targetContext)
 
     val call = Builder()
       .withUrl(url)

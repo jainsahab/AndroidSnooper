@@ -1,6 +1,6 @@
 package com.prateekj.snooper.networksnooper.database
 
-import androidx.test.InstrumentationRegistry.getTargetContext
+import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import com.prateekj.snooper.networksnooper.model.HttpCall
 import com.prateekj.snooper.networksnooper.model.HttpCallRecord
 import com.prateekj.snooper.networksnooper.model.HttpHeaderValue
@@ -25,7 +25,7 @@ class SnooperRepoTest {
 
   @get:Rule
   var rule = DataResetRule()
-  private var repo: SnooperRepo? = null
+  private lateinit var repo: SnooperRepo
 
   private fun getResponseHeaders(): Map<String, List<String>> {
     val xssProtectionHeader = listOf("1", "mode=block")
@@ -48,7 +48,7 @@ class SnooperRepoTest {
   @Before
   @Throws(Exception::class)
   fun setUp() {
-    repo = SnooperRepo(getTargetContext())
+    repo = SnooperRepo(getInstrumentation().targetContext)
   }
 
   @Test
@@ -60,8 +60,8 @@ class SnooperRepoTest {
         .withRequestHeaders(getRequestHeaders()).withResponseHeaders(getResponseHeaders())
         .withError("error").build()
 
-    val id = repo!!.save(HttpCallRecord.from(httpCall))
-    val httpCallRecord = repo!!.findById(id)
+    val id = repo.save(HttpCallRecord.from(httpCall))
+    val httpCallRecord = repo.findById(id)
 
     assertThat<String>(httpCallRecord.url, `is`("http://google.com"))
     assertThat<String>(httpCallRecord.method, `is`("POST"))
@@ -95,10 +95,10 @@ class SnooperRepoTest {
     val afterHttpCall = HttpCall.Builder().withUrl("url2").build()
     beforeHttpCall.date = beforeDate
     afterHttpCall.date = afterDate
-    repo!!.save(HttpCallRecord.from(beforeHttpCall))
-    repo!!.save(HttpCallRecord.from(afterHttpCall))
+    repo.save(HttpCallRecord.from(beforeHttpCall))
+    repo.save(HttpCallRecord.from(afterHttpCall))
 
-    val httpCalls = repo!!.findAllSortByDate()
+    val httpCalls = repo.findAllSortByDate()
 
     assertThat(httpCalls, hasCallWithUrl("url1"))
     assertThat(httpCalls, hasCallWithUrl("url2"))
@@ -115,10 +115,10 @@ class SnooperRepoTest {
     val afterHttpCall = HttpCall.Builder().withUrl("url2").build()
     beforeHttpCall.date = beforeDate
     afterHttpCall.date = afterDate
-    repo!!.save(HttpCallRecord.from(beforeHttpCall))
-    repo!!.save(HttpCallRecord.from(afterHttpCall))
+    repo.save(HttpCallRecord.from(beforeHttpCall))
+    repo.save(HttpCallRecord.from(afterHttpCall))
 
-    val httpCalls = repo!!.searchHttpRecord("url")
+    val httpCalls = repo.searchHttpRecord("url")
 
     assertThat(httpCalls, hasCallWithUrl("url1"))
     assertThat(httpCalls, hasCallWithUrl("url2"))
@@ -135,10 +135,10 @@ class SnooperRepoTest {
     val afterHttpCall = HttpCall.Builder().withPayload("requestBody2").build()
     beforeHttpCall.date = beforeDate
     afterHttpCall.date = afterDate
-    repo!!.save(HttpCallRecord.from(beforeHttpCall))
-    repo!!.save(HttpCallRecord.from(afterHttpCall))
+    repo.save(HttpCallRecord.from(beforeHttpCall))
+    repo.save(HttpCallRecord.from(afterHttpCall))
 
-    val httpCalls = repo!!.searchHttpRecord("request")
+    val httpCalls = repo.searchHttpRecord("request")
 
     assertThat<String>(httpCalls[0].payload, `is`("requestBody2"))
     assertThat<String>(httpCalls[1].payload, `is`("requestBody1"))
@@ -155,10 +155,10 @@ class SnooperRepoTest {
     val afterHttpCall = HttpCall.Builder().withResponseBody("responseBody2").build()
     beforeHttpCall.date = beforeDate
     afterHttpCall.date = afterDate
-    repo!!.save(HttpCallRecord.from(beforeHttpCall))
-    repo!!.save(HttpCallRecord.from(afterHttpCall))
+    repo.save(HttpCallRecord.from(beforeHttpCall))
+    repo.save(HttpCallRecord.from(afterHttpCall))
 
-    val httpCalls = repo!!.searchHttpRecord("response")
+    val httpCalls = repo.searchHttpRecord("response")
 
     assertThat<String>(httpCalls[0].responseBody, `is`("responseBody2"))
     assertThat<String>(httpCalls[1].responseBody, `is`("responseBody1"))
@@ -175,10 +175,10 @@ class SnooperRepoTest {
     val afterHttpCall = HttpCall.Builder().withError("error2").build()
     beforeHttpCall.date = beforeDate
     afterHttpCall.date = afterDate
-    repo!!.save(HttpCallRecord.from(beforeHttpCall))
-    repo!!.save(HttpCallRecord.from(afterHttpCall))
+    repo.save(HttpCallRecord.from(beforeHttpCall))
+    repo.save(HttpCallRecord.from(afterHttpCall))
 
-    val httpCalls = repo!!.searchHttpRecord("error")
+    val httpCalls = repo.searchHttpRecord("error")
 
     assertThat<String>(httpCalls[0].error, `is`("error2"))
     assertThat<String>(httpCalls[1].error, `is`("error1"))
@@ -191,15 +191,15 @@ class SnooperRepoTest {
   fun shouldGetNextSetOfHttpCallsAfterTheGivenId() {
     saveCalls(50)
 
-    var httpCalls = repo!!.findAllSortByDateAfter(-1, 20)
+    var httpCalls = repo.findAllSortByDateAfter(-1, 20)
     assertThat(httpCalls.size, `is`(20))
     assertThat<List<HttpCallRecord>>(httpCalls, areSortedAccordingToDate())
 
-    httpCalls = repo!!.findAllSortByDateAfter(httpCalls.last().id, 20)
+    httpCalls = repo.findAllSortByDateAfter(httpCalls.last().id, 20)
     assertThat(httpCalls.size, `is`(20))
     assertThat<List<HttpCallRecord>>(httpCalls, areSortedAccordingToDate())
 
-    httpCalls = repo!!.findAllSortByDateAfter(httpCalls.last().id, 20)
+    httpCalls = repo.findAllSortByDateAfter(httpCalls.last().id, 20)
     assertThat(httpCalls.size, `is`(10))
     assertThat<List<HttpCallRecord>>(httpCalls, areSortedAccordingToDate())
   }
@@ -232,12 +232,12 @@ class SnooperRepoTest {
       .withRequestHeaders(getRequestHeaders())
       .withResponseHeaders(getResponseHeaders())
       .build()
-    repo!!.save(HttpCallRecord.from(httpCall))
-    repo!!.save(HttpCallRecord.from(httpCall2))
+    repo.save(HttpCallRecord.from(httpCall))
+    repo.save(HttpCallRecord.from(httpCall2))
 
-    repo!!.deleteAll()
+    repo.deleteAll()
 
-    val httpCalls = repo!!.findAllSortByDate()
+    val httpCalls = repo.findAllSortByDate()
     assertThat(httpCalls.size, `is`(0))
   }
 
@@ -246,7 +246,7 @@ class SnooperRepoTest {
       val httpCall = HttpCall.Builder().withUrl("url$i").build()
       val date = Date(getDate(2016, 5, 23).time + i * 1000)
       httpCall.date = date
-      repo!!.save(HttpCallRecord.from(httpCall))
+      repo.save(HttpCallRecord.from(httpCall))
     }
   }
 
