@@ -130,3 +130,51 @@ jobs:
         env:
           NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
           NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
+
+  code_coverage_reports:
+    name: Generate code coverage reports
+    if: github.event_name == 'push'
+    runs-on: macos-latest
+    needs: [unit_test, integration_test]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set Up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+
+      - name: Cache gradle wrapper
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: snapshot-deploy-${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            snapshot-deploy-${{ runner.os }}-gradle-
+      - name: Download unit test coverage file (.exec)
+        uses: actions/download-artifact@v2
+        with:
+          name: unit-test-coverage-report
+          path: build
+      - name: Download espresso test coverage file (.ec)
+        uses: actions/download-artifact@v2
+        with:
+          name: espresso-test-coverage-report
+          path: build
+      - name: Download generated kotlin classes
+        uses: actions/download-artifact@v2
+        with:
+          name: generated-kotlin-classes
+          path: build/tmp/kotlin-classes/debug
+      - name: Generate reports
+        run: bash ./gradlew generateCiDebugTestReports --rerun-tasks
+      - name: Publish reports
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./build/reports/jacoco/generateCiDebugTestReports/generateCiDebugTestReports.xml
+          fail_ci_if_error: true
+          verbose: true

@@ -4,6 +4,57 @@ jacoco {
     toolVersion = "0.8.6"
 }
 
+def excludes = [
+        // data binding
+        'android/databinding/**/*.class',
+        '**/android/databinding/*Binding.class',
+        '**/android/databinding/*',
+        '**/androidx/databinding/*',
+        '**/BR.*',
+        // android
+        '**/R.class',
+        '**/R$*.class',
+        '**/BuildConfig.*',
+        '**/Manifest*.*',
+        '**/*Test*.*',
+        'android/**/*.*',
+        // butterKnife
+        '**/*$ViewInjector*.*',
+        '**/*$ViewBinder*.*',
+        // dagger
+        '**/*_MembersInjector.class',
+        '**/Dagger*Component.class',
+        '**/Dagger*Component$Builder.class',
+        '**/*Module_*Factory.class',
+        '**/di/module/*',
+        '**/*_Factory*.*',
+        '**/*Module*.*',
+        '**/*Dagger*.*',
+        '**/*Hilt*.*',
+        // kotlin
+        '**/*MapperImpl*.*',
+        '**/*$ViewInjector*.*',
+        '**/*$ViewBinder*.*',
+        '**/BuildConfig.*',
+        '**/*Component*.*',
+        '**/*BR*.*',
+        '**/Manifest*.*',
+        '**/*$Lambda$*.*',
+        '**/*Companion*.*',
+        '**/*Module*.*',
+        '**/*Dagger*.*',
+        '**/*Hilt*.*',
+        '**/*MembersInjector*.*',
+        '**/*_MembersInjector.class',
+        '**/*_Factory*.*',
+        '**/*_Provide*Factory*.*',
+        '**/*Extensions*.*',
+        // sealed and data classes
+        '**/*$Result.*',
+        '**/*$Result$*.*'
+]
+
+
 tasks.withType(Test) {
     jacoco.includeNoLocationClasses = true
     jacoco.excludes = ['jdk.internal.*']
@@ -32,56 +83,6 @@ project.afterEvaluate {
                         csv.enabled = true
                     }
 
-                    def excludes = [
-                            // data binding
-                            'android/databinding/**/*.class',
-                            '**/android/databinding/*Binding.class',
-                            '**/android/databinding/*',
-                            '**/androidx/databinding/*',
-                            '**/BR.*',
-                            // android
-                            '**/R.class',
-                            '**/R$*.class',
-                            '**/BuildConfig.*',
-                            '**/Manifest*.*',
-                            '**/*Test*.*',
-                            'android/**/*.*',
-                            // butterKnife
-                            '**/*$ViewInjector*.*',
-                            '**/*$ViewBinder*.*',
-                            // dagger
-                            '**/*_MembersInjector.class',
-                            '**/Dagger*Component.class',
-                            '**/Dagger*Component$Builder.class',
-                            '**/*Module_*Factory.class',
-                            '**/di/module/*',
-                            '**/*_Factory*.*',
-                            '**/*Module*.*',
-                            '**/*Dagger*.*',
-                            '**/*Hilt*.*',
-                            // kotlin
-                            '**/*MapperImpl*.*',
-                            '**/*$ViewInjector*.*',
-                            '**/*$ViewBinder*.*',
-                            '**/BuildConfig.*',
-                            '**/*Component*.*',
-                            '**/*BR*.*',
-                            '**/Manifest*.*',
-                            '**/*$Lambda$*.*',
-                            '**/*Companion*.*',
-                            '**/*Module*.*',
-                            '**/*Dagger*.*',
-                            '**/*Hilt*.*',
-                            '**/*MembersInjector*.*',
-                            '**/*_MembersInjector.class',
-                            '**/*_Factory*.*',
-                            '**/*_Provide*Factory*.*',
-                            '**/*Extensions*.*',
-                            // sealed and data classes
-                            '**/*$Result.*',
-                            '**/*$Result$*.*'
-                    ]
-
                     def javaClasses = fileTree(dir: variant.javaCompileProvider.get().destinationDir,
                             excludes: excludes)
                     def kotlinClasses = fileTree(dir: "${buildDir}/tmp/kotlin-classes/${variantName}",
@@ -102,4 +103,37 @@ project.afterEvaluate {
                     ]))
                 }
             }
+}
+
+project.afterEvaluate {
+    def allVariants = android.hasProperty('applicationVariants')
+            ? android.'applicationVariants'
+            : android.'libraryVariants'
+    allVariants.all { variant ->
+        def variantName = variant.name
+
+        tasks.create(name: "generateCi${variantName.capitalize()}TestReports", type: JacocoReport) {
+            group = "Reporting"
+            description = "Generate Jacoco coverage reports on CI"
+
+            reports {
+                html.enabled = true
+                xml.enabled = true
+                csv.enabled = true
+            }
+
+            def kotlinClasses = fileTree(dir: "${buildDir}/tmp/kotlin-classes/debug", excludes: excludes)
+            classDirectories.setFrom(files([
+                    kotlinClasses
+            ]))
+
+            def variantSourceSets = variant.sourceSets.java.srcDirs.collect { it.path }.flatten()
+            sourceDirectories.setFrom(project.files(variantSourceSets))
+
+            def codeCoverageFiles = fileTree(dir: "${buildDir}", includes: ["**/*.ec", "**/*.exec"])
+            executionData(files([
+                    codeCoverageFiles
+            ]))
+        }
+    }
 }
