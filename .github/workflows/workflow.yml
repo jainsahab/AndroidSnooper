@@ -41,7 +41,6 @@ jobs:
           name: generated-kotlin-classes
           path: Snooper/build/tmp/kotlin-classes/debug
 
-
   integration_test:
     name: Run Instrumention tests
     runs-on: macos-latest
@@ -176,3 +175,8 @@ jobs:
           files: Snooper/build/reports/jacoco/generateCiDebugTestReports/generateCiDebugTestReports.xml
           fail_ci_if_error: true
           verbose: true
+      - name: Archive html reports
+        uses: actions/upload-artifact@v2
+        with:
+          name: code-coverage-html-reports
+          path: Snooper/build/reports/jacoco/generateCiDebugTestReports/html
