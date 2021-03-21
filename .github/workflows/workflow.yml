@@ -135,7 +135,7 @@ jobs:
     name: Generate code coverage reports
     if: github.event_name == 'push'
     runs-on: macos-latest
-    needs: [unit_test, integration_test]
+    needs: [unit_test]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -158,19 +158,22 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: unit-test-coverage-report
-          path: build
+          path: Snooper/build
       - name: Download espresso test coverage file (.ec)
         uses: actions/download-artifact@v2
         with:
           name: espresso-test-coverage-report
-          path: build
+          path: Snooper/build
       - name: Download generated kotlin classes
         uses: actions/download-artifact@v2
         with:
           name: generated-kotlin-classes
-          path: build/tmp/kotlin-classes/debug
+          path: Snooper/build/tmp/kotlin-classes/debug
+      - name: Display structure of Snooper/build directory
+        run: ls -R
+        working-directory: Snooper/build
       - name: Generate reports
-        run: bash ./gradlew generateCiDebugTestReports --rerun-tasks
+        run: bash ./gradlew generateCiDebugTestReports --rerun-tasks -i
       - name: Publish reports
         uses: codecov/codecov-action@v1
         with:
