@@ -169,15 +169,15 @@ jobs:
         with:
           name: generated-kotlin-classes
           path: Snooper/build/tmp/kotlin-classes/debug
+      - name: Generate reports
+        run: bash ./gradlew generateCiDebugTestReports --rerun-tasks -i
       - name: Display structure of Snooper/build directory
         run: ls -R
         working-directory: Snooper/build
-      - name: Generate reports
-        run: bash ./gradlew generateCiDebugTestReports --rerun-tasks -i
       - name: Publish reports
         uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./build/reports/jacoco/generateCiDebugTestReports/generateCiDebugTestReports.xml
+          files: Snooper/build/reports/jacoco/generateCiDebugTestReports/generateCiDebugTestReports.xml
           fail_ci_if_error: true
           verbose: true
